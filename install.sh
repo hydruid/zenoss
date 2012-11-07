@@ -19,11 +19,11 @@ else
                 echo "Save it in the same directory as install.sh"
                 exit;
 fi
-#sudo ./jdk-6u34-linux-x64.bin
-#sudo mkdir /usr/lib/jvm/
-#sudo mv jdk1.6.0_34 /usr/lib/jvm/
-#sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1.6.0_34/bin/javac 1
-#sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.6.0_34/bin/java 1
+sudo ./jdk-6u34-linux-x64.bin
+sudo mkdir /usr/lib/jvm/
+sudo mv jdk1.6.0_34 /usr/lib/jvm/
+sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1.6.0_34/bin/javac 1
+sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.6.0_34/bin/java 1
 
 echo "Installing Dependcies"
 sudo apt-get install rrdtool mysql-server mysql-client mysql-common libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libreadline-dev libsnmp-dev zip libssl0.9.8 libxml2-dev libxslt-dev libldap2-dev libsasl2-dev
