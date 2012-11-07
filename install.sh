@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Version-02
-# Status: Very experimental
+# Status: Exerimental but functioning!
 # Notes: This script is still a work in progress, Use at your own risk!!!
 
 sudo apt-get purge openjdk*
