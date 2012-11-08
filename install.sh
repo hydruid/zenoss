@@ -60,4 +60,4 @@ echo "##	./install.sh"
 
 echo "Zenoss Post Installation configurations"
 # Nmap setuid fix
-chown root:zenoss /usr/local/zenoss/bin/nmap && chmod u+s /usr/local/zenoss/bin/nmap
+sudo chown root:zenoss /usr/local/zenoss/bin/nmap && sudo chmod u+s /usr/local/zenoss/bin/nmap
