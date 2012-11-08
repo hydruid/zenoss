@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Version-02
-# Status: Exerimental but functioning!
+# Version-03
+# Status: Functional but not perfect
 # Notes: This script is still a work in progress, Use at your own risk!!!
 
 sudo apt-get purge openjdk*
@@ -58,3 +58,6 @@ echo "##	sudo su zenoss"
 echo "##	cd /home/zenoss/zenoss-inst"
 echo "##	./install.sh"
 
+echo "Zenoss Post Installation configurations"
+# Nmap setuid fix
+chown root:zenoss /usr/local/zenoss/bin/nmap && chmod u+s /usr/local/zenoss/bin/nmap
