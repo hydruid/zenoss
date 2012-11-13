@@ -42,13 +42,13 @@ if [ "" == "$search" ];
                         if [ -f jdk-6u34-linux-x64.bin ];
                                 then
                                         echo "Oracle JDK1.6_u34 .bin found"
-										echo "chmod u+x jdk-6u34-linux-x64.bin"
-										echo "sudo ./jdk-6u34-linux-x64.bin"
-										echo "sudo mkdir /usr/lib/jvm/"
-										echo "sudo mv jdk1.6.0_34 /usr/lib/jvm/"
-										echo "sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1.6.0_34/bin/javac 1"
-										echo "sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.6.0_34/bin/java 1"
-								else
+					echo "chmod u+x jdk-6u34-linux-x64.bin"
+					echo "sudo ./jdk-6u34-linux-x64.bin"
+					echo "sudo mkdir /usr/lib/jvm/"
+					echo "sudo mv jdk1.6.0_34 /usr/lib/jvm/"
+					echo "sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1.6.0_34/bin/javac 1"
+					echo "sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.6.0_34/bin/java 1"
+				else
                                         echo ""
                                         echo ""
                                         echo "#######Error:#######"
