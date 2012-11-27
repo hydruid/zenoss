@@ -7,14 +7,14 @@
 # This script should be run on a base install of
 # Ubuntu 12.04 x64
 #
-# Status: Working.....still working on the automation
-# Version: 04-Beta03
+# Status: Functional....still working on the automation
+# Version: 04-Beta04
 #
 ########################################################
 
 
 #Preinstall Checks
-checkenable='yes'
+checkenable='no'
 if [ $checkenable = "no" ];
         then
 		echo "Preinstall checks disabled......"
@@ -79,12 +79,18 @@ echo "Installing Dependencies"
 sudo apt-get install rrdtool mysql-server mysql-client mysql-common libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libreadline-dev libsnmp-dev zip libssl0.9.8 libxml2-dev libxslt-dev libldap2-dev libsasl2-dev snmp-mibs-downloader
 
 #echo "Zenoss User setup"
-#sudo useradd -m -U -s /bin/bash zenoss
-#sudo mkdir /usr/local/zenoss
-#sudo chown -R zenoss:zenoss /usr/local/zenoss
-#sudo rabbitmqctl add_user zenoss zenoss
-#sudo rabbitmqctl add_vhost /zenoss
-#sudo rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'
+sudo useradd -m -U -s /bin/bash zenoss
+sudo mkdir /usr/local/zenoss
+sudo chown -R zenoss:zenoss /usr/local/zenoss
+sudo rabbitmqctl add_user zenoss zenoss
+sudo rabbitmqctl add_vhost /zenoss
+sudo rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'
+sudo chmod 777 /home/zenoss/.bashrc
+sudo echo 'export ZENHOME=/usr/local/zenoss' >> /home/zenoss/.bashrc
+sudo echo 'export PYTHONPATH=/usr/local/zenoss/lib/python' >> /home/zenoss/.bashrc
+sudo echo 'export PATH=/usr/local/zenoss/bin:$PATH' >> /home/zenoss/.bashrc
+sudo echo 'export INSTANCE_HOME=$ZENHOME' >> /home/zenoss/.bashrc
+sudo chmod 644 /home/zenoss/.bashrc
 
 #echo "Zenoss Installation Preparation (may take a few minutes)"
 #sudo svn --quiet co http://dev.zenoss.org/svn/tags/zenoss-4.2.0/inst /home/zenoss/zenoss-inst
@@ -92,11 +98,6 @@ sudo apt-get install rrdtool mysql-server mysql-client mysql-common libmysqlclie
 #echo "##        Ready for install!!"
 #echo "##        Follow the Instructions below"
 #echo "##"
-#echo "##        Modify file - sudo vi /home/zenoss/.bashrc"
-#echo "##        export ZENHOME=/usr/local/zenoss"
-#echo "##        export PYTHONPATH=$ZENHOME/lib/python"
-#echo "##        export PATH=$ZENHOME/bin:$PATH"
-#echo "##        export INSTANCE_HOME=$ZENHOME"
 #echo "##        Modify file - sudo vi /etc/mysql/my.cnf"
 #echo "##        max_allowed_packet=16M"
 #echo "##        innodb_buffer_pool_size=256M"
