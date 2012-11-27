@@ -7,8 +7,8 @@
 # This script should be run on a base install of
 # Ubuntu 12.04 x64
 #
-# Status: Functional...still working on automation
-# Version: 04 - Beta01
+# Status: Broken......working on fixing it now
+# Version: 04 - Beta02
 #
 ###################################################
 
