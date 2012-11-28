@@ -8,7 +8,7 @@
 # Ubuntu 12.04 x64
 #
 # Status: Functional....still working on the automation
-# Version: 04-Beta04
+# Version: 04-Beta05
 #
 ########################################################
 
@@ -92,23 +92,27 @@ sudo echo 'export PATH=/usr/local/zenoss/bin:$PATH' >> /home/zenoss/.bashrc
 sudo echo 'export INSTANCE_HOME=$ZENHOME' >> /home/zenoss/.bashrc
 sudo chmod 644 /home/zenoss/.bashrc
 
-#echo "Zenoss Installation Preparation (may take a few minutes)"
-#sudo svn --quiet co http://dev.zenoss.org/svn/tags/zenoss-4.2.0/inst /home/zenoss/zenoss-inst
-#sudo chown -R zenoss:zenoss /home/zenoss/zenoss-inst
-#echo "##        Ready for install!!"
-#echo "##        Follow the Instructions below"
-#echo "##"
-#echo "##        Modify file - sudo vi /etc/mysql/my.cnf"
-#echo "##        max_allowed_packet=16M"
-#echo "##        innodb_buffer_pool_size=256M"
-#echo "##        innodb_additional_mem_pool_size=20M"
-#echo "##        Modify file - sudo vi /etc/snmp/snmp.conf"
-#echo "##        #mibs :"
-#echo "##"
-#echo "##        sudo su zenoss"
-#echo "##        cd /home/zenoss/zenoss-inst"
-#echo "##        ./install.sh"
+echo "MySQL Adjustments"
+sudo echo '#This is commented out as it is the default parameter' >> /etc/mysql/my.cnf
+sudo echo '#max_allowed_packet=16M' >> /etc/mysql/my.cnf
+sudo echo 'innodb_buffer_pool_size=256M' >> /etc/mysql/my.cnf
+sudo echo 'innodb_additional_mem_pool_size=20M' >> /etc/mysql/my.cnf
 
-#echo "Zenoss Post Installation configurations"
-# Nmap setuid fix
-#sudo chown root:zenoss /usr/local/zenoss/bin/nmap && sudo chmod u+s /usr/local/zenoss/bin/nmap
+echo "SNMP Adjustments"
+sudo sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
+
+echo "Zenoss Installation Preparation (may take a few minutes)"
+sudo svn --quiet co http://dev.zenoss.org/svn/tags/zenoss-4.2.0/inst /home/zenoss/zenoss-inst
+sudo chown -R zenoss:zenoss /home/zenoss/zenoss-inst
+echo "###############################################
+echo "##        Ready for install!!"
+echo "##        Follow the Instructions below"
+echo "##"
+echo "##        sudo su zenoss"
+echo "##        cd /home/zenoss/zenoss-inst"
+echo "##        ./install.sh"
+echo ""
+echo "##        Zenoss Post Installation Adjustments"
+echo "##        Nmap setuid fix"
+echo "##        sudo chown root:zenoss /usr/local/zenoss/bin/nmap && sudo chmod u+s /usr/local/zenoss/bin/nmap"
+echo "###############################################
