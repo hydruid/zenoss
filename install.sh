@@ -1,16 +1,15 @@
 #!/bin/bash
-########################################################
+###########################################################
 #
 # A simple script to auto-install Zenoss Core 4.2
-# simple script to auto-install Zenoss Core 4.2
 #
 # This script should be run on a base install of
 # Ubuntu 12.04 x64
 #
-# Status: Functional....still working on the automation
-# Version: 04-Beta05
+# Status: Broken....seems after updates missing dependencies
+# Version: 04-Beta06
 #
-########################################################
+###########################################################
 
 
 #Preinstall Checks
@@ -61,8 +60,6 @@ if [ -f /usr/lib/jvm/jdk1.6.0_34/COPYRIGHT ];
 			sudo ./jdk-6u34-linux-x64.bin
 			sudo mkdir /usr/lib/jvm/
 			sudo mv jdk1.6.0_34 /usr/lib/jvm/
-			sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1.6.0_34/bin/javac 1
-			sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.6.0_34/bin/java 1
 		else
 			echo ""
 			echo ""
@@ -76,7 +73,7 @@ if [ -f /usr/lib/jvm/jdk1.6.0_34/COPYRIGHT ];
 fi
 
 echo "Installing Dependencies"
-sudo apt-get install rrdtool mysql-server mysql-client mysql-common libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libreadline-dev libsnmp-dev zip libssl0.9.8 libxml2-dev libxslt-dev libldap2-dev libsasl2-dev snmp-mibs-downloader
+sudo apt-get install rrdtool mysql-server mysql-client mysql-common libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libreadline-dev libsnmp-dev zip libssl0.9.8 libxml2-dev libxslt-dev libldap2-dev libsasl2-dev snmp-mibs-downloader python-qt4reactor python-twisted python-gnutls python-twisted-web ia32-libs
 
 #echo "Zenoss User setup"
 sudo useradd -m -U -s /bin/bash zenoss
@@ -100,6 +97,10 @@ sudo echo 'innodb_additional_mem_pool_size=20M' >> /etc/mysql/my.cnf
 
 echo "SNMP Adjustments"
 sudo sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
+
+echo "Java Adjustments"
+sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1.6.0_34/bin/javac 1
+sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.6.0_34/bin/java 1
 
 echo "Zenoss Installation Preparation (may take a few minutes)"
 sudo svn --quiet co http://dev.zenoss.org/svn/tags/zenoss-4.2.0/inst /home/zenoss/zenoss-inst
