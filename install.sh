@@ -1,13 +1,13 @@
 #!/bin/bash
 ###########################################################
 #
-# A simple script to auto-install Zenoss Core 4.2
+# A simple script to auto-install Zenoss Core 4.2.0
 #
 # This script should be run on a base install of
 # Ubuntu 12.04 x64
 #
-# Status: Testing Phase.....seems to be working though!
-# Version: 05-Beta01
+# Status: Functional.....just need work on automation
+# Version: 05-Beta02
 #
 ###########################################################
 
