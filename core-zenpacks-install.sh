@@ -6,15 +6,14 @@
 # This script should be run on a base install of
 # Ubuntu 12.04 x64
 #
-# Status: Still Testing...twisted.reactor library not working
-#		  properly but I will iron that out soon
-# Version: 01-Beta02
+# Status: Functional....still needs work
+# Version: 01-Beta03
 #
 ###########################################################
 
 
 echo "Zenpack Core"
-echo "#Zenpack Directory: http://zenpacks.zenoss.com/pypi/none/4.2/ "
+echo "#Zenpacks Source: http://zenpacks.zenoss.com/pypi/none/4.2/ "
 if [ -f ZenPacks.zenoss.ZenJMX-3.8.0-py2.7.egg ];
 	then
 		zenpack --install ZenPacks.zenoss.ApacheMonitor-2.1.3-py2.7.egg
@@ -45,7 +44,12 @@ if [ -f ZenPacks.zenoss.ZenJMX-3.8.0-py2.7.egg ];
 		zenpack --install ZenPacks.zenoss.MSExchange-2.0.4-py2.7.egg
 		zenpack --install ZenPacks.zenoss.MSMQMonitor-1.2.1-py2.7.egg
 		zenpack --install ZenPacks.zenoss.MSSQLServer-2.0.3-py2.7.egg
-		zenoss restart
+		wget http://hydruid-blog.com/wp-content/uploads/2012/12/pysamba.zip
+		mv pysamba.zip /usr/local/zenoss/ZenPacks/ZenPacks.zenoss.PySamba-1.0.0-py2.7-linux-x86_64.egg/ZenPacks/zenoss/PySamba/lib/
+		cd /usr/local/zenoss/ZenPacks/ZenPacks.zenoss.PySamba-1.0.0-py2.7-linux-x86_64.egg/ZenPacks/zenoss/PySamba/lib/
+		unzip pysamba.zip
+		cp pysamba/easy-install.pth /usr/local/zenoss/ZenPacks/
+		echo "Restart your server"
 	else
 		wget http://zenpacks.zenoss.com/pypi/eggs/none/ZenPacks.zenoss.PySamba-1.0.0-py2.7-linux-x86_64.egg
 		wget http://zenpacks.zenoss.com/pypi/eggs/none/ZenPacks.zenoss.WindowsMonitor-1.0.2-py2.7.egg
@@ -103,5 +107,10 @@ if [ -f ZenPacks.zenoss.ZenJMX-3.8.0-py2.7.egg ];
 		zenpack --install ZenPacks.zenoss.MSExchange-2.0.4-py2.7.egg
 		zenpack --install ZenPacks.zenoss.MSMQMonitor-1.2.1-py2.7.egg
 		zenpack --install ZenPacks.zenoss.MSSQLServer-2.0.3-py2.7.egg
-		zenoss restart
+		wget http://hydruid-blog.com/wp-content/uploads/2012/12/pysamba.zip
+		mv pysamba.zip /usr/local/zenoss/ZenPacks/ZenPacks.zenoss.PySamba-1.0.0-py2.7-linux-x86_64.egg/ZenPacks/zenoss/PySamba/lib/
+		cd /usr/local/zenoss/ZenPacks/ZenPacks.zenoss.PySamba-1.0.0-py2.7-linux-x86_64.egg/ZenPacks/zenoss/PySamba/lib/
+		unzip pysamba.zip
+		cp pysamba/easy-install.pth /usr/local/zenoss/ZenPacks/
+		echo "Restart your server"
 fi
