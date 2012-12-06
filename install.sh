@@ -7,12 +7,12 @@
 # Ubuntu 12.04 x64
 #
 # Status: Functional.....just need work on automation
-# Version: 05-Beta02
+# Version: 05-Beta03
 #
 ###########################################################
 
 echo "Install Dependencies"
-apt-get install rrdtool mysql-server mysql-client mysql-common libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libreadline-dev libsnmp-dev zip libssl0.9.8 libxml2-dev libxslt-dev libldap2-dev libsasl2-dev snmp-mibs-downloader python-twisted python-gnutls python-twisted-web
+apt-get install rrdtool mysql-server mysql-client mysql-common libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libreadline-dev libsnmp-dev zip libssl0.9.8 libxml2-dev libxslt-dev libldap2-dev libsasl2-dev snmp-mibs-downloader python-twisted python-gnutls python-twisted-web python-samba
 
 echo "Install Oracle JDK1.6_34u"
 if [ -f /usr/lib/jvm/jdk1.6.0_34/COPYRIGHT ];
