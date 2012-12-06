@@ -7,7 +7,7 @@
 # Ubuntu 12.04 x64
 #
 # Status: Functional....still needs work
-# Version: 01-Beta03
+# Version: 01-Beta04
 #
 ###########################################################
 
@@ -49,6 +49,7 @@ if [ -f ZenPacks.zenoss.ZenJMX-3.8.0-py2.7.egg ];
 		cd /usr/local/zenoss/ZenPacks/ZenPacks.zenoss.PySamba-1.0.0-py2.7-linux-x86_64.egg/ZenPacks/zenoss/PySamba/lib/
 		unzip pysamba.zip
 		cp pysamba/easy-install.pth /usr/local/zenoss/ZenPacks/
+		touch /usr/local/zenoss/etc/zenwinperf.conf
 		echo "Restart your server"
 	else
 		wget http://zenpacks.zenoss.com/pypi/eggs/none/ZenPacks.zenoss.PySamba-1.0.0-py2.7-linux-x86_64.egg
@@ -112,5 +113,6 @@ if [ -f ZenPacks.zenoss.ZenJMX-3.8.0-py2.7.egg ];
 		cd /usr/local/zenoss/ZenPacks/ZenPacks.zenoss.PySamba-1.0.0-py2.7-linux-x86_64.egg/ZenPacks/zenoss/PySamba/lib/
 		unzip pysamba.zip
 		cp pysamba/easy-install.pth /usr/local/zenoss/ZenPacks/
+		touch /usr/local/zenoss/etc/zenwinperf.conf
 		echo "Restart your server"
 fi
