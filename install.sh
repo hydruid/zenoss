@@ -6,8 +6,8 @@
 # This script should be run on a base install of
 # Ubuntu 12.04 x64
 #
-# Status: Functional.....just need work on automation
-# Version: 05-Beta03
+# Status: Functional.....needs automation
+# Version: 06-a
 #
 ###########################################################
 
@@ -57,16 +57,13 @@ if [ -f /home/zenoss/.bashrc ];
                 echo 'export INSTANCE_HOME=$ZENHOME' >> /home/zenoss/.bashrc
                 chmod 644 /home/zenoss/.bashrc
 fi
-
 echo "Applying MySQL Adjustments"
 echo '#This is commented out as it is the default parameter' >> /etc/mysql/my.cnf
 echo '#max_allowed_packet=16M' >> /etc/mysql/my.cnf
 echo 'innodb_buffer_pool_size=256M' >> /etc/mysql/my.cnf
 echo 'innodb_additional_mem_pool_size=20M' >> /etc/mysql/my.cnf
-
 echo "Applying SNMP Adjustments"
 sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
-
 echo "Applying Java Adjustments"
 update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1.6.0_34/bin/javac 1
 update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.6.0_34/bin/java 1
