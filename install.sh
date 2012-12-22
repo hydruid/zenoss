@@ -12,31 +12,58 @@
 ###########################################################
 
 echo "Install Dependencies"
-apt-get install rrdtool mysql-server mysql-client mysql-common libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libreadline-dev libsnmp-dev zip libssl0.9.8 libxml2-dev libxslt-dev libldap2-dev libsasl2-dev snmp-mibs-downloader python-twisted python-gnutls python-twisted-web python-samba
+apt-get install rrdtool mysql-server mysql-client mysql-common libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libreadline-dev libsnmp-dev zip libssl0.9.8 libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev libsmi2-common python-twisted python-gnutls python-twisted-web python-samba
+
+#. ref: http://d.hatena.ne.jp/minghai/20120503/p1
+function get_jdk(){
+        # second and nano second
+        T=$(date +%s%N)
+        # Make it 13 digits cause JavaScript Date has only millisecond
+        T=${T:0:13}
+        P1="s_nr=${T};"
+        P2="gpw_e24=http%3A%2F%2Fwww.oracle.com%2Ftechnetwork%2Fjava%2Fjavase%2Fdownloads%2Fjdk6-downloads-1637591.html;"
+        P3="s_sq=%5B%5BB%5D%5D"
+        COOKIE="$P1 $P2 $P3"
+        AGENT='Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.16) Gecko/20120421 Firefox/11.0'
+        TARGET='http://download.oracle.com/otn-pub/java/jdk/6u34-b04/jdk-6u34-linux-x64.bin'
+        REFERER='http://www.oracle.com/technetwork/java/javase/downloads/jdk6-downloads-1637591.html'
+        curl -k -b "$COOKIE" --user-agent "$AGENT" --referer "$REFERER" -L -O "$TARGET"
+}
 
 echo "Install Oracle JDK1.6_34u"
 if [ -f /usr/lib/jvm/jdk1.6.0_34/COPYRIGHT ];
         then
                 echo "Oracle JDK1.6_34u Already Installed.....Skipping"
         else
-        if [ -f jdk-6u34-linux-x64.bin ];
-                then
-                        echo "Oracle JDK1.6_u34 .bin found"
-                        chmod u+x jdk-6u34-linux-x64.bin
-                        ./jdk-6u34-linux-x64.bin
-                        rm -fr /usr/lib/jvm
-                        mkdir /usr/lib/jvm/
-                        mv jdk1.6.0_34 /usr/lib/jvm/
-                else
-                        echo ""
-                        echo ""
-                        echo "#######Error:#######"
-                        echo "Oracle JDK1.6_u34 .bin not found "
-                        echo "Please Download jdk-6u34-linux-x64.bin from the below link"
-                        echo "http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-javase6-419409.html#jdk-6u34-oth-JPR "
-                        echo "Save it in the same directory as install.sh"
-                        exit
-        fi
+                ATTEMPT=3
+                FAILED=0
+                ROUND=0
+                while [[ ! -f ./jdk-6u34-linux-x64.bin ]]; do
+                    ROUND=$(($ROUND+1))
+                    echo "Trying to download Oracle JDK1.6_34u ($ROUND/$ATTEMPT)"
+                        get_jdk
+                        if [[ ! -f ./jdk-6u34-linux-x64.bin  ]]; then
+                                FAILED=$(($FAILED+1))
+                                if [[ "$FAILED" -eq "$ATTEMPT" ]]; then
+                                        echo ""
+                                        echo ""
+                                        echo "#######Error:#######"
+                                        echo "Oracle JDK1.6_u34 .bin not found "
+                                        echo "Please manually download jdk-6u34-linux-x64.bin from the below link"
+                                        echo "http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-javase6-419409.html#jdk-6u34-oth-JPR "
+                                        echo "Save it in the same directory as install.sh"
+                                        exit
+                                fi
+                        else
+                                echo "Oracle JDK1.6_u34 .bin found"
+                                chmod u+x jdk-6u34-linux-x64.bin
+                                ./jdk-6u34-linux-x64.bin
+                                rm -fr /usr/lib/jvm
+                                mkdir /usr/lib/jvm/
+                                mv jdk1.6.0_34 /usr/lib/jvm/
+                                break
+                        fi
+                done
 fi
 
 echo "Zenoss User Adjustments"
