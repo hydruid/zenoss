@@ -7,5 +7,5 @@ export INSTANCE_HOME=$ZENHOME
 export ZENPATH=/usr/local/zenoss/bin
 export RRDCACHED=$ZENPATH/rrdcached
 
-sudo -u zenoss -H -E $ZENPATH/zenoss $OPT
+sudo -u zenoss -H -E $ZENPATH/zenoss $1
 
