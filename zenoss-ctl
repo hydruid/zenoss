@@ -1,11 +1,11 @@
 #!/bin/bash
 
-export ZENHOME=/usr/local/zenoss
-export PYTHONPATH=/usr/local/zenoss/lib/python
-export PATH=/usr/local/zenoss/bin:$PATH
-export INSTANCE_HOME=$ZENHOME
-export ZENPATH=/usr/local/zenoss/bin
-export RRDCACHED=$ZENPATH/rrdcached
+ZENPATH=/usr/local/zenoss/bin
+ENV="ZENHOME=/usr/local/zenoss 
+PYTHONPATH=/usr/local/zenoss/lib/python 
+PATH=/usr/local/zenoss/bin:$PATH 
+INSTANCE_HOME=$ZENHOME 
+RRDCACHED=$ZENPATH/rrdcached "
 
-sudo -u zenoss -H -E $ZENPATH/zenoss $1
+sudo -u zenoss -H sh -c "$ENV $ZENPATH/zenoss $@"
 
