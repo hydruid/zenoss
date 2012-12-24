@@ -94,6 +94,15 @@ sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
 echo "Applying Java Adjustments"
 update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1.6.0_34/bin/javac 1
 update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.6.0_34/bin/java 1
+echo "Setting Socket buffers"
+echo 'net.core.rmem_default=1048576
+net.core.rmem_max=1048576
+net.core.wmem_default=1048576
+net.core.wmem_max=1048576' >> /etc/sysctl.conf
+sysctl -w net.core.rmem_default=1048576
+sysctl -w net.core.rmem_max=1048576
+sysctl -w net.core.wmem_default=1048576
+sysctl -w net.core.wmem_max=1048576
 
 echo "Zenoss Installation Preparation (may take a few minutes)"
 sudo svn --quiet co http://dev.zenoss.org/svn/tags/zenoss-4.2.0/inst /home/zenoss/zenoss-inst
@@ -107,7 +116,11 @@ echo "##    cd /home/zenoss/zenoss-inst"
 echo "##    ./install.sh"
 echo "##"
 echo "##    Zenoss Post Installation Adjustments"
-echo "##    Nmap setuid fix"
-echo "##    sudo chown root:zenoss /usr/local/zenoss/bin/nmap && sudo chmod u+s /usr/local/zenoss/bin/nmap"
+echo "##    1. setuid to open raw sockets"
+echo "##    export ZENHOME=/usr/local/zenoss"
+echo "##    chown root:zenoss \$ZENHOME/bin/{zensocket,pyraw,nmap}"
+echo "##    chmod 04750 \$ZENHOME/bin/{zensocket,pyraw,nmap}"
+echo "##    2. ..."
+echo "##  "
 echo "###############################################"
 
