@@ -67,7 +67,7 @@ echo 'innodb_additional_mem_pool_size=20M' >> /etc/mysql/my.cnf
 echo "Applying SNMP Adjustments"
 sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
 echo "Applying Java Adjustments"
-dist="lsb_release -r' | awk '{ print $3 }'"
+dist=`lsb_release -i | awk '{ print $3 }'`
 
 if [ "$dist" = "Debian" ]; then
         echo 'JAVA_HOME=/usr/lib/jvm/jdk1.6.0_34' >> /etc/profile
