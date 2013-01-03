@@ -9,7 +9,7 @@
 # Debian (tested on wheezy)
 #
 # Status: Functional.....needs automation
-# Version: 06-b
+# Version: 06-c
 #
 ###########################################################
 
@@ -67,13 +67,15 @@ echo 'innodb_additional_mem_pool_size=20M' >> /etc/mysql/my.cnf
 echo "Applying SNMP Adjustments"
 sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
 echo "Applying Java Adjustments"
-dist=`lsb_release -r | awk '{ print $3 }'`
+dist="lsb_release -r' | awk '{ print $3 }'"
 
-if [ "$dist" -eq "Debian" ]; then
+if [ "$dist" = "Debian" ]; then
         echo 'JAVA_HOME=/usr/lib/jvm/jdk1.6.0_34' >> /etc/profile
         echo 'export JAVA_HOME' >> /etc/profile
+        ln -s /usr/lib/jvm/jdk1.6.0_34/bin/javac /usr/bin/javac
+        ln -s /usr/lib/jvm/jdk1.6.0_34/bin/java /usr/bin/java
 else
-        if [ "$dist" -eq "Ubuntu" ]; then
+        if [ "$dist" = "Ubuntu" ]; then
                 update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1.6.0_34/bin/javac 1
                 update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.6.0_34/bin/java 1
         else
