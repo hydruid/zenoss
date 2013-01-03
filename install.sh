@@ -5,9 +5,11 @@
 #
 # This script should be run on a base install of
 # Ubuntu 12.04 x64
+# or
+# Debian (tested on wheezy)
 #
 # Status: Functional.....needs automation
-# Version: 06-a
+# Version: 06-c
 #
 ###########################################################
 
@@ -65,8 +67,21 @@ echo 'innodb_additional_mem_pool_size=20M' >> /etc/mysql/my.cnf
 echo "Applying SNMP Adjustments"
 sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
 echo "Applying Java Adjustments"
-update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1.6.0_34/bin/javac 1
-update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.6.0_34/bin/java 1
+dist=`lsb_release -i | awk '{ print $3 }'`
+
+if [ "$dist" = "Debian" ]; then
+        echo 'JAVA_HOME=/usr/lib/jvm/jdk1.6.0_34' >> /etc/profile
+        echo 'export JAVA_HOME' >> /etc/profile
+        ln -s /usr/lib/jvm/jdk1.6.0_34/bin/javac /usr/bin/javac
+        ln -s /usr/lib/jvm/jdk1.6.0_34/bin/java /usr/bin/java
+else
+        if [ "$dist" = "Ubuntu" ]; then
+                update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1.6.0_34/bin/javac 1
+                update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.6.0_34/bin/java 1
+        else
+                echo "Java Adjustments not supported on your distro"
+        fi
+fi
 
 echo "Zenoss Installation Preparation (may take a few minutes)"
 sudo svn --quiet co http://dev.zenoss.org/svn/tags/zenoss-4.2.0/inst /home/zenoss/zenoss-inst
