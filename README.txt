@@ -1,4 +1,11 @@
+Scripts for installing Zenoss on Ubuntu
+
+install.sh -
+  Zenoss 4.2.0 install
+
+core-zenpacks-install.sh -
+  Core ZenPacks install
+
+
+
 http://www.hydruid-blog.com/?p=5
-
-These scripts are to help install Zenoss 4.2.0 on Ubuntu Server 12.04.1 LTS
-
