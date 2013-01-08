@@ -7,7 +7,7 @@
 # Ubuntu 12.04 x64
 #
 # Status: Functional.....needs automation
-# Version: 06-a
+# Version: 06-b
 #
 ###########################################################
 
@@ -72,15 +72,17 @@ echo "Zenoss Installation Preparation (may take a few minutes)"
 sudo svn --quiet co http://dev.zenoss.org/svn/tags/zenoss-4.2.0/inst /home/zenoss/zenoss-inst
 sudo chown -R zenoss:zenoss /home/zenoss/zenoss-inst
 echo "###############################################"
-echo "##        Ready for install!!"
-echo "##        Follow the Instructions below"
+echo "## Ready for install!!"
+echo "## Follow the Instructions below"
 echo "##"
-echo "##        sudo su zenoss"
-echo "##        cd /home/zenoss/zenoss-inst"
-echo "##        ./install.sh"
+echo "## sudo su zenoss"
+echo "## cd /home/zenoss/zenoss-inst"
+echo "## ./install.sh"
 echo "##"
-echo "##        Zenoss Post Installation Adjustments"
-echo "##        Nmap setuid fix"
-echo "##        sudo chown root:zenoss /usr/local/zenoss/bin/nmap && sudo chmod u+s /usr/local/zenoss/bin/nmap"
+echo "## Zenoss Post Installation Adjustments"
+echo "##   Nmap, Zensocket, and Pyraw setuid fix"
+echo "##   sudo chown root:zenoss /usr/local/zenoss/bin/nmap && sudo chmod u+s /usr/local/zenoss/bin/nmap"
+echo "##   sudo chown root:zenoss /usr/local/zenoss/bin/zensocket && sudo chmod u+s /usr/local/zenoss/bin/zensocket"
+echo "##   sudo chown root:zenoss /usr/local/zenoss/bin/pyraw && sudo chmod u+s /usr/local/zenoss/bin/pyraw"
 echo "###############################################"
 
