@@ -1,4 +1,3 @@
-#!/bin/bash
 ###########################################################
 #
 # A simple script to auto-install Zenoss Core 4.2.0
