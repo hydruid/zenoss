@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #####################################################
-# Version: 03                                        #
+# Version: 04                                        #
 # Status: Functional...still in testing              #
 #                                                    #
 # Zenoss Version: Core ZenPacks for 4.2.3            #
@@ -15,5 +15,10 @@ do
 zenpack --fetch $i
 done
 
-#Step-02: Restart Zenoss
+#Step02: Download missing PySamba folder
+wget http://hydruid-blog.com/wp-content/uploads/2013/01/pysamba.zip
+unzip pysamba.zip
+cp -fr pysamba /usr/local/zenoss/ZenPacks/ZenPacks.zenoss.PySamba-1.0.0-py2.7.egg/ZenPacks/zenoss/PySamba/
+
+#Step-03: Restart Zenoss
 zenoss restart
