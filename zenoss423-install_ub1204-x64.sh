@@ -29,7 +29,7 @@ add-apt-repository ppa:webupd8team/java
 apt-get update
 apt-get install rrdtool mysql-server mysql-client mysql-common libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java6-installer
 
-#Step-04: Zenoss User Setup 
+#Step-03: Zenoss User Setup 
 if [ -f /home/zenoss/.bashrc ];
         then
                 echo "Zenoss user already exists...skipping"
@@ -48,7 +48,7 @@ if [ -f /home/zenoss/.bashrc ];
                 chmod 644 /home/zenoss/.bashrc
 fi
 
-#Step-05: Misc Adjustments for MySQL, SNMP, and Java
+#Step-04: Misc Adjustments for MySQL, SNMP, and Java
 #MySQL
 echo '#max_allowed_packet=16M' >> /etc/mysql/my.cnf
 echo 'innodb_buffer_pool_size=256M' >> /etc/mysql/my.cnf
@@ -56,7 +56,7 @@ echo 'innodb_additional_mem_pool_size=20M' >> /etc/mysql/my.cnf
 #SNMP
 sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
 
-#Step-06: Download Zenoss Install 
+#Step-05: Download Zenoss Install 
 if [ -f /home/zenoss/zenoss-inst/CHANGES.txt ];
         then
                 echo "Zenoss install already exists...skipping\n"
