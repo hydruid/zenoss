@@ -18,7 +18,7 @@ if grep -Fxq "Ubuntu 12.04.1 LTS" /etc/issue.net
 fi
 if grep -FqR "Release amd64" /etc/apt/sources.list
     then
-        echo "Correct Arch detected...\n"
+        echo "Correct Arch detected..."
     else
         echo "Incorrect Arch detected...stopping script"
         exit 0
@@ -68,7 +68,7 @@ sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
 #Step-05: Download Zenoss Install 
 if [ -f /home/zenoss/zenoss-inst/CHANGES.txt ];
         then
-                echo "Zenoss install already exists...skipping\n"
+                echo "Zenoss install already exists...skipping"
         else
 		sudo svn --quiet co http://dev.zenoss.org/svn/tags/zenoss-4.2.3/inst /home/zenoss/zenoss-inst
 		sudo chown -R zenoss:zenoss /home/zenoss/zenoss-inst
