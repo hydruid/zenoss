@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #####################################################
-# Version: 03c                                       #
+# Version: 03d                                       #
 # Status: Functional....automation improved          #
 #                                                    #
 # Zenoss Version: Core 4.2.3                         #
@@ -36,7 +36,7 @@ fi
 sudo apt-get install python-software-properties
 add-apt-repository ppa:webupd8team/java
 apt-get update
-apt-get install rrdtool mysql-server mysql-client mysql-common libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java6-installer python-twisted python-gnutls python-twisted-web python-samba
+apt-get install rrdtool mysql-server mysql-client mysql-common libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java6-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader
 
 #Step-03: Zenoss User Setup 
 if [ -f /home/zenoss/.bashrc ];
