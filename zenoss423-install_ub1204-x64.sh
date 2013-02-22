@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #####################################################
-# Version: 03d                                       #
+# Version: 03e                                       #
 # Status: Functional....automation improved          #
 #                                                    #
 # Zenoss Version: Core 4.2.3                         #
@@ -9,25 +9,25 @@
 ######################################################
 
 #Step-01: Determine OS and Arch
-if grep -Fxq "Ubuntu 12.04.1 LTS" /etc/issue.net 
+if grep -Fq "Ubuntu 12.04" /etc/issue.net 
     then
-	echo "Correct OS detected..."
+        echo "Correct OS detected..."
     else
-	echo "Incorrect OS detected...stopping script"
-	exit 0
+        echo "Incorrect OS detected...stopping script" >>/dev/stderr
+        exit 1
 fi
-if grep -FqR "Release amd64" /etc/apt/sources.list
+if grep -Fq "Release amd64" /etc/apt/sources.list
     then
         echo "Correct Arch detected..."
     else
-        echo "Incorrect Arch detected...stopping script"
-        exit 0
+        echo "Incorrect Arch detected...stopping script" >>/dev/stderr
+        exit 1
 fi
 if whoami | grep zenoss
     then
-        echo "This script should not be ran as the zenoss user..."
-        echo "You should run it as your normal admin user..."
-        exit 0
+        echo "This script should not be ran as the zenoss user..." >>/dev/stderr
+        echo "You should run it as your normal admin user..." >>/dev/stderr
+        exit 1
     else
         echo ""
 fi
@@ -73,19 +73,19 @@ if [ -f /home/zenoss/zenoss-inst/CHANGES.txt ];
 		sudo svn --quiet co http://dev.zenoss.org/svn/tags/zenoss-4.2.3/inst /home/zenoss/zenoss-inst
 		sudo chown -R zenoss:zenoss /home/zenoss/zenoss-inst
 fi
-echo "###############################################"
-echo "## Ready for install!!"
-echo "## Follow the Instructions below"
-echo "##"
-echo "## Zenoss Install"
-echo "##   sudo su zenoss"
-echo "##   cd /home/zenoss/zenoss-inst"
-echo "##   ./install.sh"
-echo "##"
-echo "## Zenoss Post Installation Adjustments"
-echo "## (Run these commands as a non zenoss user)"
-echo "##   Nmap, Zensocket, and Pyraw setuid fix"
-echo "##   sudo chown root:zenoss /usr/local/zenoss/bin/nmap && sudo chmod u+s /usr/local/zenoss/bin/nmap"
-echo "##   sudo chown root:zenoss /usr/local/zenoss/bin/zensocket && sudo chmod u+s /usr/local/zenoss/bin/zensocket"
-echo "##   sudo chown root:zenoss /usr/local/zenoss/bin/pyraw && sudo chmod u+s /usr/local/zenoss/bin/pyraw"
-echo "###############################################"
+echo "
+###############################################
+## Ready for install!!
+## Follow the Instructions below
+##
+## Zenoss Install
+##   sudo su zenoss
+##   cd /home/zenoss/zenoss-inst
+##   ./install.sh
+##
+## Zenoss Post Installation Adjustments
+## (Run these commands as a non zenoss user)
+##   Nmap, Zensocket, and Pyraw setuid fix:
+##   $ sudo chown root:zenoss /usr/local/zenoss/bin/{nmap,zensocket,pyraw} && sudo chmod u+s /usr/local/zenoss/bin/{nmap,zensocket,pyraw}
+###############################################
+"
