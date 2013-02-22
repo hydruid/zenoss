@@ -1,22 +1,26 @@
-#!/bin/bash
+#!/bin/bash -e
 
 #####################################################
-# Version: 03d                                       #
+# Version: 03d    e                                  #
 # Status: Functional....automation improved          #
+# Jenna: added fixes for 12.04.2                     #
+# Jenna: altered to "bash -e" for failures           #
+# Jenna: Rabbit added to manual instruction steps    #
 #                                                    #
 # Zenoss Version: Core 4.2.3                         #
 # OS: Ubuntu 12.04 x64                               #
+# Requires Multiverse in /etc/apt/sources.list       #
 ######################################################
 
 #Step-01: Determine OS and Arch
-if grep -Fxq "Ubuntu 12.04.1 LTS" /etc/issue.net 
+if egrep -Fxq '"Ubuntu 12.04.2 LTS"|"Ubuntu 12.04.1 LTS' /etc/issue.net 
     then
 	echo "Correct OS detected..."
     else
 	echo "Incorrect OS detected...stopping script"
 	exit 0
 fi
-if grep -FqR "Release amd64" /etc/apt/sources.list
+if echo `/bin/uname -ar` | grep -F "x86_64"
     then
         echo "Correct Arch detected..."
     else
@@ -36,7 +40,7 @@ fi
 sudo apt-get install python-software-properties
 add-apt-repository ppa:webupd8team/java
 apt-get update
-apt-get install rrdtool mysql-server mysql-client mysql-common libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java6-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader
+apt-get install rrdtool librrd-dev rrdcollect mysql-server mysql-client mysql-common libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java6-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader libglib2.0-dev
 
 #Step-03: Zenoss User Setup 
 if [ -f /home/zenoss/.bashrc ];
@@ -78,7 +82,7 @@ echo "## Ready for install!!"
 echo "## Follow the Instructions below"
 echo "##"
 echo "## Zenoss Install"
-echo "##   sudo su zenoss"
+echo "##   sudo -u zenoss -i"
 echo "##   cd /home/zenoss/zenoss-inst"
 echo "##   ./install.sh"
 echo "##"
