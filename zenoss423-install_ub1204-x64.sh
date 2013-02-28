@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #####################################################
-# Version: 03d                                       #
+# Version: 03e                                       #
 # Status: Functional....automation improved          #
 #                                                    #
 # Zenoss Version: Core 4.2.3                         #
@@ -9,14 +9,14 @@
 ######################################################
 
 #Step-01: Determine OS and Arch
-if grep -Fxq "Ubuntu 12.04.1 LTS" /etc/issue.net 
+if grep -Fxq "Ubuntu 12.04.2 LTS" /etc/issue.net 
     then
 	echo "Correct OS detected..."
     else
 	echo "Incorrect OS detected...stopping script"
 	exit 0
 fi
-if grep -FqR "Release amd64" /etc/apt/sources.list
+if uname -m | grep -Fxq "x86_64"
     then
         echo "Correct Arch detected..."
     else
