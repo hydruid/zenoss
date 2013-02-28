@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #####################################################
-# Version: 04b                                      #
+# Version: 04c                                       #
 # Status: Functional...still in testing              #
 #                                                    #
 # Zenoss Version: Core ZenPacks for 4.2.3            #
@@ -17,14 +17,8 @@ do
 zenpack --fetch $i
 done
 
-#Step02: Apply PySamba, ZenWinPerf, and Easy-Install adjustments
-wget http://hydruid-blog.com/wp-content/uploads/2013/01/pysamba.zip
-unzip pysamba.zip
-cp -fr pysamba /usr/local/zenoss/ZenPacks/ZenPacks.zenoss.PySamba-1.0.0-py2.7-linux-x86_64.egg/ZenPacks/zenoss/PySamba/lib
-touch /usr/local/zenoss/etc/zenwinperf.conf
-wget http://hydruid-blog.com/wp-content/uploads/2013/01/easy-install.zip
-unzip easy-install.zip
-cp easy-install.pth /usr/local/zenoss/ZenPacks
+#Step02: Apply PySamba adjustments
+cp -fr /usr/local/zenoss/lib/python/PySamba to /usr/local/zenoss/lib/python/pysamba
 
 #Step-03: Restart Zenoss
 zenoss restart
