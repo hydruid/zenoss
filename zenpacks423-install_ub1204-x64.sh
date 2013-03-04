@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #####################################################
-# Version: 04e                                       #
+# Version: 04f                                       #
 # Status: Functional...still in testing              #
 #                                                    #
 # Zenoss Version: Core ZenPacks for 4.2.3            #
@@ -24,8 +24,7 @@ cp -fr pysamba /usr/local/zenoss/ZenPacks/ZenPacks.zenoss.PySamba-1.0.0-py2.7-li
 cp -fr pysamba /usr/local/zenoss/ZenPacks/ZenPacks.zenoss.PySamba-1.0.0-py2.7.egg/ZenPacks/zenoss/PySamba/lib
 
 touch /usr/local/zenoss/etc/zenwinperf.conf
-wget https://dl.dropbox.com/s/ngqij8xlxwgtl3t/easy-install.zip
-unzip easy-install.zip
+wget https://dl.dropbox.com/s/p6s4adtpdjibmcl/easy-install.pth
 cp easy-install.pth /usr/local/zenoss/ZenPacks
 
 #Step-03: Restart Zenoss
