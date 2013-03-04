@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #####################################################
-# Version: 04d                                       #
+# Version: 04e                                       #
 # Status: Functional...still in testing              #
 #                                                    #
 # Zenoss Version: Core ZenPacks for 4.2.3            #
@@ -21,6 +21,8 @@ done
 wget https://dl.dropbox.com/s/mbgu0x9fyxhusnv/pysamba.zip
 unzip pysamba.zip
 cp -fr pysamba /usr/local/zenoss/ZenPacks/ZenPacks.zenoss.PySamba-1.0.0-py2.7-linux-x86_64.egg/ZenPacks/zenoss/PySamba/lib
+cp -fr pysamba /usr/local/zenoss/ZenPacks/ZenPacks.zenoss.PySamba-1.0.0-py2.7.egg/ZenPacks/zenoss/PySamba/lib
+
 touch /usr/local/zenoss/etc/zenwinperf.conf
 wget https://dl.dropbox.com/s/ngqij8xlxwgtl3t/easy-install.zip
 unzip easy-install.zip
