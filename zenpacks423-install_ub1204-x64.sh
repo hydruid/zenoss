@@ -18,11 +18,11 @@ zenpack --fetch $i
 done
 
 #Step02: Apply PySamba, ZenWinPerf, and Easy-Install adjustments
-wget https://dl.dropbox.com/s/mbgu0x9fyxhusnv/pysamba.zip&dl=1
+wget https://dl.dropbox.com/s/mbgu0x9fyxhusnv/pysamba.zip
 unzip pysamba.zip
 cp -fr pysamba /usr/local/zenoss/ZenPacks/ZenPacks.zenoss.PySamba-1.0.0-py2.7-linux-x86_64.egg/ZenPacks/zenoss/PySamba/lib
 touch /usr/local/zenoss/etc/zenwinperf.conf
-wget https://dl.dropbox.com/s/ngqij8xlxwgtl3t/easy-install.zip&dl=1
+wget https://dl.dropbox.com/s/ngqij8xlxwgtl3t/easy-install.zip
 unzip easy-install.zip
 cp easy-install.pth /usr/local/zenoss/ZenPacks
 
