@@ -1,6 +1,6 @@
-#############
-# Version: 02                      
-# The blog was taken down, Zenoss will officially release an Ubuntu Install script
+#
+# Version: 03                      
+# http://hydruid-blog.com/?p=10
 
 Description:
 This repo contains scripts to install Zenoss 4.2.3 on Ubuntu 12.04
