@@ -1,12 +1,11 @@
 #!/bin/bash
-
-#####################################################
-# Version: 05b                                       #
-# Status: Functional...still in testing              #
-#                                                    #
-# Zenoss Version: Core ZenPacks for 4.2.3            #
-# OS: Ubuntu 12.04 x64                               #
-######################################################
+#
+# Version: 06a
+# Status: Functional
+# Zenoss Version: Core ZenPacks for 4.2.3            
+# OS: Ubuntu 12.04 x64   
+#
+# http://hydruid-blog.com/?p=10
 
 #Step-01
 if whoami | grep zenoss
@@ -35,10 +34,20 @@ wget https://dl.dropbox.com/s/mbgu0x9fyxhusnv/pysamba.zip
 unzip pysamba.zip
 cp -fr pysamba /usr/local/zenoss/ZenPacks/ZenPacks.zenoss.PySamba-1.0.0-py2.7-linux-x86_64.egg/ZenPacks/zenoss/PySamba/lib
 cp -fr pysamba /usr/local/zenoss/ZenPacks/ZenPacks.zenoss.PySamba-1.0.0-py2.7.egg/ZenPacks/zenoss/PySamba/lib
-
 touch /usr/local/zenoss/etc/zenwinperf.conf
 wget https://dl.dropbox.com/s/p6s4adtpdjibmcl/easy-install.pth
 cp easy-install.pth /usr/local/zenoss/ZenPacks
 
 #Step-05: Restart Zenoss
 zenoss restart
+
+#Step-06: Setup Cron Job to auto start Zenoss after reboot
+touch date.cron
+echo '*/5 * * * * /home/zenoss/zenoss-cron.sh' >date.cron
+crontab date.cron
+rm date.cron
+rm /home/zenoss/zenoss-cron.sh
+wget https://raw.github.com/hydruid/zenoss/master/zenoss-cron.sh
+mv zenoss-cron.sh /home/zenoss/
+chmod +x /home/zenoss/zenoss-cron.sh
+
