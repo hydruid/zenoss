@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Version: 04a
-# Status: Functional...complete rebuild, still needs lost of testing
+# Version: 04b
+# Status: Functional...still fine tuning
 #
 # Zenoss: Core 4.2.3
 # OS: Ubuntu 12.04 x64
@@ -10,6 +10,7 @@
 echo "Step 01: Installing Ubuntu updates..."
 	apt-get update > /dev/null
 	apt-get dist-upgrade -y > /dev/null
+
 
 echo "Step 02: Determine OS and Arch..."
 	if grep -Fxq "Ubuntu 12.04.2 LTS" /etc/issue.net
@@ -27,6 +28,7 @@ echo "Step 02: Determine OS and Arch..."
 		exit 0
 	fi
 
+
 echo "Step 03: Check user"
 	if whoami | grep zenoss
 	then
@@ -37,11 +39,13 @@ echo "Step 03: Check user"
 		echo "     Pass...user is not 'zenoss'."
 	fi
 
+
 echo "Step 04: Install Dependencies"
-sudo apt-get install python-software-properties -y
-echo | add-apt-repository ppa:webupd8team/java
-apt-get update > /dev/null
-apt-get install rrdtool mysql-server mysql-client mysql-common libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java6-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio -y
+	sudo apt-get install python-software-properties -y
+	echo | add-apt-repository ppa:webupd8team/java
+	apt-get update > /dev/null
+	apt-get install rrdtool mysql-server mysql-client mysql-common libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java6-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached -y
+
 
 echo "Step 05: Zenoss user setup"
 	if [ -f /home/zenoss/.bashrc ];
@@ -62,6 +66,7 @@ echo "Step 05: Zenoss user setup"
 		chmod 644 /home/zenoss/.bashrc
 	fi
 
+
 echo "Step 06: Apply Misc. Adjustments for MySQL, SNMP, and Java"
 	echo '#max_allowed_packet=16M' >> /etc/mysql/my.cnf
 	echo 'innodb_buffer_pool_size=256M' >> /etc/mysql/my.cnf
@@ -72,6 +77,7 @@ echo "Step 06: Apply Misc. Adjustments for MySQL, SNMP, and Java"
 echo "Step 07: Download the Zenoss install"
 		sudo svn --quiet co http://dev.zenoss.org/svn/tags/zenoss-4.2.3/inst /home/zenoss/zenoss-inst
 		sudo chown -R zenoss:zenoss /home/zenoss/zenoss-inst
+
 
 echo "Step 08: Start the Zenoss install"
 	if [ -f /home/zenoss/helper1.sh ];
@@ -89,7 +95,15 @@ echo "Step 08: Start the Zenoss install"
 	echo 'cd /home/zenoss/zenoss-inst' >> /home/zenoss/helper1.sh
 	echo './install.sh' >> /home/zenoss/helper1.sh
 	su - zenoss -c "/bin/sh /home/zenoss/helper1.sh"
+	if grep -Fxq "[INFO] BUILD FAILURE" /home/zenoss/zenoss-inst/zenbuild.log
+	then
+		echo "     Build Failure detected in zenbuild.log...stopping script."
+		exit 0
+	else
+		echo "     No Build Failure detected."
+	fi
 	
+
 echo "Step 09: Install the Core ZenPacks"
 	if [ -f /home/zenoss/ZenPacks.zenoss.PySamba-1.0.0-py2.7-linux-x86_64.egg ];
 	then
@@ -104,8 +118,7 @@ echo "Step 09: Install the Core ZenPacks"
 		rpm2cpio zenoss_core-4.2.3.el6.x86_64.rpm | sudo cpio -ivd ./opt/zenoss/packs/*.*
 		cp /home/zenoss/rpm/opt/zenoss/packs/*.egg /home/zenoss/
 	fi
-        chown -R zenoss:zenoss /home/zenoss
-		
+	chown -R zenoss:zenoss /home/zenoss		
 	if [ -f /home/zenoss/helper2.sh ];
 	then
 		rm /home/zenoss/helper2.sh
@@ -150,6 +163,7 @@ echo "Step 09: Install the Core ZenPacks"
 	echo '/usr/local/zenoss/bin/zenoss restart' >> /home/zenoss/helper2.sh
 	su - zenoss -c "/bin/sh /home/zenoss/helper2.sh"
 
+
 echo "Step 10: Post Installation Adjustments"
 	chown root:zenoss /usr/local/zenoss/bin/nmap
 	chmod u+s /usr/local/zenoss/bin/nmap
@@ -158,4 +172,8 @@ echo "Step 10: Post Installation Adjustments"
 	chown root:zenoss /usr/local/zenoss/bin/pyraw
 	chmod u+s /usr/local/zenoss/bin/pyraw
 	echo 'watchdog True' >> /usr/local/zenoss/etc/zenwinperf.conf
-	echo "     The Zenoss Install Script is Complete......browse to http://your-server-ip:8080"
+	TEXT1="     The Zenoss Install Script is Complete......browse to http://"
+	TEXT2=":8080"
+	IP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
+	echo $TEXT1$IP$TEXT2
+
