@@ -3,12 +3,12 @@
 # Version: 01a
 # Status: Not functional...still a work in progress
 #
-# Zenoss: Core 4.2.4
+# Zenoss: Core 4.2.4 Beta
 # OS: Ubuntu 12.04 x64
 #
 
 echo "Step 01: Installing Ubuntu updates..."
-  apt-get update > /dev/null
+	apt-get update > /dev/null
 	apt-get dist-upgrade -y > /dev/null
 
 
@@ -75,7 +75,7 @@ echo "Step 06: Apply Misc. Adjustments for MySQL, SNMP, and Java"
 
 
 echo "Step 07: Download the Zenoss install"
-		svn --quiet co http://dev.zenoss.org/svn/tags/zenoss-4.2.3/inst /home/zenoss/zenoss-inst
+		svn --quiet co http://dev.zenoss.org/svn/branches/zenoss-4.2.x/inst/ /home/zenoss/zenoss-inst
 		chown -R zenoss:zenoss /home/zenoss/zenoss-inst
 
 
