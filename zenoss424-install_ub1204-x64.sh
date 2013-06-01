@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Version: 01a
-# Status: Not functional...still a work in progress
+# Version: 01b
+# Status: Functional...still needs lots of testing
 #
 # Zenoss: Core 4.2.4 Beta
 # OS: Ubuntu 12.04 x64
