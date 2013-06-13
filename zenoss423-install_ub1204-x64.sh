@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Version: 04b
+# Version: 04c
 # Status: Functional...still fine tuning
 #
 # Zenoss: Core 4.2.3
@@ -41,7 +41,7 @@ echo "Step 03: Check user"
 
 
 echo "Step 04: Install Dependencies"
-	sudo apt-get install python-software-properties -y
+	apt-get install python-software-properties -y
 	echo | add-apt-repository ppa:webupd8team/java
 	apt-get update > /dev/null
 	apt-get install rrdtool mysql-server mysql-client mysql-common libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java6-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached -y
@@ -75,8 +75,8 @@ echo "Step 06: Apply Misc. Adjustments for MySQL, SNMP, and Java"
 
 
 echo "Step 07: Download the Zenoss install"
-		sudo svn --quiet co http://dev.zenoss.org/svn/tags/zenoss-4.2.3/inst /home/zenoss/zenoss-inst
-		sudo chown -R zenoss:zenoss /home/zenoss/zenoss-inst
+		svn --quiet co http://dev.zenoss.org/svn/tags/zenoss-4.2.3/inst /home/zenoss/zenoss-inst
+		chown -R zenoss:zenoss /home/zenoss/zenoss-inst
 
 
 echo "Step 08: Start the Zenoss install"
@@ -95,13 +95,15 @@ echo "Step 08: Start the Zenoss install"
 	echo 'cd /home/zenoss/zenoss-inst' >> /home/zenoss/helper1.sh
 	echo './install.sh' >> /home/zenoss/helper1.sh
 	su - zenoss -c "/bin/sh /home/zenoss/helper1.sh"
-	if grep -Fxq "[INFO] BUILD FAILURE" /home/zenoss/zenoss-inst/zenbuild.log
-	then
-		echo "     Build Failure detected in zenbuild.log...stopping script."
-		exit 0
-	else
-		echo "     No Build Failure detected."
+	grep -o "BUILD SUCCESS" /home/zenoss/zenoss-inst/zenbuild.log | wc -l > count.txt
+	if grep -Fxq "3" count.txt
+		then
+			echo "     Zenoss build successful."
+		else
+			echo "     Zenoss build unsuccessful, errors detected...stopping the script."
+			exit 0
 	fi
+	rm count.txt
 	
 
 echo "Step 09: Install the Core ZenPacks"
@@ -165,6 +167,13 @@ echo "Step 09: Install the Core ZenPacks"
 
 
 echo "Step 10: Post Installation Adjustments"
+	cp /usr/local/zenoss/bin/zenoss /etc/init.d/zenoss
+	touch /usr/local/zenoss/var/Data.fs
+	chown zenoss:zenoss /usr/local/zenoss/var/Data.fs
+    su - root -c "sed -i 's:# License.zenoss under the directory where your Zenoss product is installed.:# License.zenoss under the directory where your Zenoss product is installed.\n#\n#Custom Ubuntu Variables\nexport ZENHOME=/usr/local/zenoss\nexport RRDCACHED=/usr/local/zenoss/bin/rrdcached:g' /etc/init.d/zenoss"
+	#	su - root -c "echo 'export ZENHOME=/usr/local/zenoss' >> /etc/init.d/zenoss"
+#	su - root -c "echo 'export RRDCACHED=/usr/local/zenoss/bin/rrdcached' >> /etc/init.d/zenoss"
+	update-rc.d zenoss defaults
 	chown root:zenoss /usr/local/zenoss/bin/nmap
 	chmod u+s /usr/local/zenoss/bin/nmap
 	chown root:zenoss /usr/local/zenoss/bin/zensocket
