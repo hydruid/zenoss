@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Version: 01b
+# Version: 01c
 # Status: Functional...still needs lots of testing
 #
 # Zenoss: Core 4.2.4 Beta
@@ -8,6 +8,14 @@
 #
 
 echo "Step 01: Installing Ubuntu updates..."
+	if grep -Fxq "deb http://us.archive.ubuntu.com/ubuntu/ precise multiverse" /etc/apt/sources.list
+	then
+		echo "     Multiverse enabled." > /dev/null
+	else
+		echo "     Multiverse repository appears to be disabled, please enable it...stopping script"
+		echo "     Link with additional information: https://help.ubuntu.com/community/EC2StartersGuide"
+		exit 0
+	fi
 	apt-get update > /dev/null
 	apt-get dist-upgrade -y > /dev/null
 
@@ -95,13 +103,15 @@ echo "Step 08: Start the Zenoss install"
 	echo 'cd /home/zenoss/zenoss-inst' >> /home/zenoss/helper1.sh
 	echo './install.sh' >> /home/zenoss/helper1.sh
 	su - zenoss -c "/bin/sh /home/zenoss/helper1.sh"
-	if grep -Fxq "[INFO] BUILD FAILURE" /home/zenoss/zenoss-inst/zenbuild.log
-	then
-		echo "     Build Failure detected in zenbuild.log...stopping script."
-		exit 0
-	else
-		echo "     No Build Failure detected."
+	grep -o "BUILD SUCCESS" /home/zenoss/zenoss-inst/zenbuild.log | wc -l > count.txt
+	if grep -Fxq "3" count.txt
+		then
+			echo "     Zenoss build successful."
+		else
+			echo "     Zenoss build unsuccessful, errors detected...stopping the script."
+			exit 0
 	fi
+	rm count.txt
 	
 
 echo "Step 09: Install the Core ZenPacks"
@@ -165,6 +175,13 @@ echo "Step 09: Install the Core ZenPacks"
 
 
 echo "Step 10: Post Installation Adjustments"
+	echo "     Enter the password for the MySQL root password, if blank just press enter"
+	mysql -uroot -p -e 'grant select on mysql.proc to zenoss ; flush privileges'
+	cp /usr/local/zenoss/bin/zenoss /etc/init.d/zenoss
+	touch /usr/local/zenoss/var/Data.fs
+	chown zenoss:zenoss /usr/local/zenoss/var/Data.fs
+    su - root -c "sed -i 's:# License.zenoss under the directory where your Zenoss product is installed.:# License.zenoss under the directory where your Zenoss product is installed.\n#\n#Custom Ubuntu Variables\nexport ZENHOME=/usr/local/zenoss\nexport RRDCACHED=/usr/local/zenoss/bin/rrdcached:g' /etc/init.d/zenoss"
+	update-rc.d zenoss defaults
 	chown root:zenoss /usr/local/zenoss/bin/nmap
 	chmod u+s /usr/local/zenoss/bin/nmap
 	chown root:zenoss /usr/local/zenoss/bin/zensocket
@@ -172,8 +189,13 @@ echo "Step 10: Post Installation Adjustments"
 	chown root:zenoss /usr/local/zenoss/bin/pyraw
 	chmod u+s /usr/local/zenoss/bin/pyraw
 	echo 'watchdog True' >> /usr/local/zenoss/etc/zenwinperf.conf
+	su - zenoss -c "chmod 0600 $ZENHOME/etc/*.conf*"
 	TEXT1="     The Zenoss Install Script is Complete......browse to http://"
 	TEXT2=":8080"
 	IP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
 	echo $TEXT1$IP$TEXT2
+
+	
+
+
 
