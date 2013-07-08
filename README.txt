@@ -1,5 +1,5 @@
 #
-# Version: 03                      
+# Version: 03a                      
 # http://hydruid-blog.com/?p=10
 
 Description:
@@ -9,9 +9,6 @@ Future Plans:
 Add support for Ubuntu 12.10 and other Linux Distributions.
 
 Files by OS:
-Ubuntu 12.04 x64 -
- zenoss-install_ub1204-x64.sh (Base Zenoss) 
- zenpacks-install_ub1204-x64.sh (Core ZenPacks)
+Ubuntu 12.04.2 AMD64 LTS  -
+ zenoss423-install_ub1204-x64.sh (Base + Core ZenPacks)
 
-Ubuntu 12.10 x64 -
- ...under development 
