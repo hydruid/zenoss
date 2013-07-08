@@ -3,7 +3,7 @@
 # Version: 01a
 # Status: Not functional...under heavy development
 #
-# Zenoss: Core 4.2.3
+# Zenoss: Core 4.2.4 Beta
 # OS: Ubuntu 12.04 x64
 #
 
