@@ -13,5 +13,5 @@ Ubuntu 12.04.2 AMD64 LTS  -
 /zenoss423-install_ub1204-x64.sh (4.2.3 Core + ZenPacks)
 /zenoss423-install_ub1204-x64.sh (4.2.4 Core Beta + ZenPacks)
 /core-autodeploy/4.2.3/zenoss423-svn_ub1204-x64.sh (4.2.3 Core, Subversion Dev Script)
-/core-autodeploy/4.2.4/zenoss424-srpm_ub1204-x64.sh (4.2.4 Core, SRPM Dev Script) 
+/core-autodeploy/4.2.4/zenoss424-srpm_ub1204-x64.sh (4.2.4 Core Beta, SRPM Dev Script) 
 
