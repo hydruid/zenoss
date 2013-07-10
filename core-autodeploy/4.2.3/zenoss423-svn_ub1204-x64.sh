@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Version: 05a - Beta02
-# Status: Not functional...under heavy development
+# Version: 05a - Beta03
+# Status: Functional...but still under heavy development and lots of testing required
 #
 # Zenoss: Core 4.2.3 (From Subversion)
 # OS: Ubuntu 12.04 x64
@@ -35,12 +35,12 @@ apt-get update && apt-get install rrdtool mysql-server mysql-client mysql-common
 
 # Setup the 'zenoss' user, configure rabbit, apply misc. adjustments 
 echo "Step 04: Zenoss user setup and misc package adjustments"
-useradd -m -U -s /bin/bash zenoss > /dev/null
-mkdir /usr/local/zenoss > /dev/null
+useradd -m -U -s /bin/bash zenoss > /dev/null 2>/dev/null
+mkdir /usr/local/zenoss > /dev/null 2>/dev/null
 chown -R zenoss:zenoss /usr/local/zenoss
-rabbitmqctl add_user zenoss zenoss > /dev/null
-rabbitmqctl add_vhost /zenoss > /dev/null
-rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*' > /dev/null
+rabbitmqctl add_user zenoss zenoss > /dev/null 2>/dev/null
+rabbitmqctl add_vhost /zenoss > /dev/null 2>/dev/null
+rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*' > /dev/null 2>/dev/null
 chmod 777 /home/zenoss/.bashrc
 echo 'export ZENHOME=/usr/local/zenoss' >> /home/zenoss/.bashrc
 echo 'export PYTHONPATH=/usr/local/zenoss/lib/python' >> /home/zenoss/.bashrc
@@ -55,10 +55,87 @@ sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
 
 # Download the zenoss source 
 echo "Step 05: Download the Zenoss install"
-svn co http://dev.zenoss.org/svn/tags/zenoss-4.2.3/inst /home/zenoss/zenoss-inst
-chown -R zenoss:zenoss /home/zenoss/zenoss-inst
+svn co http://dev.zenoss.org/svn/tags/zenoss-4.2.3/inst /home/zenoss/zenoss423_svn-install
+chown -R zenoss:zenoss /home/zenoss/zenoss423_svn-install
 
 
+# Install Zenoss Core 4.2.3
+echo "Step 06: Start the Zenoss install"
+rm /home/zenoss/helper1.sh > /dev/null 2>/dev/null && touch /home/zenoss/helper1.sh
+echo '#!/bin/bash' >> /home/zenoss/helper1.sh
+echo 'ZENHOME=/usr/local/zenoss' >> /home/zenoss/helper1.sh
+echo 'PYTHONPATH=/usr/local/zenoss/lib/python' >> /home/zenoss/helper1.sh
+echo 'PATH=/usr/local/zenoss/bin:$PATH' >> /home/zenoss/helper1.sh
+echo 'INSTANCE_HOME=$ZENHOME' >> /home/zenoss/helper1.sh
+echo 'cd /home/zenoss/zenoss423_svn-install' >> /home/zenoss/helper1.sh
+echo './install.sh | tee status.log' >> /home/zenoss/helper1.sh
+su - zenoss -c "/bin/sh /home/zenoss/helper1.sh"
+if grep -Fxq "Successfully installed Zenoss" /home/zenoss/zenoss423_svn-install/status.log
+        then    echo "...Zenoss build successful."
+        else    echo "...Zenoss build unsuccessful, errors detected...stopping the script" && exit 0
+fi
 
-#easy_install readline
+
+# Install the Core ZenPacks
+echo "Step 07: Install the Core ZenPacks"
+rm -fr /home/zenoss/rpm > /dev/null 2>/dev/null && rm -fr /home/zenoss/*.egg > /dev/null 2>/dev/null
+mkdir /home/zenoss/rpm && cd /home/zenoss/rpm
+wget http://iweb.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.3/zenoss_core-4.2.3.el6.x86_64.rpm
+rpm2cpio zenoss_core-4.2.3.el6.x86_64.rpm | sudo cpio -ivd ./opt/zenoss/packs/*.*
+cp /home/zenoss/rpm/opt/zenoss/packs/*.egg /home/zenoss/
+chown -R zenoss:zenoss /home/zenoss
+rm /home/zenoss/helper2.sh > /dev/null 2>/dev/null && touch /home/zenoss/helper2.sh
+echo '#!/bin/bash' >> /home/zenoss/helper2.sh
+echo 'ZENHOME=/usr/local/zenoss' >> /home/zenoss/helper2.sh
+echo 'export ZENHOME=/usr/local/zenoss' >> /home/zenoss/helper2.sh
+echo 'PYTHONPATH=/usr/local/zenoss/lib/python' >> /home/zenoss/helper2.sh
+echo 'PATH=/usr/local/zenoss/bin:$PATH' >> /home/zenoss/helper2.sh
+echo 'INSTANCE_HOME=$ZENHOME' >> /home/zenoss/helper2.sh
+echo '/usr/local/zenoss/bin/zenoss restart' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.PySamba-1.0.0-py2.7-linux-x86_64.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.WindowsMonitor-1.0.5-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.ActiveDirectory-2.1.0-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.ApacheMonitor-2.1.3-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.DellMonitor-2.2.0-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.DeviceSearch-1.2.0-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.DigMonitor-1.1.0-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.DnsMonitor-2.1.0-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.EsxTop-1.1.0-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.FtpMonitor-1.1.0-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.HPMonitor-2.1.0-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.HttpMonitor-2.1.0-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.IISMonitor-2.0.2-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.IRCDMonitor-1.1.0-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.JabberMonitor-1.1.0-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.LDAPMonitor-1.4.0-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.LinuxMonitor-1.2.0-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.ZenossVirtualHostMonitor-2.4.0-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.MSExchange-2.0.4-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.MSMQMonitor-1.2.1-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.MySqlMonitor-2.2.0-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.MSSQLServer-2.0.3-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.NNTPMonitor-1.1.0-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.NtpMonitor-2.2.0-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.XenMonitor-1.1.0-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.ZenAWS-1.1.0-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'zenpack --install ZenPacks.zenoss.ZenJMX-3.9.3-py2.7.egg' >> /home/zenoss/helper2.sh
+echo 'easy_install readline' >> /home/zenoss/helper2.sh
+echo '/usr/local/zenoss/bin/zenoss restart' >> /home/zenoss/helper2.sh
+su - zenoss -c "/bin/sh /home/zenoss/helper2.sh"
+
+
+# Complete post installation adjustments
+echo "Step 08: Post Installation Adjustments"
+cp /usr/local/zenoss/bin/zenoss /etc/init.d/zenoss
+touch /usr/local/zenoss/var/Data.fs && chown zenoss:zenoss /usr/local/zenoss/var/Data.fs
+su - root -c "sed -i 's:# License.zenoss under the directory where your Zenoss product is installed.:# License.zenoss under the directory where your Zenoss product is installed.\n#\n#Custom Ubuntu Variables\nexport ZENHOME=/usr/local/zenoss\nexport RRDCACHED=/usr/local/zenoss/bin/rrdcached:g' /etc/init.d/zenoss"
+update-rc.d zenoss defaults
+chown root:zenoss /usr/local/zenoss/bin/nmap && chmod u+s /usr/local/zenoss/bin/nmap
+chown root:zenoss /usr/local/zenoss/bin/zensocket && chmod u+s /usr/local/zenoss/bin/zensocket
+chown root:zenoss /usr/local/zenoss/bin/pyraw && chmod u+s /usr/local/zenoss/bin/pyraw
+echo 'watchdog True' >> /usr/local/zenoss/etc/zenwinperf.conf
+TEXT1="     The Zenoss Install Script is Complete......browse to http://"
+TEXT2=":8080"
+IP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
+echo $TEXT1$IP$TEXT2
 
