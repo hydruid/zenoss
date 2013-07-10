@@ -1,5 +1,0 @@
-#
-# Version: 01a
-
-Description:
-This directory is for the new Subversion install script, however it's currently under heavy development and shouldn't be used for anything!
