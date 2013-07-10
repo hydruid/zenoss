@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Version: 04c
+# Version: 04c (Legacy)
 # Status: Functional...still fine tuning
 #
 # Zenoss: Core 4.2.3
