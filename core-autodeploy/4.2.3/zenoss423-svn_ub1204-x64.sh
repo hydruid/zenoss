@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Version: 05a - Beta03
-# Status: Functional...but still under heavy development and lots of testing required
+# Version: 05a
+# Status: Functional...automation improved
 #
 # Zenoss: Core 4.2.3 (From Subversion)
 # OS: Ubuntu 12.04 x64
