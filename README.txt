@@ -1,5 +1,5 @@
 #
-# Version: 03c
+# Version: 03d
 # http://hydruid-blog.com/?p=241
 
 Description:
@@ -10,7 +10,6 @@ Add support for Ubuntu 12.10 and other Linux Distributions.
 
 Files by OS:
 Ubuntu 12.04.2 AMD64 LTS  -
-/zenoss424-install_ub1204-x64.sh (4.2.4 Core Beta + ZenPacks)
 /core-autodeploy/4.2.3/zenoss423-svn_ub1204-x64.sh (4.2.3 Core + ZenPacks)
 /core-autodeploy/4.2.4/zenoss424-srpm_ub1204-x64.sh (4.2.4 Core Beta, SRPM Dev Script) 
 
