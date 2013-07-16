@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Version: 02b
-# Status: Not functional...under heavy development
+# Version: 02c
+# Status: Functional...still under heavy development and needs LOTS of testing
 #
 # Zenoss: Core 4.2.4 (From SRPM)
 # OS: Ubuntu 12.04 x64
@@ -62,12 +62,12 @@ sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
 
 # Download the zenoss SRPM 
 echo "Step 05: Download the Zenoss install"
-#mkdir /home/zenoss/zenoss424-srpm_install
-#cd /home/zenoss/zenoss424-srpm_install
-#wget http://iweb.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/zenoss_core-4.2.4.el6.src.rpm
-#rpm2cpio zenoss_core-4.2.4.el6.src.rpm | cpio -i --make-directories
-#bunzip2 zenoss_core-4.2.4-1859.el6.x86_64.tar.bz2
-#tar -xvf zenoss_core-4.2.4-1859.el6.x86_64.tar
+mkdir /home/zenoss/zenoss424-srpm_install
+cd /home/zenoss/zenoss424-srpm_install
+wget http://iweb.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/zenoss_core-4.2.4.el6.src.rpm
+rpm2cpio zenoss_core-4.2.4.el6.src.rpm | cpio -i --make-directories
+bunzip2 zenoss_core-4.2.4-1859.el6.x86_64.tar.bz2
+tar -xvf zenoss_core-4.2.4-1859.el6.x86_64.tar
 
 
 # Install Zenoss Core 4.2.4 
@@ -91,7 +91,28 @@ make
 make clean
 cp /home/zenoss/zenoss424-srpm_install/zenoss_core-4.2.4/mkzenossinstance.sh /home/zenoss/zenoss424-srpm_install/zenoss_core-4.2.4/mkzenossinstance.sh
 su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. variables.sh:g' /home/zenoss/zenoss424-srpm_install/zenoss_core-4.2.4/mkzenossinstance.sh"
+./mkzenossinstance.sh > /dev/null 2>/dev/null
 ./mkzenossinstance.sh
-./mkzenossinstance.sh
+chown -R zenoss:zenoss /usr/local/zenoss
+chown -R zenoss:zenoss /opt/rrdtool-1.4.7
 
-# Still some stuff left to do :)
+
+# Install the Core ZenPacks
+echo "Step 07: Install the Core ZenPacks"
+echo "...Step 07 not quite ready"
+
+
+# Complete post installation adjustments
+echo "Step 08: Post Installation Adjustments"
+cp /usr/local/zenoss/bin/zenoss /etc/init.d/zenoss
+touch /usr/local/zenoss/var/Data.fs && chown zenoss:zenoss /usr/local/zenoss/var/Data.fs
+su - root -c "sed -i 's:# License.zenoss under the directory where your Zenoss product is installed.:# License.zenoss under the directory where your Zenoss product is installed.\n#\n#Custom Ubuntu Variables\nexport ZENHOME=/usr/local/zenoss\nexport RRDCACHED=/opt/rrdtool-1.4.7/bin/rrdcached:g' /etc/init.d/zenoss"
+update-rc.d zenoss defaults
+chown root:zenoss /usr/local/zenoss/bin/nmap && chmod u+s /usr/local/zenoss/bin/nmap
+chown root:zenoss /usr/local/zenoss/bin/zensocket && chmod u+s /usr/local/zenoss/bin/zensocket
+chown root:zenoss /usr/local/zenoss/bin/pyraw && chmod u+s /usr/local/zenoss/bin/pyraw
+echo 'watchdog True' >> /usr/local/zenoss/etc/zenwinperf.conf
+TEXT1="     The Zenoss Install Script is Complete......browse to http://"
+TEXT2=":8080"
+IP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
+echo $TEXT1$IP$TEXT2
