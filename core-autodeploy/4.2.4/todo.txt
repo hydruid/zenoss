@@ -1,0 +1,14 @@
+#
+# Version: 01
+# http://hydruid-blog.com/?p=241
+
+Description:
+This text file contains a lists of tasks that need to be worked on
+
+Changes:
+	07-22-13: Blog post updated, SVN/RPM scripts combined into 1
+	07-17-13: Posted Version-02e of SRPM insall script, almost ready for production, functional but putting the last few final tweaks in
+	07-11-13: Converting from SVN to SRPM, 4.2.4 stable released!
+	07-10-13: Version-02a: automation improved
+	06-22-13: Version-01c: includes /etc/init.d/ script, improved detection of build errors
+	06-01-13: Blog post created
