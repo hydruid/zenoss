@@ -1,11 +1,12 @@
 #
-# Version: 01
+# Version: 01a
 # http://hydruid-blog.com/?p=241
 
 Description:
 This text file contains a basic list of script changes
 
 Changes:
+	07-23-13: Version 01a Beta posted, working out the correct way to pass the MySQL credentials during install (works great if you leave the pass blank ;)
 	07-22-13: Blog post updated, SVN/RPM scripts combined into 1
 	07-17-13: Posted Version-02e of SRPM insall script, almost ready for production, functional but putting the last few final tweaks in
 	07-11-13: Converting from SVN to SRPM, 4.2.4 stable released!
