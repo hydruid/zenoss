@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Version: 01a Beta
+# Version: 01b Beta
 # Status: Not Functional...will be very soon!
 #
 # Zenoss: Core 4.2.4 & ZenPacks
@@ -29,8 +29,14 @@ fi
 
 # Install required packages
 echo "Step 03: Install Dependencies"
+read -p "...During the install please leave the password blank for the root MySQL user, Press ENTER to continue (will fix password issue soon)"
 apt-get install python-software-properties -y && echo | add-apt-repository ppa:webupd8team/java
 apt-get update && apt-get install rrdtool mysql-server mysql-client mysql-common libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java6-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 -y
+mysql -u root -e "show databases;" 2>&1 | sudo tee /tmp/mysql.txt
+if grep -Fxq "Database" /tmp/mysql.txt
+        then    echo "...MySQL connection test successful."
+        else    echo "...Mysql connection failed...make sure the password is blank for the root MySQL user." && exit 0
+fi
 
 
 # Setup the 'zenoss' user, configure rabbit, apply misc. adjustments 
