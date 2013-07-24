@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Version: 01 Beta
+# Version: 01a Beta
 # Status: Not Functional...will be very soon!
 #
 # Zenoss: Core 4.2.4 & ZenPacks
@@ -54,11 +54,11 @@ sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
 
 
 PS3='###...Choose your install Type: '
-options=("SVN Install" "SRPM Install (still a work in progress)")
+options=("SVN Install (still a work in progress)" "SRPM Install (still a work in progress)")
 select opt in "${options[@]}"
 do
 case $opt in
-        "SVN Install")
+        "SVN Install (still a work in progress)")
                 # Download the zenoss SVN
 		echo "Step 05: Download the Zenoss install"
 		svn co http://dev.zenoss.org/svn/tags/zenoss-4.2.4 /home/zenoss/zenoss424_svn-install
@@ -69,19 +69,23 @@ case $opt in
 		tar zxvf /home/zenoss/zenoss424_svn-install/inst/externallibs/rrdtool-1.4.7.tar.gz && cd rrdtool-1.4.7/
 		./configure --prefix=/usr/local/zenoss
 		make && make install
+		wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server_3.1.3-1_all.deb
+		dpkg -i rabbitmq-server_3.1.3-1_all.deb
 		ZENHOME=/usr/local/zenoss
 		PYTHONPATH=/usr/local/zenoss/lib/python
 		PATH=/usr/local/zenoss/bin:$PATH
 		INSTANCE_HOME=$ZENHOME
 		cd /home/zenoss/zenoss424_svn-install/inst
-		./install.sh | sudo tee status.log
+		wget https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh
+		su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. variables.sh:g' /home/zenoss/zenoss424_svn-install/inst/mkzenossinstance.sh"
+		./install.sh | sudo tee install.log
 		chown -R zenoss:zenoss /usr/local/zenoss
 		if grep -Fxq "Successfully installed Zenoss" /home/zenoss/zenoss424_svn-install/status.log
 		        then    echo "...Zenoss build successful."
 		        else    echo "...Zenoss build unsuccessful, errors detected...stopping the script" && exit 0
 		fi
-                break
-                ;;
+		break
+		;;
         "SRPM Install (still a work in progress)")
 		# Download the zenoss SRPM
 		echo "Step 05: Download the Zenoss install"
