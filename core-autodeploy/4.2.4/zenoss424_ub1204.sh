@@ -54,39 +54,11 @@ sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
 
 
 PS3='###...Choose your install Type: '
-options=("SVN Install (still a work in progress)" "SRPM Install (still a work in progress)")
+options=("SRPM Install (preferred method)" "SVN Install (alternative method)")
 select opt in "${options[@]}"
 do
 case $opt in
-        "SVN Install (still a work in progress)")
-                # Download the zenoss SVN
-		echo "Step 05: Download the Zenoss install"
-		svn co http://dev.zenoss.org/svn/tags/zenoss-4.2.4 /home/zenoss/zenoss424_svn-install
-		chown -R zenoss:zenoss /home/zenoss/zenoss424_svn-install
-		# Install Zenoss Core 4.2.4
-		echo "Step 06: Start the Zenoss install"
-		apt-get install librrd-dev -y
-		tar zxvf /home/zenoss/zenoss424_svn-install/inst/externallibs/rrdtool-1.4.7.tar.gz && cd rrdtool-1.4.7/
-		./configure --prefix=/usr/local/zenoss
-		make && make install
-		wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server_3.1.3-1_all.deb
-		dpkg -i rabbitmq-server_3.1.3-1_all.deb
-		ZENHOME=/usr/local/zenoss
-		PYTHONPATH=/usr/local/zenoss/lib/python
-		PATH=/usr/local/zenoss/bin:$PATH
-		INSTANCE_HOME=$ZENHOME
-		cd /home/zenoss/zenoss424_svn-install/inst
-		wget https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh
-		su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. variables.sh:g' /home/zenoss/zenoss424_svn-install/inst/mkzenossinstance.sh"
-		./install.sh | sudo tee install.log
-		chown -R zenoss:zenoss /usr/local/zenoss
-		if grep -Fxq "Successfully installed Zenoss" /home/zenoss/zenoss424_svn-install/status.log
-		        then    echo "...Zenoss build successful."
-		        else    echo "...Zenoss build unsuccessful, errors detected...stopping the script" && exit 0
-		fi
-		break
-		;;
-        "SRPM Install (still a work in progress)")
+        "SRPM Install (preferred method)")
 		# Download the zenoss SRPM
 		echo "Step 05: Download the Zenoss install"
 		mkdir /home/zenoss/zenoss424-srpm_install
@@ -115,8 +87,36 @@ case $opt in
 		./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_a.log
 		./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_b.log
 		chown -R zenoss:zenoss /usr/local/zenoss
-                break
-                ;;
+	break
+	;;
+        "SVN Install (alternative method)")
+		# Download the zenoss SVN
+		echo "Step 05: Download the Zenoss install"
+		svn co http://dev.zenoss.org/svn/tags/zenoss-4.2.4 /home/zenoss/zenoss424_svn-install
+		chown -R zenoss:zenoss /home/zenoss/zenoss424_svn-install
+		# Install Zenoss Core 4.2.4
+		echo "Step 06: Start the Zenoss install"
+		apt-get install librrd-dev -y
+		tar zxvf /home/zenoss/zenoss424_svn-install/inst/externallibs/rrdtool-1.4.7.tar.gz && cd rrdtool-1.4.7/
+		./configure --prefix=/usr/local/zenoss
+		make && make install
+		wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server_3.1.3-1_all.deb
+		dpkg -i rabbitmq-server_3.1.3-1_all.deb
+		ZENHOME=/usr/local/zenoss
+		PYTHONPATH=/usr/local/zenoss/lib/python
+		PATH=/usr/local/zenoss/bin:$PATH
+		INSTANCE_HOME=$ZENHOME
+		cd /home/zenoss/zenoss424_svn-install/inst
+		wget https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh
+		su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. variables.sh:g' /home/zenoss/zenoss424_svn-install/inst/mkzenossinstance.sh"
+		./install.sh | sudo tee install.log
+		chown -R zenoss:zenoss /usr/local/zenoss
+		if grep -Fxq "Successfully installed Zenoss" /home/zenoss/zenoss424_svn-install/status.log
+		        then    echo "...Zenoss build successful."
+		        else    echo "...Zenoss build unsuccessful, errors detected...stopping the script" && exit 0
+		fi
+	break
+	;;
         *) echo invalid option;;
 esac
 done
@@ -186,3 +186,4 @@ TEXT1="     The Zenoss Install Script is Complete......browse to http://"
 TEXT2=":8080"
 IP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
 echo $TEXT1$IP$TEXT2
+
