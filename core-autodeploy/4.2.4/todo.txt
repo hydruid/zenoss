@@ -1,5 +1,5 @@
 #
-# Version: 01
+# Version: 01a
 # http://hydruid-blog.com/?p=241
 
 Description:
@@ -11,6 +11,7 @@ Not Started:
 
 In Progress:
 	1. Detailed script breakdown
+	2. Fine tune the SRPM section
 
 Completed:
 	1. Convert to using the Source RPM
