@@ -196,4 +196,6 @@ TEXT1="     The Zenoss Install Script is Complete......browse to http://"
 TEXT2=":8080"
 IP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
 echo $TEXT1$IP$TEXT2
-
+echo "The default login is:"
+echo "	username: admin"
+echo "	password: zenoss"
