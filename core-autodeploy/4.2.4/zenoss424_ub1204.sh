@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Version: 01c Beta
+# Version: 01d Beta
 # Status: Not Functional...will be very soon!
 #
 # Zenoss: Core 4.2.4 & ZenPacks
@@ -60,11 +60,11 @@ sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
 
 
 PS3='###...Choose your install Type: '
-options=("SRPM Install (under development)" "SVN Install (almost functional...best to choose this option for now)")
+options=("SRPM Install (Prefferred Method...under development)" "SVN Install (Alternative Method...under development)")
 select opt in "${options[@]}"
 do
 case $opt in
-        "SRPM Install (under development)")
+        "SRPM Install (Prefferred Method...under development)")
 		# Download the zenoss SRPM
 		echo "Step 05: Download the Zenoss install"
 		mkdir /home/zenoss/zenoss424-srpm_install
@@ -95,7 +95,7 @@ case $opt in
 		chown -R zenoss:zenoss /usr/local/zenoss
 	break
 	;;
-        "SVN Install (almost functional...best to choose this option for now)")
+        "SVN Install (Alternative Method...under development)")
 		# Download the zenoss SVN
 		echo "Step 05: Download the Zenoss install"
 		svn co http://dev.zenoss.org/svn/tags/zenoss-4.2.4 /home/zenoss/zenoss424_svn-install
@@ -116,9 +116,13 @@ case $opt in
 		wget https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh
 		su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. variables.sh:g' /home/zenoss/zenoss424_svn-install/inst/mkzenossinstance.sh"
 		su - root -c "sed -i 's:try ./mkzenossinstance.sh:su - zenoss -c /home/zenoss/zenoss424_svn-install/inst/mkzenossinstance.sh:g' /home/zenoss/zenoss424_svn-install/inst/install.sh"	
-		./install.sh | sudo tee install.log
+		groupadd admin
+		usermod -a -G admin zenoss
+		echo "enter temporary password for the zenoss user:"
+		passwd zenoss
+		su - zenoss -c "cd /home/zenoss/zenoss424_svn-install/inst/ && ./install.sh" | tee /home/zenoss/zenoss424_svn-install/inst/status.log
 		chown -R zenoss:zenoss /usr/local/zenoss
-		if grep -Fxq "Successfully installed Zenoss" /home/zenoss/zenoss424_svn-install/status.log
+		if grep -Fxq "Successfully installed Zenoss" /home/zenoss/zenoss424_svn-install/inst/status.log
 		        then    echo "...Zenoss build successful."
 		        else    echo "...Zenoss build unsuccessful, errors detected...stopping the script" && exit 0
 		fi
