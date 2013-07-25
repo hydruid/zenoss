@@ -1,0 +1,11 @@
+#!/bin/bash
+
+ZENPATH=/usr/local/zenoss/bin
+ENV="ZENHOME=/usr/local/zenoss 
+PYTHONPATH=/usr/local/zenoss/lib/python 
+PATH=/usr/local/zenoss/bin:$PATH 
+INSTANCE_HOME=$ZENHOME 
+RRDCACHED=$ZENPATH/rrdcached "
+
+sudo -u zenoss -H sh -c "$ENV $ZENPATH/zenoss $@"
+
