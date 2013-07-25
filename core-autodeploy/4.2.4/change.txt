@@ -1,11 +1,12 @@
 #
-# Version: 01b
+# Version: 01c
 # http://hydruid-blog.com/?p=241
 
 Description:
 This text file contains a basic list of script changes
 
 Changes:
+	07-24-13: Version 01c Beta posted, SVN install should be functional with blank root MySQL user password
 	07-24-13: Version 01b Beta posted, focused on getting a functional script with a blank root MySQL user password
 	07-23-13: Version 01a Beta posted, working out the correct way to pass the MySQL credentials during install (works great if you leave the pass blank ;)
 	07-22-13: Blog post updated, SVN/RPM scripts combined into 1
