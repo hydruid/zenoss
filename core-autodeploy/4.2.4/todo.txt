@@ -1,5 +1,5 @@
 #
-# Version: 01a
+# Version: 01b
 # http://hydruid-blog.com/?p=241
 
 Description:
@@ -8,6 +8,7 @@ This text file contains a lists of tasks that need to be worked on
 Not Started:
 	1. Update script to be similiar to the Official CentOS version
 	2. Incorporate Zenup (The new Zenoss patch manager)
+	3. Incorporate compability with proxy
 
 In Progress:
 	1. Detailed script breakdown
