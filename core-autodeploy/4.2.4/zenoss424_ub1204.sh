@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Version: 01e Beta
+# Version: 01f Beta
 # Status: Functional...still need to do lots of testing
 #
 # Zenoss: Core 4.2.4 & ZenPacks
@@ -9,8 +9,8 @@
 
 # Update package list and install any updates
 echo "Step 01: Installing Ubuntu updates..."
-apt-get update > /dev/null && apt-get dist-upgrade -y > /dev/null
-
+apt-get update && apt-get dist-upgrade -y
+echo "...Step 01: Complete"
 
 # Verify OS/Arch compatibility, ensure not running as the 'zenoss' user
 echo "Step 02: Run System Checks..."
@@ -19,34 +19,37 @@ if grep -Fxq "Ubuntu 12.04.2 LTS" /etc/issue.net
 		if uname -m | grep -Fxq "x86_64"
 			then	echo "...Correct Arch detected"
 			else	echo "...Incorrect Arch detected...stopped script" && exit 0
-                fi
+fi
 	else	echo "...Incorrect OS detected...stopping script" && exit 0
 fi
 if [ `whoami` != 'zenoss' ]; then	echo "...All system checks passed"
 	else	echo "...This script should not be ran by the zenoss user" && exit 0
 fi
+echo "...Step 02: Complete"
 
 
 # Install required packages
 echo "Step 03: Install Dependencies"
-read -p "...During the install please leave the password blank for the root MySQL user, Press ENTER to continue (will fix password issue soon)"
 apt-get install python-software-properties -y && echo | add-apt-repository ppa:webupd8team/java
-apt-get update && apt-get install rrdtool mysql-server mysql-client mysql-common libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java6-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 -y
+apt-get update && apt-get install rrdtool libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java6-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 -y
+export DEBIAN_FRONTEND=noninteractive
+apt-get install mysql-server mysql-client mysql-common -y
 mysql -u root -e "show databases;" 2>&1 | sudo tee /tmp/mysql.txt
 if grep -Fxq "Database" /tmp/mysql.txt
         then    echo "...MySQL connection test successful."
         else    echo "...Mysql connection failed...make sure the password is blank for the root MySQL user." && exit 0
 fi
+echo "...Step 03: Complete"
 
 
 # Setup the 'zenoss' user, configure rabbit, apply misc. adjustments 
 echo "Step 04: Zenoss user setup and misc package adjustments"
-useradd -m -U -s /bin/bash zenoss > /dev/null 2>/dev/null
-mkdir /usr/local/zenoss > /dev/null 2>/dev/null
+useradd -m -U -s /bin/bash zenoss 
+mkdir /usr/local/zenoss
 chown -R zenoss:zenoss /usr/local/zenoss
-rabbitmqctl add_user zenoss zenoss > /dev/null 2>/dev/null
-rabbitmqctl add_vhost /zenoss > /dev/null 2>/dev/null
-rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*' > /dev/null 2>/dev/null
+rabbitmqctl add_user zenoss zenoss 
+rabbitmqctl add_vhost /zenoss
+rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'
 chmod 777 /home/zenoss/.bashrc
 echo 'export ZENHOME=/usr/local/zenoss' >> /home/zenoss/.bashrc
 echo 'export PYTHONPATH=/usr/local/zenoss/lib/python' >> /home/zenoss/.bashrc
@@ -57,79 +60,40 @@ echo '#max_allowed_packet=16M' >> /etc/mysql/my.cnf
 echo 'innodb_buffer_pool_size=256M' >> /etc/mysql/my.cnf
 echo 'innodb_additional_mem_pool_size=20M' >> /etc/mysql/my.cnf
 sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
+echo "...Step 04: Complete"
 
 
-PS3='###...Choose your install Type: '
-options=("SRPM Install (Prefferred Method...Functional but needs tweaking)" "SVN Install (Alternative Method...under development)")
-select opt in "${options[@]}"
-do
-case $opt in
-        "SRPM Install (Prefferred Method...Functional but needs tweaking)")
-		# Download the zenoss SRPM
-		echo "Step 05: Download the Zenoss install"
-		mkdir /home/zenoss/zenoss424-srpm_install
-		cd /home/zenoss/zenoss424-srpm_install
-		wget http://iweb.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/zenoss_core-4.2.4.el6.src.rpm
-		rpm2cpio zenoss_core-4.2.4.el6.src.rpm | cpio -i --make-directories
-		bunzip2 zenoss_core-4.2.4-1859.el6.x86_64.tar.bz2 && tar -xvf zenoss_core-4.2.4-1859.el6.x86_64.tar
-		# Install Zenoss Core 4.2.4
-		echo "Step 06: Start the Zenoss install"
-		echo "...Install the rrdtool external lib"
-		apt-get install librrd-dev -y
-		tar zxvf /home/zenoss/zenoss424-srpm_install/zenoss_core-4.2.4/externallibs/rrdtool-1.4.7.tar.gz && cd rrdtool-1.4.7/
-		./configure --prefix=/usr/local/zenoss
-		make && make install
-		cd /home/zenoss/zenoss424-srpm_install/zenoss_core-4.2.4/
-		wget https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh
-		wget http://dev.zenoss.org/svn/tags/zenoss-4.2.4/inst/rrdclean.sh
-		wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server_3.1.3-1_all.deb
-		dpkg -i rabbitmq-server_3.1.3-1_all.deb
-		./configure 2>&1 | tee log-configure.log
-		make 2>&1 | tee log-make.log
-		make clean 2>&1 | tee log-make_clean.log
-		cp mkzenossinstance.sh mkzenossinstance.sh.orig
-		su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. variables.sh:g' /home/zenoss/zenoss424-srpm_install/zenoss_core-4.2.4/mkzenossinstance.sh"
-		./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_a.log
-		./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_b.log
-		chown -R zenoss:zenoss /usr/local/zenoss
-	break
-	;;
-        "SVN Install (Alternative Method...under development)")
-		# Download the zenoss SVN
-		echo "Step 05: Download the Zenoss install"
-		svn co http://dev.zenoss.org/svn/tags/zenoss-4.2.4 /home/zenoss/zenoss424_svn-install
-		chown -R zenoss:zenoss /home/zenoss/zenoss424_svn-install
-		# Install Zenoss Core 4.2.4
-		echo "Step 06: Start the Zenoss install"
-		apt-get install librrd-dev -y
-		tar zxvf /home/zenoss/zenoss424_svn-install/inst/externallibs/rrdtool-1.4.7.tar.gz && cd rrdtool-1.4.7/
-		./configure --prefix=/usr/local/zenoss
-		make && make install
-		wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server_3.1.3-1_all.deb
-		dpkg -i rabbitmq-server_3.1.3-1_all.deb
-		ZENHOME=/usr/local/zenoss
-		PYTHONPATH=/usr/local/zenoss/lib/python
-		PATH=/usr/local/zenoss/bin:$PATH
-		INSTANCE_HOME=$ZENHOME
-		cd /home/zenoss/zenoss424_svn-install/inst
-		wget https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh
-		su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. variables.sh:g' /home/zenoss/zenoss424_svn-install/inst/mkzenossinstance.sh"
-		su - root -c "sed -i 's:try ./mkzenossinstance.sh:su - zenoss -c /home/zenoss/zenoss424_svn-install/inst/mkzenossinstance.sh:g' /home/zenoss/zenoss424_svn-install/inst/install.sh"	
-		groupadd admin
-		usermod -a -G admin zenoss
-		echo "enter temporary password for the zenoss user:"
-		passwd zenoss
-		su - zenoss -c "cd /home/zenoss/zenoss424_svn-install/inst/ && ./install.sh" | tee /home/zenoss/zenoss424_svn-install/inst/status.log
-		chown -R zenoss:zenoss /usr/local/zenoss
-		if grep -Fxq "Successfully installed Zenoss" /home/zenoss/zenoss424_svn-install/inst/status.log
-		        then    echo "...Zenoss build successful."
-		        else    echo "...Zenoss build unsuccessful, errors detected...stopping the script" && exit 0
-		fi
-	break
-	;;
-        *) echo invalid option;;
-esac
-done
+# Download the zenoss SRPM
+echo "Step 05: Download the Zenoss install"
+mkdir /home/zenoss/zenoss424-srpm_install
+cd /home/zenoss/zenoss424-srpm_install
+wget http://iweb.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/zenoss_core-4.2.4.el6.src.rpm
+rpm2cpio zenoss_core-4.2.4.el6.src.rpm | cpio -i --make-directories
+bunzip2 zenoss_core-4.2.4-1859.el6.x86_64.tar.bz2 && tar -xvf zenoss_core-4.2.4-1859.el6.x86_64.tar
+echo "Step 05: Complete"
+
+
+# Install Zenoss Core 4.2.4
+echo "Step 06: Start the Zenoss install"
+echo "...Install the rrdtool external lib"
+apt-get install librrd-dev -y
+tar zxvf /home/zenoss/zenoss424-srpm_install/zenoss_core-4.2.4/externallibs/rrdtool-1.4.7.tar.gz && cd rrdtool-1.4.7/
+./configure --prefix=/usr/local/zenoss
+make && make install
+cd /home/zenoss/zenoss424-srpm_install/zenoss_core-4.2.4/
+wget https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh
+wget http://dev.zenoss.org/svn/tags/zenoss-4.2.4/inst/rrdclean.sh
+wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server_3.1.3-1_all.deb
+dpkg -i rabbitmq-server_3.1.3-1_all.deb
+./configure 2>&1 | tee log-configure.log
+make 2>&1 | tee log-make.log
+make clean 2>&1 | tee log-make_clean.log
+cp mkzenossinstance.sh mkzenossinstance.sh.orig
+su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. variables.sh:g' /home/zenoss/zenoss424-srpm_install/zenoss_core-4.2.4/mkzenossinstance.sh"
+./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_a.log
+./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_b.log
+chown -R zenoss:zenoss /usr/local/zenoss
+echo "Step 06: Complete"
 
 
 # Install the Core ZenPacks
