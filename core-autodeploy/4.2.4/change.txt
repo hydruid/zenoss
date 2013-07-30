@@ -8,7 +8,7 @@ This text file contains a basic list of script changes
 Changes:
 07-29-13: Version: 01f Beta - 
 	mysql-server package defaults to blank root password
-	improved loging functions to troubleshoot MySQL password issue
+	improved logging functions to troubleshoot MySQL password issue
 	removed SVN install option (woot SRPM) 
 
 07-25-13: Version: 01e - 
