@@ -1,5 +1,5 @@
 #
-# Version: 01b
+# Version: 01c
 # http://hydruid-blog.com/?p=241
 
 Description:
@@ -11,6 +11,7 @@ Not Started:
 	3. Incorporate compability with proxy
 
 In Progress:
+	1. Resolve bug with blank password requirement for MySQL user
 	1. Detailed script breakdown
 	2. Fine tune the SRPM section
 
