@@ -6,15 +6,36 @@ Description:
 This text file contains a basic list of script changes
 
 Changes:
-	07-29-13: Version: 01f Beta posted, improving logging functions to help diagnose and troubleshoot MySQL user password issue
-	07-25-13: Version: 01e Beta posted, SRPM Install is functional with blank root MySQL user password
-	07-25-13: Version: 01d Beta posted, confirmed SVN Install not functional
-	07-24-13: Version 01c Beta posted, SVN install should be functional with blank root MySQL user password
-	07-24-13: Version 01b Beta posted, focused on getting a functional script with a blank root MySQL user password
-	07-23-13: Version 01a Beta posted, working out the correct way to pass the MySQL credentials during install (works great if you leave the pass blank ;)
-	07-22-13: Blog post updated, SVN/RPM scripts combined into 1
-	07-17-13: Posted Version-02e of SRPM insall script, almost ready for production, functional but putting the last few final tweaks in
-	07-11-13: Converting from SVN to SRPM, 4.2.4 stable released!
-	07-10-13: Version-02a: automation improved
-	06-22-13: Version-01c: includes /etc/init.d/ script, improved detection of build errors
-	06-01-13: Blog post created
+07-29-13: Version: 01f Beta - 
+	mysql-server package defaults to blank root password
+	improved loging functions to troubleshoot MySQL password issue
+	removed SVN install option (woot SRPM) 
+
+07-25-13: Version: 01e - 
+	SRPM install is functional, with blank password for the root MySQL user
+	confirmed the SVN install is not functional
+
+07-24-13: Version 01c - 
+	SVN install should be functional with blank password for the root MySQL user
+	focused on getting a functional script, before troubleshooting blank password requirement for MySQL bug
+
+07-23-13: Version 01a Beta - 
+	trying to resolve blank password requirement for MySQL bug	
+
+07-22-13: Blog post updated - 
+	combined SVN/RPM scripts into 1
+
+07-17-13: Posted Version-02e of SRPM insall script - 
+	almost ready for production
+	functional but putting the last few final tweaks in
+
+07-11-13: Converting from SVN to SRPM, 4.2.4 stable released!
+
+07-10-13: Version-02a - 
+	automation improved
+
+06-22-13: Version-01c - 
+	includes /etc/init.d/ script
+	improved detection of build errors
+
+06-01-13: Blog post created
