@@ -1,11 +1,12 @@
 #
-# Version: 01d
+# Version: 01e
 # http://hydruid-blog.com/?p=241
 
 Description:
 This text file contains a basic list of script changes
 
 Changes:
+	07-29-13: Version: 01f Beta posted, improving logging functions to help diagnose and troubleshoot MySQL user password issue
 	07-25-13: Version: 01e Beta posted, SRPM Install is functional with blank root MySQL user password
 	07-25-13: Version: 01d Beta posted, confirmed SVN Install not functional
 	07-24-13: Version 01c Beta posted, SVN install should be functional with blank root MySQL user password
