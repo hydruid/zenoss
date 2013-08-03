@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 01b                                        #
+# Version: 01c                                        #
 #######################################################
 
 ZENHOME=/usr/local/zenoss
@@ -38,5 +38,4 @@ zenpack --install ZenPacks.zenoss.WindowsMonitor-1.0.8-py2.7.egg
 zenpack --install ZenPacks.zenoss.XenMonitor-1.1.0-py2.7.egg
 zenpack --install ZenPacks.zenoss.ZenJMX-3.9.5-py2.7.egg
 zenpack --install ZenPacks.zenoss.ZenossVirtualHostMonitor-2.4.0-py2.7.egg
-easy_install readline
 /usr/local/zenoss/bin/zenoss restart
