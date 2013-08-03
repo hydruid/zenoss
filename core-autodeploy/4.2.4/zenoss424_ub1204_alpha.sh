@@ -11,8 +11,8 @@ echo && echo "Welcome to the Zenoss 4.2.4 core-autodeploy script for Ubuntu!"
 echo "http://hydruid-blog.com/?p=124" && echo
 
 echo "Step01: Install Ubuntu Updates..."
-apt-get -qq update
-apt-get -qq dist-upgrade -y && echo "...Update completed."
+apt-get update
+apt-get dist-upgrade -y && echo "...Update completed."
 if grep -Fxq "Ubuntu 12.04.2 LTS" /etc/issue.net
 	then	echo "...Correct OS detected."
 	else	echo "...Incorrect OS detected...stopping script" && exit 0
@@ -28,10 +28,10 @@ fi
 echo "...Step01 Complete!" && echo 
 
 echo "Step02: Install Zenoss Dependencies..."
-apt-get -qq install python-software-properties -y && echo | add-apt-repository ppa:webupd8team/java >/dev/null 2>/dev/null
-apt-get -qq install rrdtool libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java6-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev -y 
+apt-get install python-software-properties -y && echo | add-apt-repository ppa:webupd8team/java >/dev/null 2>/dev/null
+apt-get install rrdtool libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java6-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev -y 
 export DEBIAN_FRONTEND=noninteractive
-apt-get -qq install mysql-server mysql-client mysql-common -y
+apt-get install mysql-server mysql-client mysql-common -y
 #mysql -u root -e "show databases;" 2>&1 | sudo tee /tmp/mysql.txt
 mysql -u root -e "show databases;" > /tmp/mysql.txt 2>> /tmp/mysql.txt
 if grep -Fxq "Database" /tmp/mysql.txt
