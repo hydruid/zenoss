@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02a Alpha02                                #
+# Version: 02a Alpha03                                #
 # Status: Somewhat Functional                         # 
 # Notes: Updating code to resolve MySQL issues        #
 # Zenoss Core 4.2.4 & ZenPacks                        #
@@ -74,21 +74,21 @@ fi
 echo "Step04 Complete!" && echo
 
 echo "Step05: Install Zenoss Core..."
-#tar zxvf $INSTALLDIR/zenoss_core-4.2.4/externallibs/rrdtool-1.4.7.tar.gz && cd rrdtool-1.4.7/
-#./configure --prefix=$ZENHOME
-#make && make install
-#cd $INSTALLDIR/zenoss_core-4.2.4/
-#wget http://dev.zenoss.org/svn/tags/zenoss-4.2.4/inst/rrdclean.sh
-#wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server_3.1.3-1_all.deb
-#dpkg -i rabbitmq-server_3.1.3-1_all.deb
-#./configure 2>&1 | tee log-configure.log
-#make 2>&1 | tee log-make.log
-#make clean 2>&1 | tee log-make_clean.log
-#cp mkzenossinstance.sh mkzenossinstance.sh.orig
-#su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. variables.sh:g' $INSTALLDIR/zenoss_core-4.2.4/mkzenossinstance.sh"
-#./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_a.log
-#./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_b.log
-#chown -R zenoss:zenoss $ZENHOME
+tar zxvf $INSTALLDIR/zenoss_core-4.2.4/externallibs/rrdtool-1.4.7.tar.gz && cd rrdtool-1.4.7/
+./configure --prefix=$ZENHOME
+make && make install
+cd $INSTALLDIR/zenoss_core-4.2.4/
+wget http://dev.zenoss.org/svn/tags/zenoss-4.2.4/inst/rrdclean.sh
+wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server_3.1.3-1_all.deb
+dpkg -i rabbitmq-server_3.1.3-1_all.deb
+./configure 2>&1 | tee log-configure.log
+make 2>&1 | tee log-make.log
+make clean 2>&1 | tee log-make_clean.log
+cp mkzenossinstance.sh mkzenossinstance.sh.orig
+su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. variables.sh:g' $INSTALLDIR/zenoss_core-4.2.4/mkzenossinstance.sh"
+./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_a.log
+./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_b.log
+chown -R zenoss:zenoss $ZENHOME
 echo "...It's safe to ignore the above pyraw,zensocket,nmap warnings."
 echo "Step05 Complete!" && echo
 
@@ -98,46 +98,9 @@ mkdir /home/zenoss/rpm && cd /home/zenoss/rpm
 wget http://superb-dca2.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/zenoss_core-4.2.4.el6.x86_64.rpm
 rpm2cpio zenoss_core-4.2.4.el6.x86_64.rpm | sudo cpio -ivd ./opt/zenoss/packs/*.*
 cp /home/zenoss/rpm/opt/zenoss/packs/*.egg /home/zenoss/
+cd /home/zenoss
+wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/zenpack-helper.sh
 chown -R zenoss:zenoss /home/zenoss
-rm /home/zenoss/zenpack-helper.sh > /dev/null 2>/dev/null && touch /home/zenoss/zenpack-helper.sh
-echo '#!/bin/bash' >> /home/zenoss/zenpack-helper.sh
-echo 'ZENHOME=/usr/local/zenoss' >> /home/zenoss/zenpack-helper.sh
-echo 'export ZENHOME=/usr/local/zenoss' >> /home/zenoss/zenpack-helper.sh
-echo 'PYTHONPATH=/usr/local/zenoss/lib/python' >> /home/zenoss/zenpack-helper.sh
-echo 'PATH=/usr/local/zenoss/bin:$PATH' >> /home/zenoss/zenpack-helper.sh
-echo 'INSTANCE_HOME=$ZENHOME' >> /home/zenoss/zenpack-helper.sh
-echo '/usr/local/zenoss/bin/zenoss restart' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.PySamba-1.0.2-py2.7-linux-x86_64.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.WindowsMonitor-1.0.8-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.ActiveDirectory-2.1.0-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.ApacheMonitor-2.1.3-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.DellMonitor-2.2.0-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.DeviceSearch-1.2.0-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.DigMonitor-1.1.0-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.DnsMonitor-2.1.0-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.EsxTop-1.1.0-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.FtpMonitor-1.1.0-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.HPMonitor-2.1.0-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.HttpMonitor-2.1.0-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.IISMonitor-2.0.2-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.IRCDMonitor-1.1.0-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.JabberMonitor-1.1.0-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.LDAPMonitor-1.4.0-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.LinuxMonitor-1.2.1-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.MSExchange-2.0.4-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.MSMQMonitor-1.2.1-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.MSSQLServer-2.0.3-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.MySqlMonitor-2.2.0-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.NNTPMonitor-1.1.0-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.NtpMonitor-2.2.0-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.PythonCollector-1.0.1-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.WBEM-1.0.0-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.WindowsMonitor-1.0.8-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.XenMonitor-1.1.0-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.ZenJMX-3.9.5-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-echo 'zenpack --install ZenPacks.zenoss.ZenossVirtualHostMonitor-2.4.0-py2.7.egg' >> /home/zenoss/zenpack-helper.sh
-#echo 'easy_install readline' >> /home/zenoss/zenpack-helper.sh
-echo '/usr/local/zenoss/bin/zenoss restart' >> /home/zenoss/zenpack-helper.sh
 su - zenoss -c "/bin/sh /home/zenoss/zenpack-helper.sh"
 echo "Step06 Complete!" && echo
 
