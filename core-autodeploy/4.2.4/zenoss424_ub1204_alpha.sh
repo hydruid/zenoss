@@ -28,7 +28,7 @@ fi
 echo "...Step01 Complete!" && echo 
 
 echo "Step02: Install Zenoss Dependencies..."
-apt-get install python-software-properties -y && echo | add-apt-repository ppa:webupd8team/java >/dev/null 2>/dev/null
+apt-get install python-software-properties -y && echo | add-apt-repository ppa:webupd8team/java
 apt-get install rrdtool libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java6-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev -y 
 export DEBIAN_FRONTEND=noninteractive
 apt-get install mysql-server mysql-client mysql-common -y
