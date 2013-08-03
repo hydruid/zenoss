@@ -101,7 +101,7 @@ cp /home/zenoss/rpm/opt/zenoss/packs/*.egg /home/zenoss/
 cd /home/zenoss
 wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/zenpack-helper.sh
 chown -R zenoss:zenoss /home/zenoss
-su - zenoss -c "/bin/sh /home/zenoss/zenpack-helper.sh"
+su - zenoss -c "cd /home/zenoss && /bin/sh zenpack-helper.sh"
 echo "Step06 Complete!" && echo
 
 echo "Step07: Post Installation Adjustments"
