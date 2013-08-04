@@ -1,10 +1,10 @@
 #!/bin/bash
 #######################################################
 # Version: 02a Alpha06                                #
-# Status: Somewhat Functional                         # 
-# Notes: Updating code to resolve MySQL issues        #
-# Zenoss Core 4.2.4 & ZenPacks                        #
-# Ubuntu 12.04.2 x86_64                               #
+#  Status: Somewhat Functional                        # 
+#   Notes: Updating code to resolve MySQL issues      #
+#  Zenoss: Core 4.2.4 & ZenPacks                      #
+#      OS: Ubuntu 12.04.2 x86_64                      #
 #######################################################
 
 echo && echo "Welcome to the Zenoss 4.2.4 core-autodeploy script for Ubuntu!"
