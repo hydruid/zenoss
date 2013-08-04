@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02a Alpha05                                #
+# Version: 02a Alpha06                                #
 # Status: Somewhat Functional                         # 
 # Notes: Updating code to resolve MySQL issues        #
 # Zenoss Core 4.2.4 & ZenPacks                        #
@@ -10,7 +10,7 @@
 echo && echo "Welcome to the Zenoss 4.2.4 core-autodeploy script for Ubuntu!"
 echo "http://hydruid-blog.com/?p=124" && echo
 
-echo "Step01: Install Ubuntu Updates..."
+echo "Section-01: Install Ubuntu Updates..."
 apt-get update
 apt-get dist-upgrade -y && echo "...Update completed."
 if grep -Fxq "Ubuntu 12.04.2 LTS" /etc/issue.net
@@ -25,9 +25,9 @@ if [ `whoami` != 'zenoss' ];
 	then	echo "...All system checks passed."
 	else	echo "...This script should not be ran by the zenoss user" && exit 0
 fi
-echo "...Step01 Complete!" && echo 
+echo "...Section-01 Complete!" && echo 
 
-echo "Step02: Install Zenoss Dependencies..."
+echo "Section-02: Install Zenoss Dependencies..."
 apt-get install python-software-properties -y && echo | sudo add-apt-repository ppa:webupd8team/java
 apt-get install rrdtool libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java6-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev -y 
 export DEBIAN_FRONTEND=noninteractive
@@ -37,20 +37,23 @@ if grep -Fxq "Database" /tmp/mysql.txt
         then    echo "...MySQL connection test successful."
         else    echo "...Mysql connection failed...make sure the password is blank for the root MySQL user." && exit 0
 fi
-echo "...Step02 Complete!" && echo
+echo "...Section-02 Complete!" && echo
 
-echo "Step03: Setup zenoss User and Build Environment..."
+echo "Section-03: Setup zenoss User and Build Environment..."
 useradd -m -U -s /bin/bash zenoss
-mkdir /home/zenoss/zenoss424-srpm_install && cd /home/zenoss/zenoss424-srpm_install
+mkdir /home/zenoss/zenoss424-srpm_install
+cd /home/zenoss/zenoss424-srpm_install
 wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh >/dev/null 2>/dev/null
 . /home/zenoss/zenoss424-srpm_install/variables.sh
-mkdir $ZENHOME && chown -R zenoss:zenoss $ZENHOME
-rabbitmqctl add_user zenoss zenoss && rabbitmqctl add_vhost /zenoss
+mkdir $ZENHOME
+chown -R zenoss:zenoss $ZENHOME
+rabbitmqctl add_user zenoss zenoss
+rabbitmqctl add_vhost /zenoss
 rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'
 chmod 777 /home/zenoss/.bashrc
-echo 'export ZENHOME=$ZENHOME' >> /home/zenoss/.bashrc
-echo 'export PYTHONPATH=$ZENHOME/lib/python' >> /home/zenoss/.bashrc
-echo 'export PATH=$ZENHOME/bin:$PATH' >> /home/zenoss/.bashrc
+echo 'export ZENHOME=/usr/local/zenoss' >> /home/zenoss/.bashrc
+echo 'export PYTHONPATH=/usr/local/zenoss/lib/python' >> /home/zenoss/.bashrc
+echo 'export PATH=/usr/local/zenoss/bin:$PATH' >> /home/zenoss/.bashrc
 echo 'export INSTANCE_HOME=$ZENHOME' >> /home/zenoss/.bashrc
 chmod 644 /home/zenoss/.bashrc
 echo '#max_allowed_packet=16M' >> /etc/mysql/my.cnf
@@ -58,24 +61,28 @@ echo 'innodb_buffer_pool_size=256M' >> /etc/mysql/my.cnf
 echo 'innodb_additional_mem_pool_size=20M' >> /etc/mysql/my.cnf
 sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
 echo "...It's safe to ignore the above rabbit warnings."
-echo "...Step 03 Complete!" && echo
+echo "...Section- 03 Complete!" && echo
 
-echo "Step04: Download the Zenoss install..."
+echo "Section-04: Download the Zenoss install..."
 if [ -f $INSTALLDIR/zenoss_core-4.2.4/GNUmakefile.in ];
 	then	echo "...skipping SRPM download and extraction."
 	else	cd $INSTALLDIR/
 		echo "...This might take a few minutes."
 		wget http://iweb.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/zenoss_core-4.2.4.el6.src.rpm >/dev/null 2>/dev/null
 		rpm2cpio zenoss_core-4.2.4.el6.src.rpm | cpio -i --make-directories
-		bunzip2 zenoss_core-4.2.4-1859.el6.x86_64.tar.bz2 && tar -xvf zenoss_core-4.2.4-1859.el6.x86_64.tar
-		mv zenoss_core-4.2.4 $INSTALLDIR/ && chown -R zenoss:zenoss $ZENHOME
+		bunzip2 zenoss_core-4.2.4-1859.el6.x86_64.tar.bz2
+		tar -xvf zenoss_core-4.2.4-1859.el6.x86_64.tar
+		mv zenoss_core-4.2.4 $INSTALLDIR/
+		chown -R zenoss:zenoss $ZENHOME
 fi
-echo "Step04 Complete!" && echo
+echo "Section-04 Complete!" && echo
 
-echo "Step05: Install Zenoss Core..."
-tar zxvf $INSTALLDIR/zenoss_core-4.2.4/externallibs/rrdtool-1.4.7.tar.gz && cd rrdtool-1.4.7/
+echo "Section-05: Install Zenoss Core..."
+tar zxvf $INSTALLDIR/zenoss_core-4.2.4/externallibs/rrdtool-1.4.7.tar.gz
+cd rrdtool-1.4.7/
 ./configure --prefix=$ZENHOME
-make && make install
+make
+make install
 cd $INSTALLDIR/zenoss_core-4.2.4/
 wget http://dev.zenoss.org/svn/tags/zenoss-4.2.4/inst/rrdclean.sh
 wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server_3.1.3-1_all.deb
@@ -89,11 +96,13 @@ su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh 
 ./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_b.log
 chown -R zenoss:zenoss $ZENHOME
 echo "...It's safe to ignore the above pyraw,zensocket,nmap warnings."
-echo "Step05 Complete!" && echo
+echo "Section-05 Complete!" && echo
 
-echo "Step06: Install the Zenoss Core ZenPacks"
-rm -fr /home/zenoss/rpm > /dev/null 2>/dev/null && rm -fr /home/zenoss/*.egg > /dev/null 2>/dev/null
-mkdir /home/zenoss/rpm && cd /home/zenoss/rpm
+echo "Section-06: Install the Zenoss Core ZenPacks"
+rm -fr /home/zenoss/rpm > /dev/null 2>/dev/null
+rm -fr /home/zenoss/*.egg > /dev/null 2>/dev/null
+mkdir /home/zenoss/rpm
+cd /home/zenoss/rpm
 wget http://superb-dca2.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/zenoss_core-4.2.4.el6.x86_64.rpm
 rpm2cpio zenoss_core-4.2.4.el6.x86_64.rpm | sudo cpio -ivd ./opt/zenoss/packs/*.*
 cp /home/zenoss/rpm/opt/zenoss/packs/*.egg /home/zenoss/
@@ -102,18 +111,22 @@ wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/
 chown -R zenoss:zenoss /home/zenoss
 su - zenoss -c "cd /home/zenoss && /bin/sh zenpack-helper.sh"
 easy_install readline
-echo "Step06 Complete!" && echo
+echo "Section-06 Complete!" && echo
 
-echo "Step07: Post Installation Adjustments"
+echo "Section-07: Post Installation Adjustments"
 cp $ZENHOME/bin/zenoss /etc/init.d/zenoss
-touch $ZENHOME/var/Data.fs && chown zenoss:zenoss $ZENHOME/var/Data.fs
+touch $ZENHOME/var/Data.fs
+chown zenoss:zenoss $ZENHOME/var/Data.fs
 su - root -c "sed -i 's:# License.zenoss under the directory where your Zenoss product is installed.:# License.zenoss under the directory where your Zenoss product is installed.\n#\n#Custom Ubuntu Variables\nexport ZENHOME=$ZENHOME\nexport RRDCACHED=$ZENHOME/bin/rrdcached:g' /etc/init.d/zenoss"
 update-rc.d zenoss defaults
-chown root:zenoss $ZENHOME/bin/nmap && chmod u+s $ZENHOME/bin/nmap
-chown root:zenoss $ZENHOME/bin/zensocket && chmod u+s $ZENHOME/bin/zensocket
-chown root:zenoss $ZENHOME/bin/pyraw && chmod u+s $ZENHOME/bin/pyraw
+chown root:zenoss $ZENHOME/bin/nmap
+chmod u+s $ZENHOME/bin/nmap
+chown root:zenoss $ZENHOME/bin/zensocket
+chmod u+s $ZENHOME/bin/zensocket
+chown root:zenoss $ZENHOME/bin/pyraw
+chmod u+s $ZENHOME/bin/pyraw
 echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
-echo "Step07 Complete!" && echo
+echo "Section-07 Complete!" && echo
 
 FINDIP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
 echo "The Zenoss 4.2.4 core-autodeploy script for Ubuntu is complete!!!"
