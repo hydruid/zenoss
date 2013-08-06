@@ -1,5 +1,5 @@
 #
-# Version: 03e
+# Version: 03f
 # http://hydruid-blog.com/?p=241
 
 Description:
@@ -13,11 +13,11 @@ Ubuntu 12.04.2 AMD64 LTS  -
   4.2.3 Core + ZenPacks (Source Install, Functional)
     /core-autodeploy/4.2.3/zenoss423-svn_ub1204-x64.sh
 
-  4.2.4 Core Beta + ZenPacks (SRPM Install, Under Development)
-    /core-autodeploy/4.2.4/zenoss424-srpm_ub1204-x64.sh
+  4.2.4 Core + ZenPacks (SRPM Install, Functional with a Few Bugs)
+    /core-autodeploy/4.2.4/zenoss424_ub1204.sh
 
-  4.2.4 Core Beta + ZenPacks (Source Install, Functional)
-    /core-autodeploy/4.2.4/zenoss424-svn_ub1204-x64.sh
+  4.2.4 Core + ZenPacks (SRPM Install, Alpha Development Script...usually not Functional)
+    /core-autodeploy/4.2.4/zenoss424_ub1204_alpha.sh
 
 
 Ubuntu 13.04 AMD64  -
