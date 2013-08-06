@@ -74,8 +74,7 @@ if [ -f $INSTALLDIR/zenoss_core-4.2.4/GNUmakefile.in ];
                 rpm2cpio zenoss_core-4.2.4.el6.src.rpm | cpio -i --make-directories
                 bunzip2 zenoss_core-4.2.4-1859.el6.x86_64.tar.bz2
                 tar -xvf zenoss_core-4.2.4-1859.el6.x86_64.tar
-                mv zenoss_core-4.2.4 $INSTALLDIR/
-                chown -R zenoss:zenoss $ZENHOME
+                chown -R zenoss:zenoss $INSTALLDIR
 fi
 
 # Stopping point for script code changes
