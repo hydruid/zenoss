@@ -1,11 +1,17 @@
-#
-# Version: 01e
-# http://hydruid-blog.com/?p=241
+#######################################################
+# Version: 01f                                        #
+# http://hydruid-blog.com/?p=241                      #
+#######################################################
 
 Description:
 This text file contains a basic list of script changes
 
 Changes:
+08-06-13: Version: 02a Alpha - 
+        Posted Alpha version of script on blog post and github
+	Converted to a simplier layout
+	Plan to import official Zenoss "Secure" script to resolve MySQL password bug
+
 07-29-13: Version: 01f Beta - 
 	mysql-server package defaults to blank root password
 	improved logging functions to troubleshoot MySQL password issue
