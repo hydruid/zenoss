@@ -3,7 +3,7 @@
 # http://hydruid-blog.com/?p=241
 
 Description:
-This repo contains scripts to install Zenoss 4.2.3 on Ubuntu 12.04
+This repo contains scripts to install Zenoss 4.2.3/4.2.4 on Ubuntu 12.04
 
 Future Plans:
 Add support for Ubuntu 12.10 and other Linux Distributions.
