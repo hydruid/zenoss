@@ -1,6 +1,7 @@
-#
-# Version: 03f
-# http://hydruid-blog.com/?p=241
+#######################################################
+# Version: 03f                                        #
+# http://hydruid-blog.com/?p=241                      #
+#######################################################
 
 Description:
 This repo contains scripts to install Zenoss 4.2.3/4.2.4 on Ubuntu 12.04
