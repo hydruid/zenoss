@@ -21,7 +21,7 @@
 #     service zenoss start
 #
 #Custom Ubuntu Variables
-. /usr/local/zenoss/bin/variables.sh
+. /home/zenoss/zenoss424-srpm_install/variables.sh
 #
 ###############################################################################
 
