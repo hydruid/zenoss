@@ -1,15 +1,18 @@
 #!/bin/bash
 #######################################################
-# Version: 02a Alpha08                                #
-#  Status: Not Functional...updating code             # 
-#   Notes: Updating code to resolve MySQL issues      #
+# Version: 03a Alpha01                                #
+#  Status: Not Functional for Production              # 
+#   Notes: Updating code to resolve MySQL pass bug    #
 #  Zenoss: Core 4.2.4 & ZenPacks                      #
 #      OS: Ubuntu 12.04.2 x86_64                      #
 #######################################################
 
+# Script Logging Parameters
+(
+
+# Beginning Script Message
 echo && echo "Welcome to the Zenoss 4.2.4 core-autodeploy script for Ubuntu!"
-echo "Blog Post: http://hydruid-blog.com/?p=124"
-echo "Notes: All prompts are manual, you must choose to install the packages and/or accept any agreements. Also none of the commands are silenced, so that all output errors can be recorded." && echo
+echo "Blog Post: http://hydruid-blog.com/?p=124" && echo 
 sleep 10
 
 # Ubuntu Updates
@@ -32,7 +35,7 @@ fi
 
 # Install Package Dependencies
 apt-get install python-software-properties
-sudo add-apt-repository ppa:webupd8team/java
+echo | add-apt-repository ppa:webupd8team/java
 apt-get install rrdtool libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev
 export DEBIAN_FRONTEND=noninteractive
 apt-get install mysql-server mysql-client mysql-common
@@ -77,29 +80,25 @@ if [ -f $INSTALLDIR/zenoss_core-4.2.4/GNUmakefile.in ];
                 chown -R zenoss:zenoss $INSTALLDIR
 fi
 
-# Stopping point for script code changes
-echo "...###### NOT DONE YET WITH CODE CHANGES, STOPPED HERE!"
-exit 0
-
 # Install Zenoss Core
-tar zxvf $INSTALLDIR/zenoss_core-4.2.4/externallibs/rrdtool-1.4.7.tar.gz
-cd rrdtool-1.4.7/
-./configure --prefix=$ZENHOME
-make
-make install
-cd $INSTALLDIR/zenoss_core-4.2.4/
-wget -N http://dev.zenoss.org/svn/tags/zenoss-4.2.4/inst/rrdclean.sh
-wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server_3.1.3-1_all.deb
-dpkg -i rabbitmq-server_3.1.3-1_all.deb
-./configure 2>&1 | tee log-configure.log
-make 2>&1 | tee log-make.log
-make clean 2>&1 | tee log-make_clean.log
-cp mkzenossinstance.sh mkzenossinstance.sh.orig
-su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. variables.sh:g' $INSTALLDIR/zenoss_core-4.2.4/mkzenossinstance.sh"
-./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_a.log
-./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_b.log
-chown -R zenoss:zenoss $ZENHOME
-echo "...It's safe to ignore the above pyraw,zensocket,nmap warnings."
+#tar zxvf $INSTALLDIR/zenoss_core-4.2.4/externallibs/rrdtool-1.4.7.tar.gz
+#cd rrdtool-1.4.7/
+#./configure --prefix=$ZENHOME
+#make
+#make install
+#cd $INSTALLDIR/zenoss_core-4.2.4/
+#wget -N http://dev.zenoss.org/svn/tags/zenoss-4.2.4/inst/rrdclean.sh
+#wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server_3.1.3-1_all.deb
+#dpkg -i rabbitmq-server_3.1.3-1_all.deb
+#./configure 2>&1 | tee log-configure.log
+#make 2>&1 | tee log-make.log
+#make clean 2>&1 | tee log-make_clean.log
+#cp mkzenossinstance.sh mkzenossinstance.sh.orig
+#su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. variables.sh:g' $INSTALLDIR/zenoss_core-4.2.4/mkzenossinstance.sh"
+#./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_a.log
+#./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_b.log
+#chown -R zenoss:zenoss $ZENHOME
+#echo "...It's safe to ignore the above pyraw,zensocket,nmap warnings."
 
 # Install Zenoss Core Zenpacks
 rm -fr /home/zenoss/rpm > /dev/null 2>/dev/null
@@ -131,8 +130,10 @@ echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
 
 # End of Script Message
 FINDIP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
-echo "The Zenoss 4.2.4 core-autodeploy script for Ubuntu is complete!!!"
+echo && echo "The Zenoss 4.2.4 core-autodeploy script for Ubuntu is complete!!!" && echo
 echo "Browse to $FINDIP:8080 to access your new Zenoss install."
 echo "The default login is:"
 echo "  username: admin"
 echo "  password: zenoss"
+
+) 2>&1 | tee script-log.txt
