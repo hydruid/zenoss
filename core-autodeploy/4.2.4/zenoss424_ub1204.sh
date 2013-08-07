@@ -81,24 +81,24 @@ if [ -f $INSTALLDIR/zenoss_core-4.2.4/GNUmakefile.in ];
 fi
 
 # Install Zenoss Core
-#tar zxvf $INSTALLDIR/zenoss_core-4.2.4/externallibs/rrdtool-1.4.7.tar.gz
-#cd rrdtool-1.4.7/
-#./configure --prefix=$ZENHOME
-#make
-#make install
-#cd $INSTALLDIR/zenoss_core-4.2.4/
-#wget -N http://dev.zenoss.org/svn/tags/zenoss-4.2.4/inst/rrdclean.sh
-#wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server_3.1.3-1_all.deb
-#dpkg -i rabbitmq-server_3.1.3-1_all.deb
-#./configure 2>&1 | tee log-configure.log
-#make 2>&1 | tee log-make.log
-#make clean 2>&1 | tee log-make_clean.log
-#cp mkzenossinstance.sh mkzenossinstance.sh.orig
-#su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. variables.sh:g' $INSTALLDIR/zenoss_core-4.2.4/mkzenossinstance.sh"
-#./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_a.log
-#./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_b.log
-#chown -R zenoss:zenoss $ZENHOME
-#echo "...It's safe to ignore the above pyraw,zensocket,nmap warnings."
+tar zxvf $INSTALLDIR/zenoss_core-4.2.4/externallibs/rrdtool-1.4.7.tar.gz
+cd rrdtool-1.4.7/
+./configure --prefix=$ZENHOME
+make
+make install
+cd $INSTALLDIR/zenoss_core-4.2.4/
+wget -N http://dev.zenoss.org/svn/tags/zenoss-4.2.4/inst/rrdclean.sh
+wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server_3.1.3-1_all.deb
+dpkg -i rabbitmq-server_3.1.3-1_all.deb
+./configure 2>&1 | tee log-configure.log
+make 2>&1 | tee log-make.log
+make clean 2>&1 | tee log-make_clean.log
+cp mkzenossinstance.sh mkzenossinstance.sh.orig
+su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. variables.sh:g' $INSTALLDIR/zenoss_core-4.2.4/mkzenossinstance.sh"
+./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_a.log
+./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_b.log
+chown -R zenoss:zenoss $ZENHOME
+echo "...It's safe to ignore the above pyraw,zensocket,nmap warnings."
 
 # Install Zenoss Core Zenpacks
 rm -fr /home/zenoss/rpm > /dev/null 2>/dev/null
