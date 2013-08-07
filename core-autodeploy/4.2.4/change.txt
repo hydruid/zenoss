@@ -1,5 +1,5 @@
 #######################################################
-# Version: 01f                                        #
+# Version: 01g                                        #
 # http://hydruid-blog.com/?p=241                      #
 #######################################################
 
@@ -7,6 +7,11 @@ Description:
 This text file contains a basic list of script changes
 
 Changes:
+08-07-13: Version: 02a Stable -
+	code updated to be cleaner and give better chance of successful install
+	implemented directly logging script output
+        updated package 'oracle-java6-installer' to 'oracle-java7-installer'
+
 08-06-13: Version: 02a Alpha - 
         Posted Alpha version of script on blog post and github
 	Converted to a simplier layout
