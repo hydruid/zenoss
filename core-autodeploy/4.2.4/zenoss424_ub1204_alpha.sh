@@ -127,6 +127,11 @@ chmod u+s $ZENHOME/bin/zensocket
 chown root:zenoss $ZENHOME/bin/pyraw
 chmod u+s $ZENHOME/bin/pyraw
 echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
+cd $INSTALLDIR
+wget --no-check-certificate https://github.com/zenoss/core-autodeploy/tarball/4.2.4 -O auto.tar.gz
+tar xvf auto.tar.gz
+chown -R zenoss:zenoss $INSTALLDIR
+su - zenoss -c "cd /home/zenoss/zenoss424-srpm_install && /bin/sh secure_zenoss.sh"
 
 # End of Script Message
 FINDIP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
