@@ -1,7 +1,7 @@
 #!/bin/bash
 #######################################################
-# Version: 02b Alpha - 04                             #
-#  Status: Not Functional for Production              # 
+# Version: 02b Alpha - 05                             #
+#  Status: Functional but not ready for Production    #
 #   Notes: Updating code to resolve MySQL pass bug    #
 #  Zenoss: Core 4.2.4 & ZenPacks                      #
 #      OS: Ubuntu 12.04.2 x86_64                      #
@@ -16,6 +16,7 @@ echo "Blog Post: http://hydruid-blog.com/?p=124" && echo
 sleep 10
 
 # Ubuntu Updates
+apt-get -f install
 apt-get update
 apt-get dist-upgrade
 
