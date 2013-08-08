@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 03a Alpha01                                #
+# Version: 02b Alpha - 02                             #
 #  Status: Not Functional for Production              # 
 #   Notes: Updating code to resolve MySQL pass bug    #
 #  Zenoss: Core 4.2.4 & ZenPacks                      #
@@ -130,8 +130,12 @@ echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
 cd $INSTALLDIR
 wget --no-check-certificate https://github.com/zenoss/core-autodeploy/tarball/4.2.4 -O auto.tar.gz
 tar xvf auto.tar.gz
-chown -R zenoss:zenoss $INSTALLDIR
-su - zenoss -c "cd /home/zenoss/zenoss424-srpm_install && /bin/sh secure_zenoss.sh"
+cp zenoss-core-autodeploy-*/secure_zenoss.sh /usr/local/zenoss/bin/
+chown -R zenoss:zenoss $ZENHOME
+su - root -c "sed -i 's:#     service zenoss start:#     service zenoss start\n#\n#Custom Ubuntu Variables\n. /usr/local/zenoss/bin/variables.sh:g' /usr/local/zenoss/bin/secure_zenoss.sh"
+chmod 0700 /usr/local/zenoss/bin/secure_zenoss.sh
+su - zenoss -l -c "/usr/local/zenoss/bin/secure_zenoss.sh zenoss"
+#su -l -c /usr/local/zenoss/bin/secure_zenoss.sh zenoss
 
 # End of Script Message
 FINDIP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
