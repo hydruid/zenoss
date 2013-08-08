@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02b Alpha - 05                             #
+# Version: 02b Alpha - 06                             #
 #  Status: Functional but not ready for Production    #
 #   Notes: Updating code to resolve MySQL pass bug    #
 #  Zenoss: Core 4.2.4 & ZenPacks                      #
@@ -18,6 +18,8 @@ sleep 10
 # Ubuntu Updates
 apt-get -f install
 apt-get update
+apt-get dist-upgrade
+apt-get -f dist-upgrade
 apt-get dist-upgrade
 
 # Script Compatibility with OS
