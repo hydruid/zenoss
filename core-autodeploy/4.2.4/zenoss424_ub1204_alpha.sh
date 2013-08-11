@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02b Alpha - 06                             #
+# Version: 02b Alpha - 07                             #
 #  Status: Functional but not ready for Production    #
 #   Notes: Updating code to resolve MySQL pass bug    #
 #  Zenoss: Core 4.2.4 & ZenPacks                      #
@@ -97,7 +97,7 @@ dpkg -i rabbitmq-server_3.1.3-1_all.deb
 make 2>&1 | tee log-make.log
 make clean 2>&1 | tee log-make_clean.log
 cp mkzenossinstance.sh mkzenossinstance.sh.orig
-su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. variables.sh:g' $INSTALLDIR/zenoss_core-4.2.4/mkzenossinstance.sh"
+su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. /home/zenoss/zenoss424-srpm_install/variables.sh:g' $INSTALLDIR/zenoss_core-4.2.4/mkzenossinstance.sh"
 ./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_a.log
 ./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_b.log
 chown -R zenoss:zenoss $ZENHOME
