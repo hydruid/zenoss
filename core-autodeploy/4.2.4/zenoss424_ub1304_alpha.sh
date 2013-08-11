@@ -1,7 +1,7 @@
 #!/bin/bash
 #######################################################
-# Version: 01a Alpha - 03                             #
-#  Status: Functional with a few bugs                 #
+# Version: 01a Alpha - 04                             #
+#  Status: Functional...wish a few bugs               #
 #   Notes: Updating code to stable level              #
 #  Zenoss: Core 4.2.4 & ZenPacks                      #
 #      OS: Ubuntu 13.04 x86_64                        #
@@ -12,15 +12,23 @@
 
 # Beginning Script Message
 echo && echo "Welcome to the Zenoss 4.2.4 core-autodeploy script for Ubuntu!"
-echo "Blog Post: http://hydruid-blog.com/?p=343" && echo 
-sleep 10
+echo "Blog Post: http://hydruid-blog.com/?p=124" && echo 
+sleep 5
 
 # Ubuntu Updates
+uname -a > /tmp/kernel1
 apt-get update
+apt-get upgrade -y
 apt-get dist-upgrade -y
+uname -a > /tmp/kernel2
+if diff /tmp/kernel1 /tmp/kernel2 >/dev/null ; then
+  echo "...Kernal is the same after upgrade, no reboot needed."
+else
+  echo "...Kernel is not the same after upgrade, please reboot." && exit 0
+fi
 
 # Script Compatibility with OS
-if grep -Fxq "Ubuntu 13.04" /etc/issue.net
+if grep -Fxq "Ubuntu 13.04 LTS" /etc/issue.net
         then    echo "...Correct OS detected."
         else    echo "...Incorrect OS detected...stopping script" && exit 0
 fi
@@ -34,12 +42,19 @@ if [ `whoami` != 'zenoss' ];
 fi
 
 # Install Package Dependencies
-apt-get install python-software-properties
-echo | add-apt-repository ppa:webupd8team/java
-apt-get install rrdtool libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev
-apt-get -f install -y
+apt-get install python-software-properties -y && sleep 1
+echo | add-apt-repository ppa:webupd8team/java && sleep 1
+array=( rrdtool libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev )
+for i in "${array[@]}"
+do
+        apt-get install $i -y && sleep 1
+done
 export DEBIAN_FRONTEND=noninteractive
-apt-get install mysql-server mysql-client mysql-common
+array=( mysql-server mysql-client mysql-common )
+for i in "${array[@]}"
+do
+        apt-get install $i -y && sleep 1
+done
 mysql -u root -e "show databases;" > /tmp/mysql.txt 2>> /tmp/mysql.txt
 if grep -Fxq "Database" /tmp/mysql.txt
         then    echo "...MySQL connection test successful."
