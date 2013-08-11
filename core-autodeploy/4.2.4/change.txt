@@ -1,12 +1,19 @@
 #######################################################
-# Version: 01g                                        #
-# http://hydruid-blog.com/?p=241                      #
+# Version: 01h                                        #
+# http://hydruid-blog.com/?cat=5                      #
 #######################################################
 
 Description:
 This text file contains a basic list of script changes
 
-Changes:
+zenoss424_ub1304:
+08-10-13: Version: 01a Alpha -
+        Posted Alpha version of script on blog post and github
+        Not functional but will be soon
+
+=======================================================
+
+zenoss424_ub1204:
 08-07-13: Version: 02a Stable -
 	code updated to be cleaner and give better chance of successful install
 	implemented directly logging script output
