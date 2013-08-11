@@ -1,7 +1,7 @@
 #!/bin/bash
 #######################################################
-# Version: 02b Alpha - 08                             #
-#  Status: Functional but not ready for Production    #
+# Version: 02b Alpha - 09                             #
+#  Status: Functional...Issues with 1st device model  #
 #   Notes: Updating code to resolve MySQL pass bug    #
 #  Zenoss: Core 4.2.4 & ZenPacks                      #
 #      OS: Ubuntu 12.04.2 x86_64                      #
@@ -13,11 +13,19 @@
 # Beginning Script Message
 echo && echo "Welcome to the Zenoss 4.2.4 core-autodeploy script for Ubuntu!"
 echo "Blog Post: http://hydruid-blog.com/?p=124" && echo 
-sleep 10
+sleep 5
 
 # Ubuntu Updates
+uname -a > /tmp/kernel1
 apt-get update
+apt-get upgrade -y
 apt-get dist-upgrade -y
+uname -a > /tmp/kernel2
+if diff /tmp/kernel1 /tmp/kernel2 >/dev/null ; then
+  echo "...Kernal is the same after upgrade, no reboot needed."
+else
+  echo "...Kernel is not the same after upgrade, please reboot." && exit 0
+fi
 
 # Script Compatibility with OS
 if grep -Fxq "Ubuntu 12.04.2 LTS" /etc/issue.net
@@ -34,12 +42,19 @@ if [ `whoami` != 'zenoss' ];
 fi
 
 # Install Package Dependencies
-apt-get install python-software-properties
-echo | add-apt-repository ppa:webupd8team/java
-apt-get install rrdtool libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev
-apt-get -f install -y
+apt-get install python-software-properties -y && sleep 1
+echo | add-apt-repository ppa:webupd8team/java && sleep 1
+array=( rrdtool libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev )
+for i in "${array[@]}"
+do
+        apt-get install $i -y && sleep 1
+done
 export DEBIAN_FRONTEND=noninteractive
-apt-get install mysql-server mysql-client mysql-common
+array=( mysql-server mysql-client mysql-common )
+for i in "${array[@]}"
+do
+        apt-get install $i -y && sleep 1
+done
 mysql -u root -e "show databases;" > /tmp/mysql.txt 2>> /tmp/mysql.txt
 if grep -Fxq "Database" /tmp/mysql.txt
         then    echo "...MySQL connection test successful."
