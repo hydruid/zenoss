@@ -54,8 +54,6 @@ if grep -Fxq "Database" /tmp/mysql.txt
         else    echo "...Mysql connection failed...make sure the password is blank for the root MySQL user." && exit 0
 fi
 
-exit 0
-
 # Setup Zenoss User, Build Environment, and Rabbit
 useradd -m -U -s /bin/bash zenoss
 mkdir /home/zenoss/zenoss424-srpm_install
