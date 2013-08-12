@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02b Alpha - 09                             #
+# Version: 02b Alpha - 10                             #
 #  Status: Functional...Issues with 1st device model  #
 #   Notes: Updating code to resolve MySQL pass bug    #
 #  Zenoss: Core 4.2.4 & ZenPacks                      #
@@ -14,18 +14,6 @@
 echo && echo "Welcome to the Zenoss 4.2.4 core-autodeploy script for Ubuntu!"
 echo "Blog Post: http://hydruid-blog.com/?p=124" && echo 
 sleep 5
-
-# Ubuntu Updates
-uname -a > /tmp/kernel1
-apt-get update
-apt-get upgrade -y
-apt-get dist-upgrade -y
-uname -a > /tmp/kernel2
-if diff /tmp/kernel1 /tmp/kernel2 >/dev/null ; then
-  echo "...Kernal is the same after upgrade, no reboot needed."
-else
-  echo "...Kernel is not the same after upgrade, please reboot." && exit 0
-fi
 
 # Script Compatibility with OS
 if grep -Fxq "Ubuntu 12.04.2 LTS" /etc/issue.net
@@ -42,7 +30,12 @@ if [ `whoami` != 'zenoss' ];
 fi
 
 # Install Package Dependencies
+apt-get update
+apt-get dist-upgrade -y
 apt-get install python-software-properties -y && sleep 1
+apt-get update
+apt-get dist-upgrade -y
+apt-get autoremove -y
 echo | add-apt-repository ppa:webupd8team/java && sleep 1
 array=( rrdtool libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev )
 for i in "${array[@]}"
@@ -60,6 +53,8 @@ if grep -Fxq "Database" /tmp/mysql.txt
         then    echo "...MySQL connection test successful."
         else    echo "...Mysql connection failed...make sure the password is blank for the root MySQL user." && exit 0
 fi
+
+exit 0
 
 # Setup Zenoss User, Build Environment, and Rabbit
 useradd -m -U -s /bin/bash zenoss
