@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02b Alpha - 10                             #
+# Version: 02b Alpha - 11                             #
 #  Status: Functional...Issues with 1st device model  #
 #   Notes: Updating code to resolve MySQL pass bug    #
 #  Zenoss: Core 4.2.4 & ZenPacks                      #
@@ -12,8 +12,10 @@
 
 # Beginning Script Message
 echo && echo "Welcome to the Zenoss 4.2.4 core-autodeploy script for Ubuntu!"
-echo "Blog Post: http://hydruid-blog.com/?p=124" && echo 
-sleep 5
+echo "Blog Post: http://hydruid-blog.com/?p=124" && echo && echo
+echo "PLEASE UPDATE your Ubuntu install before running this script!"
+echo "...A simple Ubuntu update script: http://hydruid-blog.com/?p=200" && echo
+sleep 10
 
 # Script Compatibility with OS
 if grep -Fxq "Ubuntu 12.04.2 LTS" /etc/issue.net
@@ -31,11 +33,7 @@ fi
 
 # Install Package Dependencies
 apt-get update
-apt-get dist-upgrade -y
 apt-get install python-software-properties -y && sleep 1
-apt-get update
-apt-get dist-upgrade -y
-apt-get autoremove -y
 echo | add-apt-repository ppa:webupd8team/java && sleep 1
 array=( rrdtool libmysqlclient-dev rabbitmq-server nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev )
 for i in "${array[@]}"
