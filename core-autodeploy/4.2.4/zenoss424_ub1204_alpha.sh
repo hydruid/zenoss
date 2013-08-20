@@ -1,7 +1,7 @@
 #!/bin/bash
 #######################################################
-# Version: 02b Alpha - 12                             #
-#  Status: Functional...Issues with 1st device model  #
+# Version: 02b Alpha - 13                             #
+#  Status: Not Functional...issues with rabbit        #
 #   Notes: Updating code to resolve MySQL pass bug    #
 #  Zenoss: Core 4.2.4 & ZenPacks                      #
 #      OS: Ubuntu 12.04.2 x86_64                      #
@@ -96,8 +96,8 @@ make
 make install
 cd $INSTALLDIR/zenoss_core-4.2.4/
 wget -N http://dev.zenoss.org/svn/tags/zenoss-4.2.4/inst/rrdclean.sh
-wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server_3.1.3-1_all.deb
-dpkg -i rabbitmq-server_3.1.3-1_all.deb
+#wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server_3.1.3-1_all.deb
+#dpkg -i rabbitmq-server_3.1.3-1_all.deb
 ./configure 2>&1 | tee log-configure.log
 make 2>&1 | tee log-make.log
 make clean 2>&1 | tee log-make_clean.log
