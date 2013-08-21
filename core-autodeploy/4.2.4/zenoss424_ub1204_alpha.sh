@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02b Alpha - 16                             #
+# Version: 02b Alpha - 17                             #
 #  Status: Functional...but not ready for production  #                             
 #   Notes: Issues with Zenhub and modeling of devices #
 #  Zenoss: Core 4.2.4 & ZenPacks                      #
@@ -125,10 +125,10 @@ chown root:zenoss /usr/local/zenoss/bin/pyraw
 chmod u+s /usr/local/zenoss/bin/pyraw
 echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
 cd $ZENHOME/bin
-wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/secure_zenoss_ubuntu.sh
+#wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/secure_zenoss_ubuntu.sh
 chown -R zenoss:zenoss $ZENHOME
-chmod 0700 /usr/local/zenoss/bin/secure_zenoss_ubuntu.sh
-su -l -c /usr/local/zenoss/bin/secure_zenoss_ubuntu.sh
+#chmod 0700 /usr/local/zenoss/bin/secure_zenoss_ubuntu.sh
+#su -l -c /usr/local/zenoss/bin/secure_zenoss_ubuntu.sh
 /etc/init.d/zenoss restart
 
 # End of Script Message
