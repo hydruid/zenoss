@@ -1,8 +1,8 @@
 #!/bin/bash
 #######################################################
-# Version: 02b Alpha - 15                             #
-#  Status: Not Functional...issues with rabbit        #
-#   Notes: Updating code to resolve MySQL pass bug    #
+# Version: 02b Alpha - 16                             #
+#  Status: Functional...but not ready for production  #                             
+#   Notes: Issues with Zenhub and modeling of devices #
 #  Zenoss: Core 4.2.4 & ZenPacks                      #
 #      OS: Ubuntu 12.04.2 x86_64                      #
 #######################################################
@@ -117,18 +117,19 @@ touch $ZENHOME/var/Data.fs
 chown zenoss:zenoss $ZENHOME/var/Data.fs
 su - root -c "sed -i 's:# License.zenoss under the directory where your Zenoss product is installed.:# License.zenoss under the directory where your Zenoss product is installed.\n#\n#Custom Ubuntu Variables\nexport ZENHOME=$ZENHOME\nexport RRDCACHED=$ZENHOME/bin/rrdcached:g' /etc/init.d/zenoss"
 update-rc.d zenoss defaults
-chown root:zenoss $ZENHOME/bin/nmap
-chmod u+s $ZENHOME/bin/nmap
-chown root:zenoss $ZENHOME/bin/zensocket
-chmod u+s $ZENHOME/bin/zensocket
-chown root:zenoss $ZENHOME/bin/pyraw
-chmod u+s $ZENHOME/bin/pyraw
+chown root:zenoss /usr/local/zenoss/bin/nmap
+chmod u+s /usr/locla/zenoss/bin/nmap
+chown root:zenoss /usr/local/zenoss/bin/zensocket
+chmod u+s /usr/local/zenoss/bin/zensocket
+chown root:zenoss /usr/local/zenoss/bin/pyraw
+chmod u+s /usr/local/zenoss/bin/pyraw
 echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
 cd $ZENHOME/bin
 wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/secure_zenoss_ubuntu.sh
 chown -R zenoss:zenoss $ZENHOME
 chmod 0700 /usr/local/zenoss/bin/secure_zenoss_ubuntu.sh
 su -l -c /usr/local/zenoss/bin/secure_zenoss_ubuntu.sh
+/etc/init.d/zenoss restart
 
 # End of Script Message
 FINDIP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
