@@ -26,4 +26,9 @@ if [ `whoami` != 'zenoss' ];
         then    echo "...All system checks passed."
         else    echo "...This script should not be ran by the zenoss user" && exit 0
 fi	}
-
+mysql-conn_test () {
+mysql -u root -e "show databases;" > /tmp/mysql.txt 2>> /tmp/mysql.txt
+if grep -Fxq "Database" /tmp/mysql.txt
+        then    echo "...MySQL connection test successful."
+        else    echo "...Mysql connection failed...make sure the password is blank for the root MySQL user." && exit 0
+fi	}
