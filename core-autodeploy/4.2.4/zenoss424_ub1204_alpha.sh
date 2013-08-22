@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02b Alpha - 18                             #
+# Version: 02b Alpha - 19                             #
 #  Status: Functional                                 #
 #   Notes: Fixing small bugs before posting as stable #
 #  Zenoss: Core 4.2.4 & ZenPacks                      #
@@ -76,9 +76,6 @@ su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh 
 ./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_b.log
 chown -R zenoss:zenoss $ZENHOME
 
-echo && echo "...stopped here during the code changes"
-exit 0
-
 # Install Zenoss Core Zenpacks
 rm -fr /home/zenoss/rpm > /dev/null 2>/dev/null
 rm -fr /home/zenoss/*.egg > /dev/null 2>/dev/null
@@ -99,19 +96,21 @@ touch $ZENHOME/var/Data.fs
 chown zenoss:zenoss $ZENHOME/var/Data.fs
 su - root -c "sed -i 's:# License.zenoss under the directory where your Zenoss product is installed.:# License.zenoss under the directory where your Zenoss product is installed.\n#\n#Custom Ubuntu Variables\nexport ZENHOME=$ZENHOME\nexport RRDCACHED=$ZENHOME/bin/rrdcached:g' /etc/init.d/zenoss"
 update-rc.d zenoss defaults
-chown root:zenoss /usr/local/zenoss/bin/nmap
-chmod u+s /usr/locla/zenoss/bin/nmap
-chown root:zenoss /usr/local/zenoss/bin/zensocket
-chmod u+s /usr/local/zenoss/bin/zensocket
-chown root:zenoss /usr/local/zenoss/bin/pyraw
-chmod u+s /usr/local/zenoss/bin/pyraw
+chown root:zenoss $ZENHOME/bin/nmap
+chmod u+s $ZENHOME/bin/nmap
+chown root:zenoss $ZENHOME/bin/zensocket
+chmod u+s $ZENHOME/bin/zensocket
+chown root:zenoss $ZENHOME/bin/pyraw
+chmod u+s $ZENHOME/bin/pyraw
 echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
 cd $ZENHOME/bin
-#wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/secure_zenoss_ubuntu.sh
+wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/secure_zenoss_ubuntu.sh
 chown -R zenoss:zenoss $ZENHOME
-#chmod 0700 /usr/local/zenoss/bin/secure_zenoss_ubuntu.sh
-#su -l -c /usr/local/zenoss/bin/secure_zenoss_ubuntu.sh
-/etc/init.d/zenoss restart
+chmod 0700 $ZENHOME/bin/secure_zenoss_ubuntu.sh
+su -l -c $ZENHOME/bin/secure_zenoss_ubuntu.sh
+/etc/init.d/zenoss stop
+zenchkrels -r
+/etc/init.d/zenoss start
 
 # End of Script Message
 FINDIP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
