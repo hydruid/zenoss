@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02b Alpha - 19                             #
+# Version: 02b Alpha - 20                             #
 #  Status: Functional                                 #
 #   Notes: Fixing small bugs before posting as stable #
 #  Zenoss: Core 4.2.4 & ZenPacks                      #
@@ -95,7 +95,7 @@ cp $ZENHOME/bin/zenoss /etc/init.d/zenoss
 touch $ZENHOME/var/Data.fs
 chown zenoss:zenoss $ZENHOME/var/Data.fs
 su - root -c "sed -i 's:# License.zenoss under the directory where your Zenoss product is installed.:# License.zenoss under the directory where your Zenoss product is installed.\n#\n#Custom Ubuntu Variables\nexport ZENHOME=$ZENHOME\nexport RRDCACHED=$ZENHOME/bin/rrdcached:g' /etc/init.d/zenoss"
-update-rc.d zenoss defaults
+update-rc.d zenoss defaults && sleep 5
 chown root:zenoss $ZENHOME/bin/nmap
 chmod u+s $ZENHOME/bin/nmap
 chown root:zenoss $ZENHOME/bin/zensocket
