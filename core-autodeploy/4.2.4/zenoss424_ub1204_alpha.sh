@@ -1,8 +1,8 @@
 #!/bin/bash
 #######################################################
-# Version: 02b Alpha - 21                             #
+# Version: 02b Alpha - 22                             #
 #  Status: Functional                                 #
-#   Notes: Fixing small bugs before posting as stable #
+#   Notes: Bugs fixed...almost done with dry runs     #
 #  Zenoss: Core 4.2.4 & ZenPacks                      #
 #      OS: Ubuntu 12.04.2 x86_64                      #
 #######################################################
@@ -114,8 +114,6 @@ echo "The default login is:"
 echo "  username: admin"
 echo "  password: zenoss"
 
-) 2>&1 | tee script-log.txt
-
 # Post Install Tweaks - Part 2
 chown root:zenoss $ZENHOME/bin/nmap
 chmod u+s $ZENHOME/bin/nmap
@@ -124,3 +122,4 @@ chmod u+s $ZENHOME/bin/zensocket
 chown root:zenoss $ZENHOME/bin/pyraw
 chmod u+s $ZENHOME/bin/pyraw
 
+) 2>&1 | tee script-log.txt
