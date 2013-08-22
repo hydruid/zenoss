@@ -1,8 +1,8 @@
 #!/bin/bash
 #######################################################
-# Version: 02b Alpha - 17                             #
-#  Status: Functional...but not ready for production  #                             
-#   Notes: Issues with Zenhub and modeling of devices #
+# Version: 02b Alpha - 18                             #
+#  Status: Functional                                 #
+#   Notes: Fixing small bugs before posting as stable #
 #  Zenoss: Core 4.2.4 & ZenPacks                      #
 #      OS: Ubuntu 12.04.2 x86_64                      #
 #######################################################
@@ -12,47 +12,34 @@
 
 # Beginning Script Message
 echo && echo "Welcome to the Zenoss 4.2.4 core-autodeploy script for Ubuntu!"
-echo "Blog Post: http://hydruid-blog.com/?p=124" && echo && echo && sleep 5
+echo "Blog Post: http://hydruid-blog.com/?p=124" && echo && sleep 5
 
-# Script Compatibility with OS
-if grep -Fxq "Ubuntu 12.04.3 LTS" /etc/issue.net
-        then    echo "...Correct OS detected."
-        else    echo "...Incorrect OS detected...stopping script" && exit 0
-fi
-if uname -m | grep -Fxq "x86_64"
-        then    echo "...Correct Arch detected."
-        else    echo "...Incorrect Arch detected...stopped script" && exit 0
-fi
-if [ `whoami` != 'zenoss' ];
-        then    echo "...All system checks passed."
-        else    echo "...This script should not be ran by the zenoss user" && exit 0
-fi
-
-# Install Package Dependencies
+# Update Ubuntu
 apt-get update
 apt-get dist-upgrade -y
-apt-get autoremove
-apt-get install python-software-properties -y && sleep 1
-echo | add-apt-repository ppa:webupd8team/java && sleep 1
-apt-get update
-apt-get install rrdtool libmysqlclient-dev nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev erlang-nox -y
-wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server_3.1.3-1_all.deb
-dpkg -i rabbitmq-server_3.1.3-1_all.deb
-export DEBIAN_FRONTEND=noninteractive
-apt-get install mysql-server mysql-client mysql-common -y 
-mysql -u root -e "show databases;" > /tmp/mysql.txt 2>> /tmp/mysql.txt
-if grep -Fxq "Database" /tmp/mysql.txt
-        then    echo "...MySQL connection test successful."
-        else    echo "...Mysql connection failed...make sure the password is blank for the root MySQL user." && exit 0
-fi
+apt-get autoremove -y
 
-# Setup Zenoss User, Build Environment, and Rabbit
+# Setup zenoss user and build environment
 useradd -m -U -s /bin/bash zenoss
 mkdir /home/zenoss/zenoss424-srpm_install
-cd /home/zenoss/zenoss424-srpm_install
-wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh
+wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P /home/zenoss/zenoss424-srpm_install/
 . /home/zenoss/zenoss424-srpm_install/variables.sh
-mkdir $ZENHOME
+mkdir $ZENHOME && chown -R zenoss:zenoss $ZENHOME
+
+# OS compatibility tests
+detect-os && detect-arch && detect-user
+
+# Install Package Dependencies
+apt-get install python-software-properties -y && sleep 1
+echo | add-apt-repository ppa:webupd8team/java && sleep 1 && apt-get update
+apt-get install rrdtool libmysqlclient-dev nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev erlang-nox -y
+export DEBIAN_FRONTEND=noninteractive
+apt-get install mysql-server mysql-client mysql-common -y 
+mysql-conn_test
+
+# Rabbit install and config
+wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server_3.1.3-1_all.deb
+dpkg -i rabbitmq-server_3.1.3-1_all.deb
 chown -R zenoss:zenoss $ZENHOME
 rabbitmqctl add_user zenoss zenoss
 rabbitmqctl add_vhost /zenoss
@@ -69,25 +56,17 @@ echo 'innodb_additional_mem_pool_size=20M' >> /etc/mysql/my.cnf
 sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
 
 # Download Zenoss SRPM and extract it
-if [ -f $INSTALLDIR/zenoss_core-4.2.4/GNUmakefile.in ];
-        then    echo "...skipping SRPM download and extraction."
-        else    cd $INSTALLDIR/
-                echo "...This might take a few minutes."
-                wget -N http://iweb.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/zenoss_core-4.2.4.el6.src.rpm
-                rpm2cpio zenoss_core-4.2.4.el6.src.rpm | cpio -i --make-directories
-                bunzip2 zenoss_core-4.2.4-1859.el6.x86_64.tar.bz2
-                tar -xvf zenoss_core-4.2.4-1859.el6.x86_64.tar
-                chown -R zenoss:zenoss $INSTALLDIR
-fi
+wget -N http://iweb.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/zenoss_core-4.2.4.el6.src.rpm -P $INSTALLDIR && cd $INSTALLDIR
+rpm2cpio zenoss_core-4.2.4.el6.src.rpm | cpio -i --make-directories
+bunzip2 zenoss_core-4.2.4-1859.el6.x86_64.tar.bz2 && tar -xvf zenoss_core-4.2.4-1859.el6.x86_64.tar
+chown -R zenoss:zenoss $INSTALLDIR
 
 # Install Zenoss Core
 tar zxvf $INSTALLDIR/zenoss_core-4.2.4/externallibs/rrdtool-1.4.7.tar.gz
 cd rrdtool-1.4.7/
 ./configure --prefix=$ZENHOME
-make
-make install
-cd $INSTALLDIR/zenoss_core-4.2.4/
-wget -N http://dev.zenoss.org/svn/tags/zenoss-4.2.4/inst/rrdclean.sh
+make && make install
+cd $INSTALLDIR/zenoss_core-4.2.4/ && wget -N http://dev.zenoss.org/svn/tags/zenoss-4.2.4/inst/rrdclean.sh
 ./configure 2>&1 | tee log-configure.log
 make 2>&1 | tee log-make.log
 make clean 2>&1 | tee log-make_clean.log
@@ -96,6 +75,9 @@ su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh 
 ./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_a.log
 ./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_b.log
 chown -R zenoss:zenoss $ZENHOME
+
+echo && echo "...stopped here during the code changes"
+exit 0
 
 # Install Zenoss Core Zenpacks
 rm -fr /home/zenoss/rpm > /dev/null 2>/dev/null
