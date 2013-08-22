@@ -1,14 +1,14 @@
 #!/bin/bash
 #######################################################
-# Version: 02b                                        #
+# Version: 02c                                        #
 #######################################################
 
 # Variables
 INSTALLDIR="/home/zenoss/zenoss424-srpm_install"
-ZENHOME=/usr/local/zenoss
-PYTHONPATH=/usr/local/zenoss/lib/python
-PATH=/usr/local/zenoss/bin:$PATH
-INSTANCE_HOME=$ZENHOME
+export ZENHOME=/usr/local/zenoss
+export PYTHONPATH=/usr/local/zenoss/lib/python
+export PATH=/usr/local/zenoss/bin:$PATH
+export INSTANCE_HOME=$ZENHOME
 
 # Functions
 detect-os () {
