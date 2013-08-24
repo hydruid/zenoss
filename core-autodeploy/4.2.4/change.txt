@@ -1,5 +1,5 @@
 #######################################################
-# Version: 01h                                        #
+# Version: 01i                                        #
 # http://hydruid-blog.com/?cat=5                      #
 #######################################################
 
@@ -7,6 +7,9 @@ Description:
 This text file contains a basic list of script changes
 
 zenoss424_ub1304:
+08-24-13: Version: 01b Alpha -
+        Merged updates from zenoss424_ub1204, Version: 02b Stable
+
 08-10-13: Version: 01a Alpha -
         Posted Alpha version of script on blog post and github
         Not functional but will be soon
@@ -14,6 +17,13 @@ zenoss424_ub1304:
 =======================================================
 
 zenoss424_ub1204:
+08-24-13: Version: 02b Stable -
+        code updated to be cleaner and give better chance of successful install
+        removed directly logging script output
+        downgraded package 'oracle-java7-installer' to 'oracle-java6-installer'
+	fixed MySQL password bug
+	implemented the official secure_zenoss.sh script
+
 08-07-13: Version: 02a Stable -
 	code updated to be cleaner and give better chance of successful install
 	implemented directly logging script output
