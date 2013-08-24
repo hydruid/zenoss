@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 01a                                        #
+# Version: 01b                                        #
 #   Notes: This is a modified copy of the official    #
 #          'secure_zenoss.sh' that works with Ubuntu  #
 #######################################################
@@ -180,3 +180,13 @@ then
     echo "Forcing zeneventserver to only listen on 127.0.0.1:8084"
     echo 'export DEFAULT_ZEP_JVM_ARGS="-Djetty.host=localhost -server"' >> ~/.bashrc
 fi
+
+zenoss stop
+zenchkrels --repair
+chown -c root:zenoss /usr/local/zenoss/bin/pyraw
+chown -c root:zenoss /usr/local/zenoss/bin/zensocket
+chown -c root:zenoss /usr/local/zenoss/bin/nmap
+chmod -c 04750 /usr/local/zenoss/bin/pyraw
+chmod -c 04750 /usr/local/zenoss/bin/zensocket
+chmod -c 04750 /usr/local/zenoss/bin/nmap
+zenoss start
