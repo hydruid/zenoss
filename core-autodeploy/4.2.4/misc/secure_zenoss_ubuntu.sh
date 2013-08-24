@@ -183,10 +183,4 @@ fi
 
 zenoss stop
 zenchkrels --repair
-chown -c root:zenoss /usr/local/zenoss/bin/pyraw
-chown -c root:zenoss /usr/local/zenoss/bin/zensocket
-chown -c root:zenoss /usr/local/zenoss/bin/nmap
-chmod -c 04750 /usr/local/zenoss/bin/pyraw
-chmod -c 04750 /usr/local/zenoss/bin/zensocket
-chmod -c 04750 /usr/local/zenoss/bin/nmap
 zenoss start
