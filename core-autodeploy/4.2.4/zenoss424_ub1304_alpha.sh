@@ -28,7 +28,7 @@ wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/
 mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
 
 # OS compatibility tests
-detect-os && detect-arch && detect-user
+detect-os2 && detect-arch && detect-user
 
 # Install Package Dependencies
 apt-get install python-software-properties -y && sleep 1
