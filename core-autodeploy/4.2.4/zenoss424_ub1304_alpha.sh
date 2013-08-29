@@ -1,8 +1,8 @@
 #!/bin/bash
 #######################################################
-# Version: 01b Alpha - 01                             #
-#  Status: Functional                                 #
-#   Notes: Bugs fixed...almost done with dry runs     #
+# Version: 01b Alpha - 02                             #
+#  Status: Not Functional                             #
+#   Notes: zeneventd won't start...python segfault    #
 #  Zenoss: Core 4.2.4 & ZenPacks                      #
 #      OS: Ubuntu 12.04.2 x86_64                      #
 #######################################################
@@ -31,6 +31,9 @@ mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
 detect-os2 && detect-arch && detect-user
 
 # Install Package Dependencies
+wget http://security.ubuntu.com/ubuntu/pool/main/e/eglibc/libc-bin_2.15-0ubuntu10.2_amd64.deb
+dpkg -i libc-bin_2.15-0ubuntu10.2_amd64.deb
+sudo apt-mark hold libc-bin
 apt-get install python-software-properties -y && sleep 1
 echo | add-apt-repository ppa:webupd8team/java && sleep 1 && apt-get update
 apt-get install rrdtool libmysqlclient-dev nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev erlang-nox -y
