@@ -1,9 +1,9 @@
 #!/bin/bash
 #######################################################
-# Version: 02b Stable                                 #
+# Version: 02c                                        #
 #  Status: Functional                                 #
-#   Notes: MySQL password bug fixed                   #
-#  Zenoss: Core 4.2.4 & ZenPacks                      #
+#   Notes: Updated download links                     #
+#  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
 #      OS: Ubuntu 12.04.2 x86_64                      #
 #######################################################
 
@@ -47,9 +47,9 @@ rabbitmqctl add_vhost /zenoss
 rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'
 
 # Download Zenoss SRPM and extract it
-wget -N http://iweb.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/zenoss_core-4.2.4.el6.src.rpm -P $INSTALLDIR && cd $INSTALLDIR
-rpm2cpio zenoss_core-4.2.4.el6.src.rpm | cpio -i --make-directories
-bunzip2 zenoss_core-4.2.4-1859.el6.x86_64.tar.bz2 && tar -xvf zenoss_core-4.2.4-1859.el6.x86_64.tar
+wget -N http://softlayer-dal.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/4.2.4-1897/zenoss_core-4.2.4-1897.el6.src.rpm -P $INSTALLDIR && cd $INSTALLDIR
+rpm2cpio zenoss_core-4.2.4-1897.el6.src.rpm | cpio -i --make-directories
+bunzip2 zenoss_core-4.2.4-1897.el6.x86_64.tar.bz2 && tar -xvf zenoss_core-4.2.4-1897.el6.x86_64.tar
 chown -R zenoss:zenoss $INSTALLDIR
 
 # Install Zenoss Core
@@ -68,8 +68,8 @@ chown -R zenoss:zenoss $ZENHOME
 
 # Install Zenoss Core Zenpacks
 mkdir $INSTALLDIR/ZenPacks && cd $INSTALLDIR/ZenPacks
-wget -N http://superb-dca2.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/zenoss_core-4.2.4.el6.x86_64.rpm -P $INSTALLDIR/ZenPacks
-rpm2cpio zenoss_core-4.2.4.el6.x86_64.rpm | sudo cpio -ivd ./opt/zenoss/packs/*.*
+wget -N http://hivelocity.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/4.2.4-1897/zenoss_core-4.2.4-1897.el6.x86_64.rpm -P $INSTALLDIR/ZenPacks
+rpm2cpio zenoss_core-4.2.4-1897.el6.x86_64.rpm | sudo cpio -ivd ./opt/zenoss/packs/*.*
 wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/zenpack-helper.sh -P $INSTALLDIR/ZenPacks/opt/zenoss/packs
 chown -R zenoss:zenoss /home/zenoss
 su - zenoss -c "cd $INSTALLDIR/ZenPacks/opt/zenoss/packs && /bin/sh zenpack-helper.sh"
