@@ -1,5 +1,5 @@
 #######################################################
-# Version: 01i                                        #
+# Version: 01j                                        #
 # http://hydruid-blog.com/?cat=5                      #
 #######################################################
 
@@ -17,6 +17,9 @@ zenoss424_ub1304:
 =======================================================
 
 zenoss424_ub1204:
+09-08-13: Version: 02c Stable -
+        updated downloads links for zenoss source rpm and zenpacks
+
 08-24-13: Version: 02b Stable -
         code updated to be cleaner and give better chance of successful install
         removed directly logging script output
