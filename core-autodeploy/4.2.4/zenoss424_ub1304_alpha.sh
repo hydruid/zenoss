@@ -9,7 +9,7 @@
 
 # Beginning Script Message
 echo && echo "Welcome to the Zenoss 4.2.4 core-autodeploy script for Ubuntu!"
-echo "Blog Post: http://hydruid-blog.com/?p=124" && echo && sleep 5
+echo "Blog Post: http://hydruid-blog.com/?p=343" && echo && sleep 5
 
 # Update Ubuntu
 apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y
