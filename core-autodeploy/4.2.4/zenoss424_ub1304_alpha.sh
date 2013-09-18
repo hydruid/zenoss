@@ -1,8 +1,8 @@
 #!/bin/bash
 #######################################################
-# Version: 01b Alpha - 03                             #
+# Version: 01b Alpha - 04                             #
 #  Status: Not Functional                             #
-#   Notes: zeneventd won't start...python segfault    #
+#   Notes: Testing DEB install                        #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
 #      OS: Ubuntu 13.04 x86_64                        #
 #######################################################
@@ -46,34 +46,16 @@ rabbitmqctl add_user zenoss zenoss
 rabbitmqctl add_vhost /zenoss
 rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'
 
-# Download Zenoss SRPM and extract it
-wget -N http://softlayer-dal.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/4.2.4-1897/zenoss_core-4.2.4-1897.el6.src.rpm -P $INSTALLDIR && cd $INSTALLDIR
-rpm2cpio zenoss_core-4.2.4-1897.el6.src.rpm | cpio -i --make-directories
-bunzip2 zenoss_core-4.2.4-1897.el6.x86_64.tar.bz2 && tar -xvf zenoss_core-4.2.4-1897.el6.x86_64.tar
-chown -R zenoss:zenoss $INSTALLDIR
-
-# Install Zenoss Core
-tar zxvf $INSTALLDIR/zenoss_core-4.2.4/externallibs/rrdtool-1.4.7.tar.gz -C $INSTALLDIR/ && cd $INSTALLDIR/rrdtool-1.4.7
-./configure --prefix=$ZENHOME
-make && make install
-wget -N http://dev.zenoss.org/svn/tags/zenoss-4.2.4/inst/rrdclean.sh -P $INSTALLDIR/zenoss_core-4.2.4/ && cd $INSTALLDIR/zenoss_core-4.2.4/
-./configure 2>&1 | tee log-configure.log
-make 2>&1 | tee log-make.log
-make clean 2>&1 | tee log-make_clean.log
-cp mkzenossinstance.sh mkzenossinstance.sh.orig
-su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. /home/zenoss/zenoss424-srpm_install/variables.sh:g' $INSTALLDIR/zenoss_core-4.2.4/mkzenossinstance.sh"
-./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_a.log
-./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_b.log
+# Download Zenoss DEB and install it
+wget -N hydruid-blog.com/zenoss-core-424-1897_1.0_amd64.deb
+dpkg -i zenoss-core-424-1897_1.0_amd64.deb
 chown -R zenoss:zenoss $ZENHOME
-
-# Install Zenoss Core Zenpacks
-mkdir $INSTALLDIR/ZenPacks && cd $INSTALLDIR/ZenPacks
-wget -N http://hivelocity.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/4.2.4-1897/zenoss_core-4.2.4-1897.el6.x86_64.rpm -P $INSTALLDIR/ZenPacks
-rpm2cpio zenoss_core-4.2.4-1897.el6.x86_64.rpm | sudo cpio -ivd ./opt/zenoss/packs/*.*
-wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/zenpack-helper.sh -P $INSTALLDIR/ZenPacks/opt/zenoss/packs
-chown -R zenoss:zenoss /home/zenoss
-su - zenoss -c "cd $INSTALLDIR/ZenPacks/opt/zenoss/packs && /bin/sh zenpack-helper.sh"
-easy_install readline
+mysql -u root -e "create database zenoss_zep"
+mysql -u root -e "create database zodb"
+mysql -u root -e "create database zodb_session"
+mysql -u root zenoss_zep < /home/zenoss/zenoss_zep.sql
+mysql -u root zodb < /home/zenoss/zodb.sql
+mysql -u root zodb_session < /home/zenoss/zodb_session.sql
 
 # Post Install Tweaks
 echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
