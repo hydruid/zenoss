@@ -51,17 +51,17 @@ mysql -u root zenoss_zep < /home/zenoss/zenoss_zep.sql
 mysql -u root zodb < /home/zenoss/zodb.sql
 mysql -u root zodb_session < /home/zenoss/zodb_session.sql
 mysql -u root -e "CREATE USER 'zenoss'@'localhost' IDENTIFIED BY  'zenoss';"
-mysql -u root -e "CREATE USER 'zenoss'@'%' IDENTIFIED BY  'zenoss';"
-mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'%' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON `zodb`.* TO 'zenoss'@'%';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON `zenoss_zep`.* TO 'zenoss'@'%';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON `zodb_session`.* TO 'zenoss'@'%';"
-mysql -u root -e "GRANT SELECT ON `mysql`.`proc` TO 'zenoss'@'%';"
-mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'localhost' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON `zodb`.* TO 'zenoss'@'localhost';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON `zenoss_zep`.* TO 'zenoss'@'localhost';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON `zodb_session`.* TO 'zenoss'@'localhost';"
-mysql -u root -e "GRANT SELECT ON `mysql`.`proc` TO 'zenoss'@'localhost';"
+#mysql -u root -e "CREATE USER 'zenoss'@'%' IDENTIFIED BY  'zenoss';"
+#mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'%' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
+#mysql -u root -e "GRANT ALL PRIVILEGES ON `zodb`.* TO 'zenoss'@'%';"
+#mysql -u root -e "GRANT ALL PRIVILEGES ON `zenoss_zep`.* TO 'zenoss'@'%';"
+#mysql -u root -e "GRANT ALL PRIVILEGES ON `zodb_session`.* TO 'zenoss'@'%';"
+#mysql -u root -e "GRANT SELECT ON `mysql`.`proc` TO 'zenoss'@'%';"
+#mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'localhost' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
+#mysql -u root -e "GRANT ALL PRIVILEGES ON `zodb`.* TO 'zenoss'@'localhost';"
+#mysql -u root -e "GRANT ALL PRIVILEGES ON `zenoss_zep`.* TO 'zenoss'@'localhost';"
+#mysql -u root -e "GRANT ALL PRIVILEGES ON `zodb_session`.* TO 'zenoss'@'localhost';"
+#mysql -u root -e "GRANT SELECT ON `mysql`.`proc` TO 'zenoss'@'localhost';"
 
 # Rabbit install and config
 wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.5/rabbitmq-server_3.1.5-1_all.deb -P /home/zenoss/zenoss424-srpm_install/
