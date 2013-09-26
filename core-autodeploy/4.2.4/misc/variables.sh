@@ -13,8 +13,8 @@ export INSTANCE_HOME=$ZENHOME
 # Functions
 detect-os () {
 if grep -Fxq "Ubuntu 12.04.3 LTS" /etc/issue.net
-        then    echo "...Correct OS detected."
-        else    echo "...Incorrect OS detected...stopping script" && exit 0
+        then    echo "...Supported OS detected."
+        else    echo "...Non Supported OS detected...stopping script" && exit 0
 fi	}
 detect-os2 () {
 if grep -Fxq "Ubuntu 13.04" /etc/issue.net
