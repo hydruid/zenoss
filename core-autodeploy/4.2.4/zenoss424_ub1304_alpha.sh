@@ -1,8 +1,8 @@
 #!/bin/bash
 #######################################################
-# Version: 01b Alpha - 06                             #
-#  Status: Functional...but not for production        #
-#   Notes: Stable version almost ready                #
+# Version: 01b Alpha - 07                             #
+#  Status: Functional                                 #
+#   Notes: Completing final test runs before stable   #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
 #      OS: Ubuntu 13.04 x86_64                        #
 #######################################################
@@ -39,8 +39,8 @@ apt-get install mysql-server mysql-client mysql-common -y
 mysql-conn_test
 
 # Download Zenoss DEB and install it
-wget -N hydruid-blog.com/zenoss-core-424-1897_1.0_amd64.deb
-dpkg -i zenoss-core-424-1897_1.0_amd64.deb
+wget -N hydruid-blog.com/zenoss-core-4.2.4-1897.ubuntu.x86-64_01a_amd64.deb
+dpkg -i zenoss-core-4.2.4-1897.ubuntu.x86-64_01a_amd64.deb
 chown -R zenoss:zenoss $ZENHOME
 
 # Import the MySQL Database and create users
