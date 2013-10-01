@@ -1,29 +1,21 @@
 #######################################################
-# Version: 03g                                        #
+# Version: 03h                                        #
 # http://hydruid-blog.com/?p=241                      #
 #######################################################
 
 Description:
-This repo contains scripts to install Zenoss 4.2.3/4.2.4 on Ubuntu 12.04
+This repo contains scripts to install Zenoss Core 4.x on Ubuntu and other Linux Distributions.
 
 Future Plans:
-Add support for other Linux Distributions.
+Add support for Debian and Funtoo.
 
-Files by OS:
-Ubuntu 13.04 AMD64  -
-  4.2.4 Core + ZenPacks (SRPM Install, Alpha Development Script...usually not Functional)
-    /core-autodeploy/4.2.4/zenoss424_ub1304_alpha.sh
-
-Ubuntu 12.04.2 AMD64 LTS  -
-  4.2.3 Core + ZenPacks (Source Install, Functional)
-    /core-autodeploy/4.2.3/zenoss423-svn_ub1204-x64.sh
-
-  4.2.4 Core + ZenPacks (SRPM Install, Functional with a Few Bugs)
-    /core-autodeploy/4.2.4/zenoss424_ub1204.sh
-
-  4.2.4 Core + ZenPacks (SRPM Install, Alpha Development Script...usually not Functional)
-    /core-autodeploy/4.2.4/zenoss424_ub1204_alpha.sh
-
-
-Debian AMD64  -
-  UNDER DEVELOPMENT
+Files:
+core-autodeploy
+  4.2.3
+    zenoss423-svn_ub1204-x64.sh - Core 4.2.3 install script for Ubuntu 12.04
+  4.2.4
+    change.txt - Version changelog
+    zenoss-4.2.4_ubuntu-amd64.sh - Core 4.2.4 install script for Ubuntu amd64
+    zenoss424_ub1204.sh - Core 4.2.4 install script for Ubuntu 12.04.3 LTS (...being phased out)
+    zenoss424_ub1204_alpha.sh - Core 4.2.4 alpha install script for Ubuntu 12.04.3 LTS (...being phased out)
+    zenoss424_ub1304_alpha.sh - Core 4.2.4 alpha install script for Ubuntu 13.04 (...being phased out)
