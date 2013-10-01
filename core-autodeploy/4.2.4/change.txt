@@ -1,72 +1,33 @@
 #######################################################
-# Version: 01j                                        #
+# Version: 01k                                        #
 # http://hydruid-blog.com/?cat=5                      #
 #######################################################
 
 Description:
-This text file contains a basic list of script changes
+This text file is the version changelog for the scripts in this directory.
 
-zenoss424_ub1304:
-08-24-13: Version: 01b Alpha -
-        Merged updates from zenoss424_ub1204, Version: 02b Stable
+zenoss-4.2.4_ubuntu-amd64.sh -
+09-30-13 - Version-01b: created from zenoss424_ub1304_alpha.sh alpha
 
-08-10-13: Version: 01a Alpha -
-        Posted Alpha version of script on blog post and github
-        Not functional but will be soon
+zenoss424_ub1304_alpha.sh -
+09-29-13 - Version-01b Alpha - 07: implemented DEB install
+08-24-13 - Version-01b Alpha: created from zenoss424_ub1204.sh stable
 
-=======================================================
+zenoss424_ub1204.sh -
+09-08-13 - Version-02c Stable: uploaded download links for zenoss RPM and ZenPacks
+08-24-13 - Version-02b Stable: cleaned up script, removed directly logging script output, downgraded oracje java package
+08-07-13 - Version-02a Stable: cleaned up script, implemented directly logging script output, updated oracle java package
+08-06-13 - Version-02a Alpha: converted to a simple layout, started work on importing the Zenoss secure script
+07-29-13 - Version-01f Beta: MySQL now defaults to blank password, improved logging functions to troubleshoot MySQL bug, removed SVN install
+07-25-13 - Version-01e Beta: SRPM install is functional, MySQL bug still present, SVN install is not functional
+07-24-13 - Version-01c Beta: SVN install functional, MySQL bug still present
+07-23-13 - Version-01a Beta: MySQL bug, requires blank password requirement
+07-22-13 - Misc: combined SRPM/SVN into 1 script, reset version #'s
+07-17-13 - Version-02e: converted to SRPM, functional, almost ready for production
+07-10-13 - Version-02a: automation improved
+06-22-13 - Version-01c: includes /etc/init.d/zenoss script, improved detection of build errors
 
-zenoss424_ub1204:
-09-08-13: Version: 02c Stable -
-        updated downloads links for zenoss source rpm and zenpacks
 
-08-24-13: Version: 02b Stable -
-        code updated to be cleaner and give better chance of successful install
-        removed directly logging script output
-        downgraded package 'oracle-java7-installer' to 'oracle-java6-installer'
-	fixed MySQL password bug
-	implemented the official secure_zenoss.sh script
 
-08-07-13: Version: 02a Stable -
-	code updated to be cleaner and give better chance of successful install
-	implemented directly logging script output
-        updated package 'oracle-java6-installer' to 'oracle-java7-installer'
 
-08-06-13: Version: 02a Alpha - 
-        Posted Alpha version of script on blog post and github
-	Converted to a simplier layout
-	Plan to import official Zenoss "Secure" script to resolve MySQL password bug
 
-07-29-13: Version: 01f Beta - 
-	mysql-server package defaults to blank root password
-	improved logging functions to troubleshoot MySQL password issue
-	removed SVN install option (woot SRPM) 
-
-07-25-13: Version: 01e - 
-	SRPM install is functional, with blank password for the root MySQL user
-	confirmed the SVN install is not functional
-
-07-24-13: Version 01c - 
-	SVN install should be functional with blank password for the root MySQL user
-	focused on getting a functional script, before troubleshooting blank password requirement for MySQL bug
-
-07-23-13: Version 01a Beta - 
-	trying to resolve blank password requirement for MySQL bug	
-
-07-22-13: Blog post updated - 
-	combined SVN/RPM scripts into 1
-
-07-17-13: Posted Version-02e of SRPM insall script - 
-	almost ready for production
-	functional but putting the last few final tweaks in
-
-07-11-13: Converting from SVN to SRPM, 4.2.4 stable released!
-
-07-10-13: Version-02a - 
-	automation improved
-
-06-22-13: Version-01c - 
-	includes /etc/init.d/ script
-	improved detection of build errors
-
-06-01-13: Blog post created
