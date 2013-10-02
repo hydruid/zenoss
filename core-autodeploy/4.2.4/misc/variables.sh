@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02e                                        #
+# Version: 02f                                        #
 #######################################################
 
 # Variables
@@ -11,6 +11,24 @@ export PATH=/usr/local/zenoss/bin:$PATH
 export INSTANCE_HOME=$ZENHOME
 
 # Functions
+menu-os () {
+echo && echo "...Non Supported OS detected...would you like to continue anyways?"
+PS3='(Press 1 or 2): '
+options=("Yes" "No")
+select opt in "${options[@]}"
+do
+case $opt in
+"Yes")
+echo "...continuing script with Non Supported OS...good luck!"
+break
+;;
+"No")
+echo "...stopping script" && exit 0
+break
+;;
+        *) echo invalid option;;
+esac
+done } 
 detect-os () {
 if grep -Fxq "Ubuntu 12.04.3 LTS" /etc/issue.net
         then    echo "...Supported OS detected."
