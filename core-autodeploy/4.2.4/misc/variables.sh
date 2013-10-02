@@ -40,7 +40,7 @@ if grep -Fxq "Ubuntu 13.04" /etc/issue.net
         else    echo " "
                 if grep -Fxq "Ubuntu 12.04.3 LTS" /etc/issue.net
                         then    echo "...Supported OS detected."
-                        else    echo "...Non Supported OS detected...stopping script" && exit 0
+                        else    menu-os
                 fi
 fi      }
 detect-arch () {
