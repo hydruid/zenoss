@@ -1,10 +1,13 @@
 #######################################################
-# Version: 01k                                        #
+# Version: 01l                                        #
 # http://hydruid-blog.com/?cat=5                      #
 #######################################################
 
 Description:
 This text file is the version changelog for the scripts in this directory.
+
+zenoss-4.2.4_debian-amd64_alpha.sh -
+10-14-13 - Alpha: created from zenoss-4.2.4_ubuntu-amd64.sh stable, not functional yet
 
 zenoss-4.2.4_ubuntu-amd64.sh -
 09-30-13 - Version-01b: created from zenoss424_ub1304_alpha.sh alpha
