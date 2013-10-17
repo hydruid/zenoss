@@ -70,7 +70,7 @@ mysql -u root -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'%';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'%';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'%';"
 mysql -u root -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'%';"
-del ~zenoss/*.sql
+rm ~zenoss/*.sql
 
 # Rabbit install and config
 wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.5/rabbitmq-server_3.1.5-1_all.deb -P ~zenoss/zenoss424-srpm_install/
