@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 01a Alpha - 07                             #
+# Version: 01a Alpha - 08                             #
 #  Status: Functional but not ready for production    #
 #   Notes: Fixing last few bugs, before stable        #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
@@ -70,6 +70,7 @@ mysql -u root -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'%';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'%';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'%';"
 mysql -u root -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'%';"
+del ~zenoss/*.sql
 
 # Rabbit install and config
 wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.5/rabbitmq-server_3.1.5-1_all.deb -P ~zenoss/zenoss424-srpm_install/
