@@ -49,6 +49,7 @@ mysql-conn_test
 wget -N hydruid-blog.com/zenoss-core-4.2.4-1897.ubuntu.x86-64_01a_amd64.deb
 dpkg -i zenoss-core-4.2.4-1897.ubuntu.x86-64_01a_amd64.deb
 chown -R zenoss:zenoss $ZENHOME
+give-props
 
 # Import the MySQL Database and create users
 mysql -u root -e "create database zenoss_zep"
