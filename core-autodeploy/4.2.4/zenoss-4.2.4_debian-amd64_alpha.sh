@@ -1,8 +1,8 @@
 #!/bin/bash
 #######################################################
-# Version: 01a Alpha - 08                             #
-#  Status: Functional but not ready for production    #
-#   Notes: Fixing last few bugs, before stable        #
+# Version: 01b Alpha - 01                             #
+#  Status: Under Development...                       #
+#   Notes: Plan to clean the code up...               #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
 #      OS: Debian 7 x86_64                            #
 #######################################################
