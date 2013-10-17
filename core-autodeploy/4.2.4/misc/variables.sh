@@ -63,5 +63,5 @@ detect-repo () {
 if grep -Fxq "testing" /etc/apt/sources.list
        then echo "...Detected testing repositories."
        else echo "...Did not detect testing repositories, see https://wiki.debian.org/DebianTesting"
-            echo "...The quick solution, add these lines to your /etc/apt/sources.list - http://hydruid-blog.com/wp-content/uploads/2013/10/debian-testing.txt && exit 0
+            echo "...The quick solution, add these lines to your /etc/apt/sources.list - http://hydruid-blog.com/wp-content/uploads/2013/10/debian-testing.txt" && exit 0
 fi     }
