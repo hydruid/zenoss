@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 01a Alpha - 05                             #
+# Version: 01a Alpha - 06                             #
 #  Status: Functional but not ready for production    #
 #   Notes: Fixing last few bugs, before stable        #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
@@ -9,7 +9,8 @@
 
 # Beginning Script Message
 echo && echo "Welcome to the Zenoss 4.2.4 core-autodeploy script for Debian!"
-echo "Blog Post: http://hydruid-blog.com/?p=343" && echo && sleep 5
+echo "Blog Post: http://hydruid-blog.com/?p=343" && echo
+echo "Notes: This script installs the testing version of libc6, make sure to take a snapshot or backup before installing!" && echo && sleep 5
 
 # Update Debian
 apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y
@@ -37,12 +38,7 @@ echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | t
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
 apt-get update
 apt-get install rrdtool libmysqlclient-dev nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev erlang-nox smistrip -y
-cp /etc/apt/sources.list /etc/apt/sources.list.orig
-wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/debian-testing-repo.list -P /root/
-mv /root/debian-testing-repo.list /etc/apt/sources.list
-apt-get update
-apt-get -t testing install libc6 -y
-cp /etc/apt/sources.list.orig /etc/apt/sources.list
+debian-testing-repo
 wget -N http://ftp.us.debian.org/debian/pool/non-free/s/snmp-mibs-downloader/snmp-mibs-downloader_1.1_all.deb
 dpkg -i snmp-mibs-downloader_1.1_all.deb
 export DEBIAN_FRONTEND=noninteractive
