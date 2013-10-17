@@ -16,15 +16,15 @@ apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y
 
 # Setup zenoss user and build environment
 useradd -m -U -s /bin/bash zenoss
-chmod 777 /home/zenoss/.bashrc
-echo 'export ZENHOME=/usr/local/zenoss' >> /home/zenoss/.bashrc
-echo 'export PYTHONPATH=/usr/local/zenoss/lib/python' >> /home/zenoss/.bashrc
-echo 'export PATH=/usr/local/zenoss/bin:$PATH' >> /home/zenoss/.bashrc
-echo 'export INSTANCE_HOME=$ZENHOME' >> /home/zenoss/.bashrc
-chmod 644 /home/zenoss/.bashrc
-mkdir /home/zenoss/zenoss424-srpm_install
-wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P /home/zenoss/zenoss424-srpm_install/
-. /home/zenoss/zenoss424-srpm_install/variables.sh
+chmod 777 ~zenoss/.bashrc
+echo 'export ZENHOME=/usr/local/zenoss' >> ~zenoss/.bashrc
+echo 'export PYTHONPATH=/usr/local/zenoss/lib/python' >> ~zenoss/.bashrc
+echo 'export PATH=/usr/local/zenoss/bin:$PATH' >> ~zenoss/.bashrc
+echo 'export INSTANCE_HOME=$ZENHOME' >> ~zenoss/.bashrc
+chmod 644 ~zenoss/.bashrc
+mkdir ~zenoss/zenoss424-srpm_install
+wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P ~zenoss/zenoss424-srpm_install/
+. ~zenoss/zenoss424-srpm_install/variables.sh
 mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
 
 # OS compatibility tests
@@ -57,9 +57,9 @@ chown -R zenoss:zenoss $ZENHOME
 mysql -u root -e "create database zenoss_zep"
 mysql -u root -e "create database zodb"
 mysql -u root -e "create database zodb_session"
-mysql -u root zenoss_zep < /home/zenoss/zenoss_zep.sql
-mysql -u root zodb < /home/zenoss/zodb.sql
-mysql -u root zodb_session < /home/zenoss/zodb_session.sql
+mysql -u root zenoss_zep < ~zenoss/zenoss_zep.sql
+mysql -u root zodb < ~zenoss/zodb.sql
+mysql -u root zodb_session < ~zenoss/zodb_session.sql
 mysql -u root -e "CREATE USER 'zenoss'@'localhost' IDENTIFIED BY  'zenoss';"
 mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'localhost' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'localhost';"
@@ -74,8 +74,8 @@ mysql -u root -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'%';"
 mysql -u root -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'%';"
 
 # Rabbit install and config
-wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.5/rabbitmq-server_3.1.5-1_all.deb -P /home/zenoss/zenoss424-srpm_install/
-dpkg -i /home/zenoss/zenoss424-srpm_install/rabbitmq-server_3.1.5-1_all.deb
+wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.5/rabbitmq-server_3.1.5-1_all.deb -P ~zenoss/zenoss424-srpm_install/
+dpkg -i ~zenoss/zenoss424-srpm_install/rabbitmq-server_3.1.5-1_all.deb
 chown -R zenoss:zenoss $ZENHOME
 rabbitmqctl add_user zenoss zenoss
 rabbitmqctl add_vhost /zenoss
