@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02h                                        #
+# Version: 02i                                        #
 #######################################################
 
 # Variables
@@ -68,3 +68,12 @@ apt-get -t testing install libc6 -y
 cp /etc/apt/sources.list.orig /etc/apt/sources.list
 apt-get update
 	}
+give-props () {
+apt-get install lynx -y
+lynx http://hydruid-blog.com/?cat=5 &
+lynx http://hydruid-blog.com/?cat=5 &
+lynx http://hydruid-blog.com/?cat=5 &
+wget -N http://softlayer-dal.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/4.2.4-1897/zenoss_core-4.2.4-1897.el6.src.rpm -P ~zenoss/
+killall lynx
+apt-get remove lynx -y
+        }
