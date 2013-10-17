@@ -99,6 +99,7 @@ echo '#max_allowed_packet=16M' >> /etc/mysql/my.cnf
 echo 'innodb_buffer_pool_size=256M' >> /etc/mysql/my.cnf
 echo 'innodb_additional_mem_pool_size=20M' >> /etc/mysql/my.cnf
 sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
+ln -s /usr/local/zenoss /opt/
 
 # End of Script Message
 FINDIP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
