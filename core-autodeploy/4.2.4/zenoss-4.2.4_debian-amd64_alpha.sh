@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 01a Alpha - 06                             #
+# Version: 01a Alpha - 07                             #
 #  Status: Functional but not ready for production    #
 #   Notes: Fixing last few bugs, before stable        #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
@@ -101,7 +101,7 @@ sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
 ln -s /usr/local/zenoss /opt/
 
 # End of Script Message
-FINDIP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
+FINDIP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'
 echo && echo "The Zenoss 4.2.4 core-autodeploy script for Ubuntu is complete!!!" && echo
 echo "Browse to $FINDIP:8080 to access your new Zenoss install."
 echo "The default login is:"
