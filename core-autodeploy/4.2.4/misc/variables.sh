@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02g                                        #
+# Version: 02h                                        #
 #######################################################
 
 # Variables
@@ -59,9 +59,11 @@ if grep -Fxq "Database" /tmp/mysql.txt
         then    echo "...MySQL connection test successful."
         else    echo "...Mysql connection failed...make sure the password is blank for the root MySQL user." && exit 0
 fi	}
-detect-repo () {
-if grep -Fxq "testing" /etc/apt/sources.list
-       then echo "...Detected testing repositories."
-       else echo "...Did not detect testing repositories, see https://wiki.debian.org/DebianTesting"
-            echo "...The quick solution, add these lines to your /etc/apt/sources.list - http://hydruid-blog.com/wp-content/uploads/2013/10/debian-testing.txt" && exit 0
-fi     }
+debian-testing-repo () {
+cp /etc/apt/sources.list /etc/apt/sources.list.orig
+wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/debian-testing-repo.list -P /root/
+mv /root/debian-testing-repo.list /etc/apt/sources.list
+apt-get update
+apt-get -t testing install libc6 -y
+cp /etc/apt/sources.list.orig /etc/apt/sources.list
+	}
