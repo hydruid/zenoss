@@ -66,4 +66,5 @@ mv /root/debian-testing-repo.list /etc/apt/sources.list
 apt-get update
 apt-get -t testing install libc6 -y
 cp /etc/apt/sources.list.orig /etc/apt/sources.list
+apt-get update
 	}
