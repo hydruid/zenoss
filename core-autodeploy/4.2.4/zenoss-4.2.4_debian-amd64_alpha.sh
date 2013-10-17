@@ -1,8 +1,8 @@
 #!/bin/bash
 #######################################################
 # Version: 01a Alpha - 03                             #
-#  Status: Not Functional                             #
-#   Notes: Various daemons are broken                 #
+#  Status: Functional but not ready for production    #
+#   Notes: Fixing last few bugs, before stable        #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
 #      OS: Debian 7 x86_64                            #
 #######################################################
@@ -81,7 +81,30 @@ rabbitmqctl add_user zenoss zenoss
 rabbitmqctl add_vhost /zenoss
 rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'
 
-echo "...stopping here"
-echo "...this section still under development"
-echo "...su to the zenoss user and issue, zenoss start"
-exit 0
+# Post Install Tweaks
+echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
+touch $ZENHOME/var/Data.fs
+cp $ZENHOME/bin/zenoss /etc/init.d/zenoss
+su - root -c "sed -i 's:# License.zenoss under the directory where your Zenoss product is installed.:# License.zenoss under the directory where your Zenoss product is installed.\n#\n#Custom Ubuntu Variables\nexport ZENHOME=$ZENHOME\nexport RRDCACHED=$ZENHOME/bin/rrdcached:g' /etc/init.d/zenoss"
+update-rc.d zenoss defaults && sleep 2
+chown -c root:zenoss /usr/local/zenoss/bin/pyraw
+chown -c root:zenoss /usr/local/zenoss/bin/zensocket
+chown -c root:zenoss /usr/local/zenoss/bin/nmap
+chmod -c 04750 /usr/local/zenoss/bin/pyraw
+chmod -c 04750 /usr/local/zenoss/bin/zensocket
+chmod -c 04750 /usr/local/zenoss/bin/nmap
+wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/secure_zenoss_ubuntu.sh -P $ZENHOME/bin
+chown -c zenoss:zenoss $ZENHOME/bin/secure_zenoss_ubuntu.sh && chmod -c 0700 $ZENHOME/bin/secure_zenoss_ubuntu.sh
+su -l -c "$ZENHOME/bin/secure_zenoss_ubuntu.sh" zenoss
+echo '#max_allowed_packet=16M' >> /etc/mysql/my.cnf
+echo 'innodb_buffer_pool_size=256M' >> /etc/mysql/my.cnf
+echo 'innodb_additional_mem_pool_size=20M' >> /etc/mysql/my.cnf
+sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
+
+# End of Script Message
+FINDIP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
+echo && echo "The Zenoss 4.2.4 core-autodeploy script for Ubuntu is complete!!!" && echo
+echo "Browse to $FINDIP:8080 to access your new Zenoss install."
+echo "The default login is:"
+echo "  username: admin"
+echo "  password: zenoss"
