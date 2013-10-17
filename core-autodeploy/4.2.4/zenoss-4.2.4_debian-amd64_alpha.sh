@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 01a Alpha - 03                             #
+# Version: 01a Alpha - 04                             #
 #  Status: Functional but not ready for production    #
 #   Notes: Fixing last few bugs, before stable        #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
@@ -28,10 +28,6 @@ wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/
 mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
 
 # OS compatibility tests
-if grep -Fxq "testing" /etc/apt/sources.list
-        then echo "...Detected testing repo."
-        else echo "...Did not detect testing repo, see https://wiki.debian.org/DebianTesting" && exit 0
-fi
 detect-os2 && detect-arch && detect-user
 
 # Install Package Dependencies
@@ -41,7 +37,10 @@ echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | t
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
 apt-get update
 apt-get install rrdtool libmysqlclient-dev nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev erlang-nox smistrip -y
-apt-get -t testing install libc6
+wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/debian-testing-repo.list -P /root/
+cat "./root/debian-testing-repo.list" >> /etc/apt/sources.list
+apt-get -t testing install libc6 -y
+su - root -c "sed -i 's:./root/debian-testing-repo.list:#./root/debian-testing-repo.list:g' /etc/apt/sources.list"
 wget -N http://ftp.us.debian.org/debian/pool/non-free/s/snmp-mibs-downloader/snmp-mibs-downloader_1.1_all.deb
 dpkg -i snmp-mibs-downloader_1.1_all.deb
 export DEBIAN_FRONTEND=noninteractive
