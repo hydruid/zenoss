@@ -37,11 +37,11 @@ fi	}
 detect-os2 () {
 if grep -Fxq "Ubuntu 13.04" /etc/issue.net
         then    echo "...Supported OS detected."
-        else    echo " "
-                if grep -Fxq "Ubuntu 12.04.3 LTS" /etc/issue.net
-                        then    echo "...Supported OS detected."
-                        else    menu-os
-                fi
+elif grep -Fxq "Ubuntu 12.04.3 LTS" /etc/issue.net
+       then    echo "...Supported OS detected."
+elif grep -Fxq "Debian GNU/Linux 7" /etc/issue.net
+       then    echo "...Supported OS detected."
+else    menu-os
 fi      }
 detect-arch () {
 if uname -m | grep -Fxq "x86_64"
