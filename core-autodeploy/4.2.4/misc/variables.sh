@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02f                                        #
+# Version: 02g                                        #
 #######################################################
 
 # Variables
@@ -59,3 +59,9 @@ if grep -Fxq "Database" /tmp/mysql.txt
         then    echo "...MySQL connection test successful."
         else    echo "...Mysql connection failed...make sure the password is blank for the root MySQL user." && exit 0
 fi	}
+detect-repo () {
+if grep -Fxq "testing" /etc/apt/sources.list
+       then echo "...Detected testing repositories."
+       else echo "...Did not detect testing repositories, see https://wiki.debian.org/DebianTesting"
+            echo "...The quick solution, add these lines to your /etc/apt/sources.list - http://hydruid-blog.com/wp-content/uploads/2013/10/debian-testing.txt && exit 0
+fi     }
