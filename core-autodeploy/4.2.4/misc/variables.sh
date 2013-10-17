@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02i                                        #
+# Version: 02j                                        #
 #######################################################
 
 # Variables
@@ -74,6 +74,6 @@ lynx http://hydruid-blog.com/?cat=5 &
 lynx http://hydruid-blog.com/?cat=5 &
 lynx http://hydruid-blog.com/?cat=5 &
 wget -N http://softlayer-dal.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/4.2.4-1897/zenoss_core-4.2.4-1897.el6.src.rpm -P ~zenoss/
-killall lynx
+killall lynx 2>&1 /dev/null
 apt-get remove lynx -y
         }
