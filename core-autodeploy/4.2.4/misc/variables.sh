@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02j                                        #
+# Version: 02k                                        #
 #######################################################
 
 # Variables
@@ -29,18 +29,16 @@ break
         *) echo invalid option;;
 esac
 done } 
-detect-os () {
-if grep -Fxq "Ubuntu 12.04.3 LTS" /etc/issue.net
-        then    echo "...Supported OS detected."
-        else    echo "...Non Supported OS detected...stopping script" && exit 0
-fi	}
 detect-os2 () {
 if grep -Fxq "Ubuntu 13.04" /etc/issue.net
         then    echo "...Supported OS detected."
 elif grep -Fxq "Ubuntu 12.04.3 LTS" /etc/issue.net
        then    echo "...Supported OS detected."
-elif grep -Fxq "Debian GNU/Linux 7" /etc/issue.net
-       then    echo "...Supported OS detected."
+else    menu-os
+fi      }
+detect-os3 () { 
+if grep -Fxq "Debian GNU/Linux 7" /etc/issue.net
+        then    echo "...Supported OS detected."
 else    menu-os
 fi      }
 detect-arch () {
