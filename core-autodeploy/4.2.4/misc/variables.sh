@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02k                                        #
+# Version: 02l                                        #
 #######################################################
 
 # Variables
@@ -32,6 +32,8 @@ done }
 detect-os2 () {
 if grep -Fxq "Ubuntu 13.04" /etc/issue.net
         then    echo "...Supported OS detected."
+elif grep -Fxq "Ubuntu 13.10" /etc/issue.net
+       then    echo "...Supported OS detected."
 elif grep -Fxq "Ubuntu 12.04.3 LTS" /etc/issue.net
        then    echo "...Supported OS detected."
 else    menu-os
