@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02p                                        #
+# Version: 02r                                        #
 #######################################################
 
 # Variables
@@ -42,7 +42,7 @@ detect-os3 () {
 if grep -Fxq "Debian GNU/Linux 7" /etc/issue.net
         then    echo "...Supported OS detected."
 elif grep -Fxq "Debian GNU/Linux 6.0" /etc/issue.net
-        then    echo "...Support OS detected, with a few minor bugs." && echo && echo "Notes: There are 2 bugs where the script will die with package warnings. Once this happens execute 'apt-get -f install' and then run the script again....don't worry it will work!"
+        then    echo "...Supported OS detected (with a few bugs)" && echo && echo "Notes: There is an active bug that caused the install to fail" && echo && echo "See https://github.com/hydruid/zenoss/issues/8" && sleep 10 && menu-os
 else    menu-os
 fi      }
 detect-arch () {
