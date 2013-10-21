@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02l                                        #
+# Version: 02m                                        #
 #######################################################
 
 # Variables
@@ -64,7 +64,7 @@ cp /etc/apt/sources.list /etc/apt/sources.list.orig
 wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/debian-testing-repo.list -P /root/
 mv /root/debian-testing-repo.list /etc/apt/sources.list
 apt-get update
-apt-get -t testing install libc6 -y
+apt-get -t testing install libc6 libc6-dev -y
 cp /etc/apt/sources.list.orig /etc/apt/sources.list
 apt-get update
 	}
