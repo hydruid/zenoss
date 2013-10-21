@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02m                                        #
+# Version: 02n                                        #
 #######################################################
 
 # Variables
@@ -41,6 +41,8 @@ fi      }
 detect-os3 () { 
 if grep -Fxq "Debian GNU/Linux 7" /etc/issue.net
         then    echo "...Supported OS detected."
+elif grep -Fxq "Debian GNU/Linux 6" /etc/issue.net
+        then    echo "...Supported OS detected." && echo && echo "Notes: There is a bug where the script with die with a warning about apt-get. Once this happens go ahead and execute 'apt-get -f install' and then run the script again....don't worry it will work"
 else    menu-os
 fi      }
 detect-arch () {
