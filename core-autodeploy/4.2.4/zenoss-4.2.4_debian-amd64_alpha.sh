@@ -1,8 +1,8 @@
 #!/bin/bash
 #######################################################
-# Version: 01b Alpha - 01                             #
-#  Status: Under Development...                       #
-#   Notes: Plan to clean the code up...               #
+# Version: 01b Alpha - 02                             #
+#  Status: Not Functional                             #
+#   Notes: Working on SSL Lib bug for Debian 6        #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
 #      OS: Debian 7 x86_64                            #
 #######################################################
@@ -39,10 +39,13 @@ apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
 apt-get update
 apt-get install rrdtool libmysqlclient-dev nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev erlang-nox smistrip -y
 debian-testing-repo
+apt-get -f install -y
 wget -N http://ftp.us.debian.org/debian/pool/non-free/s/snmp-mibs-downloader/snmp-mibs-downloader_1.1_all.deb
 dpkg -i snmp-mibs-downloader_1.1_all.deb
 export DEBIAN_FRONTEND=noninteractive
 apt-get install mysql-server mysql-client mysql-common -y
+apt-get -f install -y
+apt-get install libssl-dev -y
 mysql-conn_test
 
 # Download Zenoss DEB and install it
@@ -79,6 +82,8 @@ chown -R zenoss:zenoss $ZENHOME
 rabbitmqctl add_user zenoss zenoss
 rabbitmqctl add_vhost /zenoss
 rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'
+
+exit 0
 
 # Post Install Tweaks
 echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
