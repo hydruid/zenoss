@@ -91,6 +91,7 @@ rabbitmqctl add_user zenoss zenoss
 rabbitmqctl add_vhost /zenoss
 rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'
 
+echo "stopping here"
 exit 0
 
 # Post Install Tweaks
