@@ -1,10 +1,10 @@
 #!/bin/bash
 #######################################################
-# Version: 01b Alpha - 02                             #
+# Version: 01b Alpha - 03                             #
 #  Status: Not Functional                             #
 #   Notes: Working on SSL Lib bug for Debian 6        #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
-#      OS: Debian 7 x86_64                            #
+#      OS: Debian 6 / 7 x86_64                        #
 #######################################################
 
 # Beginning Script Message
@@ -39,9 +39,17 @@ apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
 apt-get update
 apt-get install rrdtool libmysqlclient-dev nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev erlang-nox smistrip -y
 debian-testing-repo
+cp /etc/apt/sources.list /etc/apt/sources.list.orig
+wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/debian-testing-repo.list -P /root/
+mv /root/debian-testing-repo.list /etc/apt/sources.list
+apt-get update
+apt-get -t testing install libc6 libc6-dev libssl-dev -y
+cp /etc/apt/sources.list.orig /etc/apt/sources.list
+apt-get update
 apt-get -f install -y
 wget -N http://ftp.us.debian.org/debian/pool/non-free/s/snmp-mibs-downloader/snmp-mibs-downloader_1.1_all.deb
 dpkg -i snmp-mibs-downloader_1.1_all.deb
+apt-get -f install -y
 export DEBIAN_FRONTEND=noninteractive
 apt-get install mysql-server mysql-client mysql-common -y
 apt-get -f install -y
@@ -52,7 +60,7 @@ mysql-conn_test
 wget -N hydruid-blog.com/zenoss-core-4.2.4-1897.ubuntu.x86-64_01a_amd64.deb
 dpkg -i zenoss-core-4.2.4-1897.ubuntu.x86-64_01a_amd64.deb
 chown -R zenoss:zenoss $ZENHOME
-give-props
+#give-props
 
 # Import the MySQL Database and create users
 mysql -u root -e "create database zenoss_zep"
