@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02r                                        #
+# Version: 02s                                        #
 #######################################################
 
 # Variables
@@ -42,7 +42,7 @@ detect-os3 () {
 if grep -Fxq "Debian GNU/Linux 7" /etc/issue.net
         then    echo "...Supported OS detected."
 elif grep -Fxq "Debian GNU/Linux 6.0" /etc/issue.net
-        then    echo "...Supported OS detected (with a few bugs)" && echo && echo "Notes: There is an active bug that caused the install to fail" && echo && echo "See https://github.com/hydruid/zenoss/issues/8" && sleep 10 && menu-os
+        then    echo "...Non Supported OS detected" && echo && echo "Notes: The python-samba package doesn't exist for Squeeze, and the Wheezy version requires a massive package upgrade to python2.7. Simply put it would be best to use Wheezy or newer!" && exit 0
 else    menu-os
 fi      }
 detect-arch () {
