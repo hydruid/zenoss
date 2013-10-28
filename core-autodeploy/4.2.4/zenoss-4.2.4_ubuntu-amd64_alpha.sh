@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 01c Alpha - 01                             #
+# Version: 02a Alpha - 01                             #
 #  Status: Under Development...                       #
 #   Notes: Plan to clean the code up...               #
 #  Status: Functional                                 #
