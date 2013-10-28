@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 01b Alpha - 03                             #
+# Version: 02a Alpha - 03                             #
 #  Status: Not Functional                             #
 #   Notes: Working on SSL Lib bug for Debian 6        #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
