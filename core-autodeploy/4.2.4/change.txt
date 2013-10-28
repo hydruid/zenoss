@@ -1,5 +1,5 @@
 #######################################################
-# Version: 01n                                        #
+# Version: 01o                                        #
 # http://hydruid-blog.com/?cat=5                      #
 #######################################################
 
@@ -9,6 +9,7 @@ This text file is the version changelog for the scripts in this directory.
 Current:
 	Debian	
 		zenoss-4.2.4_debian-amd64 -
+                        10-28-13 - Version-01b: set wget to "--no-check-certificate" for https url's
 		        10-17-13 - Version-01a: created from zenoss-4.2.4_debian-amd64_alpha.sh alpha 
 		zenoss-4.2.4_debian-amd64_alpha.sh -
 			10-17-13 - Alpha: various tweaks applied, stable will be released soon 
