@@ -1,8 +1,8 @@
 #!/bin/bash
 #######################################################
-# Version: 01a                                        #
+# Version: 01b                                        #
 #  Status: Functional                                 #
-#   Notes: First stable script for Debian!            #
+#   Notes: Minor update, fixed wget for https         #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
 #      OS: Debian 7 x86_64                            #
 #######################################################
@@ -24,7 +24,7 @@ echo 'export PATH=/usr/local/zenoss/bin:$PATH' >> ~zenoss/.bashrc
 echo 'export INSTANCE_HOME=$ZENHOME' >> ~zenoss/.bashrc
 chmod 644 ~zenoss/.bashrc
 mkdir ~zenoss/zenoss424-srpm_install
-wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P ~zenoss/zenoss424-srpm_install/
+wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P ~zenoss/zenoss424-srpm_install/
 . ~zenoss/zenoss424-srpm_install/variables.sh
 mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
 
@@ -92,7 +92,7 @@ chown -c root:zenoss /usr/local/zenoss/bin/nmap
 chmod -c 04750 /usr/local/zenoss/bin/pyraw
 chmod -c 04750 /usr/local/zenoss/bin/zensocket
 chmod -c 04750 /usr/local/zenoss/bin/nmap
-wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/secure_zenoss_ubuntu.sh -P $ZENHOME/bin
+wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/secure_zenoss_ubuntu.sh -P $ZENHOME/bin
 chown -c zenoss:zenoss $ZENHOME/bin/secure_zenoss_ubuntu.sh && chmod -c 0700 $ZENHOME/bin/secure_zenoss_ubuntu.sh
 su -l -c "$ZENHOME/bin/secure_zenoss_ubuntu.sh" zenoss
 echo '#max_allowed_packet=16M' >> /etc/mysql/my.cnf
