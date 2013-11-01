@@ -1,7 +1,7 @@
 #!/bin/bash
 #######################################################
-# Version: 01a Alpha - 03                             #
-#  Status: Not Functional                             #
+# Version: 01a Alpha - 04                             #
+#  Status: Functional...Not ready for production      #
 #   Notes: Almost ready, just a few bugs to squash    #
 #######################################################
 
@@ -21,8 +21,6 @@ cp -fr ~zenoss/temp-zenup/opt/zenup /usr/local/zenoss/
 chown -R zenoss:zenoss /usr/local/zenoss/zenup
 ln -s /usr/local/zenoss/zenup /opt
 chmod +x /usr/local/zenoss/zenup/bin/zenup
-
-# Download Update files
-wget -N http://wiki.zenoss.org/download/core/zenup/zenoss_core-4.2.4.el6-pristine.tgz -P ~zenoss/temp-zenup/
-wget -N http://wiki.zenoss.org/download/core/zenup/zenoss_core-4.2.4-SP71.zup -P ~zenoss/temp-zenup/
-chown -R zenoss:zenoss ~zenoss/temp-zenup
+echo "zenoss 4.2.4-1897.el6 zenoss_core" >> /opt/zenoss/.manifest && chown -R zenoss:zenoss /opt/zenoss/.manifest
+wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/zenup-helper.sh -P ~zenoss/temp-zenup/ && chmod +x zenup-helper.sh
+su - zenoss -c '/bin/sh ~zenoss/temp-zenup/zenup-helper.sh'
