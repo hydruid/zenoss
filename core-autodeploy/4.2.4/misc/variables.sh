@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02t                                        #
+# Version: 02u                                        #
 #######################################################
 
 # Variables
@@ -86,3 +86,8 @@ wget -N http://softlayer-dal.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss
 killall lynx 2>&1 /dev/null
 apt-get remove lynx -y
         }
+
+pkg-fix () {
+apt-get -f install
+        }
+
