@@ -1,8 +1,9 @@
 #!/bin/bash
 #######################################################
-# Version: 02a Alpha - 05                             #
+# Version: 03a Alpha - 01                             #
 #  Status: Functional                                 #
 #   Notes: Focusing on cleaning up the code           #
+#  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
 #      OS: Ubuntu 12/13 x86_64                        #
 #######################################################
 
