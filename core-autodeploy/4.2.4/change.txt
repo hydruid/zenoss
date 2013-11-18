@@ -1,5 +1,5 @@
 #######################################################
-# Version: 01o                                        #
+# Version: 01p                                        #
 # http://hydruid-blog.com/?cat=5                      #
 #######################################################
 
@@ -16,8 +16,10 @@ Current:
 			10-14-13 - Alpha: created from zenoss-4.2.4_ubuntu-amd64.sh stable, not functional yet
 	Ubuntu
 		zenoss-4.2.4_ubuntu-amd64.sh -
+                        11-18-13 - Version-02a: mostly just code cleanup
 			09-30-13 - Version-01b: created from zenoss424_ub1304_alpha.sh alpha
 		zenoss-4.2.4_ubuntu-amd64_alpha.sh -
+                        11-17-13 - Alpha: code cleanup almost complete
 		        10-17-13 - Alpha: created from zenoss-4.2.4_ubuntu-amd64.sh stable
 
 Legacy:
