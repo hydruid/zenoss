@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 01a Alpha - 01                             #
+# Version: 01a Alpha - 02                             #
 #  Status: Not Functional                             #
 #   Notes: Focusing on automating DEB builds          #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
@@ -53,6 +53,12 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get install mysql-server mysql-client mysql-common -y
 mysql-conn_test
 pkg-fix
+
+# Download the Zenoss SRPM 
+wget -N http://softlayer-dal.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/4.2.4-1897/zenoss_core-4.2.4-1897.el6.src.rpm -P $zenosshome/zenoss424-srpm_install/
+exit 0
+cd $zenosshome/zenoss424-srpm_install/ && rpm2cpio zenoss_core-4.2.4-1897.el6.src.rpm | cpio -i --make-directories
+bunzip2 zenoss_core-4.2.4-1859.el6.x86_64.tar.bz2 && tar -xvf zenoss_core-4.2.4-1859.el6.x86_64.tar
 
 echo "Ready for SRPM...remember to snapshot"
 exit 0
