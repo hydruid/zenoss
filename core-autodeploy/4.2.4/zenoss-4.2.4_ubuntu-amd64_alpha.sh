@@ -1,15 +1,15 @@
 #!/bin/bash
 #######################################################
-# Version: 02a Alpha - 02                             #
+# Version: 02a Alpha - 03                             #
 #  Status: Functional                                 #
-#   Notes: Mostly just code cleanup...                #
+#   Notes: Focusing on cleaning up the code           #
 #      OS: Ubuntu 12/13 x86_64                        #
 #######################################################
 
 # Beginning Script Message
 echo && echo "Welcome to the Zenoss 4.2.4 core-autodeploy script for Ubuntu!"
 echo "Blog Post: http://hydruid-blog.com/?p=343" && echo 
-echo "Notes: Ubuntu Rocks and I appreciate any feedback!!!" && echo && sleep 5
+echo "Notes: All feedback and suggestions are appreciated." && echo && sleep 5
 
 # Installer variables
 ## Home path for the zenoss user
@@ -35,10 +35,13 @@ mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
 detect-os2 && detect-arch && detect-user
 
 # Install Package Dependencies
+## Java PPA
 apt-get install python-software-properties -y && sleep 1
 echo | add-apt-repository ppa:webupd8team/java && sleep 1 && apt-get update
+## Install Packages
 apt-get install rrdtool libmysqlclient-dev nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev erlang-nox -y
 pkg-fix
+## MySQL Packages
 export DEBIAN_FRONTEND=noninteractive
 apt-get install mysql-server mysql-client mysql-common -y
 mysql-conn_test
@@ -54,6 +57,7 @@ give-props
 mysql -u root -e "create database zenoss_zep"
 mysql -u root -e "create database zodb"
 mysql -u root -e "create database zodb_session"
+echo "The MySQL import error below is save to ignore..."
 mysql -u root zenoss_zep < $zenosshome/zenoss_zep.sql
 mysql -u root zodb < $zenosshome/zodb.sql
 mysql -u root zodb_session < $zenosshome/zodb_session.sql
