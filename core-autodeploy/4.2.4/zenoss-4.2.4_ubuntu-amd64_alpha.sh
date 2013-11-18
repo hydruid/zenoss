@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02a Alpha - 04                             #
+# Version: 02a Alpha - 05                             #
 #  Status: Functional                                 #
 #   Notes: Focusing on cleaning up the code           #
 #      OS: Ubuntu 12/13 x86_64                        #
@@ -14,6 +14,8 @@ echo "Notes: All feedback and suggestions are appreciated." && echo && sleep 5
 # Installer variables
 ## Home path for the zenoss user
 zenosshome="/home/zenoss"
+## Download Directory
+downdir="/tmp"
 
 # Update Ubuntu
 apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y
@@ -27,7 +29,7 @@ echo 'export PATH=/usr/local/zenoss/bin:$PATH' >> $zenosshome/.bashrc
 echo 'export INSTANCE_HOME=$ZENHOME' >> $zenosshome/.bashrc
 chmod 644 $zenosshome/.bashrc
 mkdir $zenosshome/zenoss424-srpm_install
-wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P $zenosshome/zenoss424-srpm_install/
+wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P $zenosshome/zenoss424-srpm_install/
 . $zenosshome/zenoss424-srpm_install/variables.sh
 mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
 
@@ -48,8 +50,8 @@ mysql-conn_test
 pkg-fix
 
 # Download Zenoss DEB and install it
-wget -N hydruid-blog.com/zenoss-core-4.2.4-1897.ubuntu.x86-64_01a_amd64.deb
-dpkg -i zenoss-core-4.2.4-1897.ubuntu.x86-64_01a_amd64.deb
+wget -N hydruid-blog.com/zenoss-core-4.2.4-1897.ubuntu.x86-64_01a_amd64.deb -P $downdir/
+dpkg -i $downdir/zenoss-core-4.2.4-1897.ubuntu.x86-64_01a_amd64.deb
 chown -R zenoss:zenoss $ZENHOME
 give-props
 
@@ -75,8 +77,8 @@ mysql -u root -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'%';"
 mysql -u root -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'%';"
 
 # Rabbit install and config
-wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.2.1/rabbitmq-server_3.2.1-1_all.deb -P $zenosshome/zenoss424-srpm_install/
-dpkg -i $zenosshome/zenoss424-srpm_install/rabbitmq-server_3.2.1-1_all.deb
+wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.2.1/rabbitmq-server_3.2.1-1_all.deb -P $downdir/
+dpkg -i $downdir/rabbitmq-server_3.2.1-1_all.deb
 chown -R zenoss:zenoss $ZENHOME
 rabbitmqctl add_user zenoss zenoss
 rabbitmqctl add_vhost /zenoss
@@ -94,7 +96,7 @@ chown -c root:zenoss /usr/local/zenoss/bin/nmap
 chmod -c 04750 /usr/local/zenoss/bin/pyraw
 chmod -c 04750 /usr/local/zenoss/bin/zensocket
 chmod -c 04750 /usr/local/zenoss/bin/nmap
-wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/secure_zenoss_ubuntu.sh -P $ZENHOME/bin
+wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/secure_zenoss_ubuntu.sh -P $ZENHOME/bin
 chown -c zenoss:zenoss $ZENHOME/bin/secure_zenoss_ubuntu.sh && chmod -c 0700 $ZENHOME/bin/secure_zenoss_ubuntu.sh
 su -l -c "$ZENHOME/bin/secure_zenoss_ubuntu.sh" zenoss
 echo '#max_allowed_packet=16M' >> /etc/mysql/my.cnf
