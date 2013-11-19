@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 01a Alpha - 02                             #
+# Version: 01a Alpha - 03                             #
 #  Status: Not Functional                             #
 #   Notes: Focusing on automating DEB builds          #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
@@ -56,72 +56,37 @@ pkg-fix
 
 # Download the Zenoss SRPM 
 wget -N http://softlayer-dal.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/4.2.4-1897/zenoss_core-4.2.4-1897.el6.src.rpm -P $zenosshome/zenoss424-srpm_install/
-exit 0
 cd $zenosshome/zenoss424-srpm_install/ && rpm2cpio zenoss_core-4.2.4-1897.el6.src.rpm | cpio -i --make-directories
-bunzip2 zenoss_core-4.2.4-1859.el6.x86_64.tar.bz2 && tar -xvf zenoss_core-4.2.4-1859.el6.x86_64.tar
+bunzip2 zenoss_core-4.2.4-1897.el6.x86_64.tar.bz2 && tar -xvf zenoss_core-4.2.4-1897.el6.x86_64.tar
 
-echo "Ready for SRPM...remember to snapshot"
-exit 0
-
-# Download Zenoss DEB and install it
-wget -N hydruid-blog.com/zenoss-core-4.2.4-1897.ubuntu.x86-64_01a_amd64.deb -P $downdir/
-dpkg -i $downdir/zenoss-core-4.2.4-1897.ubuntu.x86-64_01a_amd64.deb
-chown -R zenoss:zenoss $ZENHOME
-give-props
-
-# Import the MySQL Database and create users
-mysql -u root -e "create database zenoss_zep"
-mysql -u root -e "create database zodb"
-mysql -u root -e "create database zodb_session"
-echo "The 1305 MySQL import error below is save to ignore..."
-mysql -u root zenoss_zep < $zenosshome/zenoss_zep.sql
-mysql -u root zodb < $zenosshome/zodb.sql
-mysql -u root zodb_session < $zenosshome/zodb_session.sql
-mysql -u root -e "CREATE USER 'zenoss'@'localhost' IDENTIFIED BY  'zenoss';"
-mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'localhost' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'localhost';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'localhost';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'localhost';"
-mysql -u root -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'localhost';"
-mysql -u root -e "CREATE USER 'zenoss'@'%' IDENTIFIED BY  'zenoss';"
-mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'%' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'%';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'%';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'%';"
-mysql -u root -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'%';"
-
-# Rabbit install and config
+# Install the Zenoss SRPM
+apt-get install librrd-dev -y
+tar zxvf /home/zenoss/zenoss424-srpm_install/zenoss_core-4.2.4/externallibs/rrdtool-1.4.7.tar.gz && cd rrdtool-1.4.7/
+./configure --prefix=/usr/local/zenoss
+make && make install
+cd /home/zenoss/zenoss424-srpm_install/zenoss_core-4.2.4/
+wget http://dev.zenoss.org/svn/tags/zenoss-4.2.4/inst/rrdclean.sh
+## Rabbit install and config
 wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.2.1/rabbitmq-server_3.2.1-1_all.deb -P $downdir/
 dpkg -i $downdir/rabbitmq-server_3.2.1-1_all.deb
 chown -R zenoss:zenoss $ZENHOME
 rabbitmqctl add_user zenoss zenoss
 rabbitmqctl add_vhost /zenoss
 rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'
+./configure 2>&1 | tee log-configure.log
+make 2>&1 | tee log-make.log
+make clean 2>&1 | tee log-make_clean.log
+cp mkzenossinstance.sh mkzenossinstance.sh.orig
+su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. variables.sh:g' /home/zenoss/zenoss424-srpm_install/zenoss_core-4.2.4/mkzenossinstance.sh"
+read -p "If you set a password for the root MySQL User, you will have to manually input the password into: /usr/local/zenoss/etc/global.conf (I will automate this on the next round, there are 2 entries for the password)"
+./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_a.log
+./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_b.log
+chown -R zenoss:zenoss /usr/local/zenoss
 
-# Post Install Tweaks
-echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
-touch $ZENHOME/var/Data.fs
-cp $ZENHOME/bin/zenoss /etc/init.d/zenoss
-su - root -c "sed -i 's:# License.zenoss under the directory where your Zenoss product is installed.:# License.zenoss under the directory where your Zenoss product is installed.\n#\n#Custom Ubuntu Variables\nexport ZENHOME=$ZENHOME\nexport RRDCACHED=$ZENHOME/bin/rrdcached:g' /etc/init.d/zenoss"
-update-rc.d zenoss defaults && sleep 2
-chown -c root:zenoss /usr/local/zenoss/bin/pyraw
-chown -c root:zenoss /usr/local/zenoss/bin/zensocket
-chown -c root:zenoss /usr/local/zenoss/bin/nmap
-chmod -c 04750 /usr/local/zenoss/bin/pyraw
-chmod -c 04750 /usr/local/zenoss/bin/zensocket
-chmod -c 04750 /usr/local/zenoss/bin/nmap
-wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/secure_zenoss_ubuntu.sh -P $ZENHOME/bin
-chown -c zenoss:zenoss $ZENHOME/bin/secure_zenoss_ubuntu.sh && chmod -c 0700 $ZENHOME/bin/secure_zenoss_ubuntu.sh
-su -l -c "$ZENHOME/bin/secure_zenoss_ubuntu.sh" zenoss
-echo '#max_allowed_packet=16M' >> /etc/mysql/my.cnf
-echo 'innodb_buffer_pool_size=256M' >> /etc/mysql/my.cnf
-echo 'innodb_additional_mem_pool_size=20M' >> /etc/mysql/my.cnf
-sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
+echo "...Still a few more steps to go, check back later!"
+exit 0
 
-# End of Script Message
-FINDIP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
-echo && echo "The Zenoss 4.2.4 core-autodeploy script for Ubuntu is complete!!!" && echo
-echo "Browse to $FINDIP:8080 to access your new Zenoss install."
-echo "The default login is:"
-echo "  username: admin"
-echo "  password: zenoss"
+# ZenPack Install
+# MySQL Dump
+# Install FPM
+# Create DEB
