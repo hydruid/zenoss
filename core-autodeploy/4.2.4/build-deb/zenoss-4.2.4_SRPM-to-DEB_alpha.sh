@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 01a Alpha - 03                             #
+# Version: 01a Alpha - 04                             #
 #  Status: Not Functional                             #
 #   Notes: Focusing on automating DEB builds          #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
@@ -84,7 +84,8 @@ read -p "If you set a password for the root MySQL User, you will have to manuall
 chown -R zenoss:zenoss /usr/local/zenoss
 
 # Install the Core ZenPacks
-wget -N http://softlayer-dal.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/4.2.4-1897/zenoss_core-4.2.4-1897.el6.x86_64.rpm -P /home/zenoss/zenoss424-srpm_install/
+wget -N http://softlayer-dal.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/4.2.4-1897/zenoss_core-4.2.4-1897.el6.x86_64.rpm -P $downdir/
+rpm2cpio $downdir/zenoss_core-4.2.4-1897.el6.x86_64.rpm | sudo cpio -ivd ./opt/zenoss/packs/*.* && mv opt/ $downdir/
 
 echo "...Still a few more steps to go, check back later!"
 exit 0
