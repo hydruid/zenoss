@@ -88,5 +88,5 @@ chown -R zenoss:zenoss /usr/local/zenoss
 wget -N http://softlayer-dal.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/4.2.4-1897/zenoss_core-4.2.4-1897.el6.x86_64.rpm -P $downdir/
 rpm2cpio $downdir/zenoss_core-4.2.4-1897.el6.x86_64.rpm | sudo cpio -ivd ./opt/zenoss/packs/*.* && mv opt/ $downdir/
 
-echo "...Script complete, you may now proceed to run the Zenpacks Install script"
+echo "...Script complete"
 exit 0
