@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 01a                                        #
+# Version: 01b                                        #
 #######################################################
 
 zenoss restart
@@ -12,3 +12,7 @@ do
 done
 
 easy_install readline
+
+echo "...Script complete, you may now proceed to run the Build Deb script"
+exit 0
+
