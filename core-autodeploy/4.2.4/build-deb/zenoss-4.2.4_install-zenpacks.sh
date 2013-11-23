@@ -1,9 +1,9 @@
 #!/bin/bash
 #######################################################
-# Version: 01b                                        #
+# Version: 01c                                        #
 #######################################################
 
-zenoss restart
+zenoss start
 
 array=( PySamba*.egg WindowsMonitor*.egg ActiveDirectory*.egg IISMonitor*.egg MSExchange*.egg MSMQMonitor*.egg MSSQLServer*.egg ApacheMonitor*.egg DellMonitor*.egg DigMonitor*.egg DnsMonitor*.egg FtpMonitor*.egg HPMonitor*.egg HttpMonitor*.egg IRCDMonitor*.egg JabberMonitor*.egg LDAPMonitor*.egg MySqlMonitor*.egg NNTPMonitor*.egg NtpMonitor*.egg ZenJMX*.egg LinuxMonitor*.egg ZenossVirtualHostMonitor*.egg EsxTop*.egg XenMonitor*.egg DeviceSearch*.egg PythonCollector*.egg WBEM*.egg )
 for i in "${array[@]}"
@@ -13,6 +13,8 @@ done
 
 easy_install readline
 
-echo "...Script complete, you may now proceed to run the Build Deb script"
+zenoss stop
+
+echo "...Script complete, you may now proceed to run the ZenUp Install script"
 exit 0
 
