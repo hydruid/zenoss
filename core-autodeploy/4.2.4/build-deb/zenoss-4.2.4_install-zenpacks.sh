@@ -15,6 +15,6 @@ easy_install readline
 
 zenoss stop
 
-echo "...Script complete, you may now proceed to run the ZenUp Install script"
+echo "...Script complete"
 exit 0
 
