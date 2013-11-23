@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 01b                                        #
+# Version: 01c                                        #
 #  Status: Functional                                 #
 #   Notes: Focusing on automating DEB builds          #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
@@ -28,6 +28,7 @@ echo 'export ZENHOME=/usr/local/zenoss' >> $zenosshome/.bashrc
 echo 'export PYTHONPATH=/usr/local/zenoss/lib/python' >> $zenosshome/.bashrc
 echo 'export PATH=/usr/local/zenoss/bin:$PATH' >> $zenosshome/.bashrc
 echo 'export INSTANCE_HOME=$ZENHOME' >> $zenosshome/.bashrc
+echo 'export PATH=/opt/zenup/bin:$PATH' >> $zenosshome/.bashrc
 chmod 644 $zenosshome/.bashrc
 mkdir $zenosshome/zenoss424-srpm_install
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P $zenosshome/zenoss424-srpm_install/
