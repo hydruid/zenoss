@@ -1,7 +1,7 @@
 #!/bin/bash
 #######################################################
-# Version: 01a Alpha - 01                             #
-#  Status: Not Functional                             #
+# Version: 01a                                        #
+#  Status: Functional                                 #
 #######################################################
 
 # Installer variables
@@ -12,11 +12,28 @@ downdir="/tmp"
 . $zenosshome/zenoss424-srpm_install/variables.sh
 
 # Install FPM
-apt-get install rubygems -y
-gem install fpm
+if [ -f /usr/local/bin/fpm ]
+	then
+		echo "...Skipping fpm installation"
+	else
+		apt-get install rubygems -y
+		gem install fpm
+fi
+
+# MySQL Dump
+mysqldump -u root zenoss_zep > $zenosshome/zenoss_zep.sql
+mysqldump -u root zodb > $zenosshome/zodb.sql
+mysqldump -u root zodb_session > $zenosshome/zodb_session.sql
+
+# Cleanup 
+rm -fr $zenosshome/zenoss424-srpm_install/zenoss_core-4.2.4
+rm -fr $zenosshome/zenoss424-srpm_install/*.rpm
+rm -fr $zenosshome/zenoss424-srpm_install/*.tar
+rm -fr $zenosshome/zenoss424-srpm_install/*.spec
 
 # Build Deb
-fpm -n zenoss-core_424-1897 -v 1.0 -s dir -t deb /home/zenoss/ /usr/local/zenoss
+echo "...Building DEB"
+fpm -n zenoss-core_424-1897 -v 1.0 -s dir -t deb $zenosshome /usr/local/zenoss
 
-echo "...Script Complete, Congratulations on creating a Zenoss Deb!!!!"
+echo "...Script Complete"
 exit 0
