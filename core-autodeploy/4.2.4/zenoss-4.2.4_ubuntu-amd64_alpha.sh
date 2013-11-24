@@ -1,8 +1,8 @@
 #!/bin/bash
 #######################################################
-# Version: 03a Alpha - 01                             #
+# Version: 03a Alpha - 02                             #
 #  Status: Functional                                 #
-#   Notes: Focusing on cleaning up the code           #
+#   Notes: Includes updated DEB with ZenUP            #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
 #      OS: Ubuntu 12/13 x86_64                        #
 #######################################################
@@ -28,6 +28,7 @@ echo 'export ZENHOME=/usr/local/zenoss' >> $zenosshome/.bashrc
 echo 'export PYTHONPATH=/usr/local/zenoss/lib/python' >> $zenosshome/.bashrc
 echo 'export PATH=/usr/local/zenoss/bin:$PATH' >> $zenosshome/.bashrc
 echo 'export INSTANCE_HOME=$ZENHOME' >> $zenosshome/.bashrc
+echo 'export PATH=/opt/zenup/bin:$PATH' >> $zenosshome/.bashrc
 chmod 644 $zenosshome/.bashrc
 mkdir $zenosshome/zenoss424-srpm_install
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P $zenosshome/zenoss424-srpm_install/
@@ -51,7 +52,7 @@ mysql-conn_test
 pkg-fix
 
 # Download Zenoss DEB and install it
-wget -N hydruid-blog.com/zenoss-core-4.2.4-1897.ubuntu.x86-64_01a_amd64.deb -P $downdir/
+wget -N hydruid-blog.com/zenoss-core-4.2.4-1897.ubuntu.x86-64_02a_amd64.deb -P $downdir/
 dpkg -i $downdir/zenoss-core-4.2.4-1897.ubuntu.x86-64_01a_amd64.deb
 chown -R zenoss:zenoss $ZENHOME
 give-props
