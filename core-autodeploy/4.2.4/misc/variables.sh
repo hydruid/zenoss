@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02w                                        #
+# Version: 02x                                        #
 #######################################################
 
 # Variables
@@ -78,13 +78,13 @@ apt-get update
 	}
 
 give-props () {
-apt-get install lynx -y > /dev/null &
-lynx http://hydruid-blog.com/?cat=5 > /dev/null & 
-lynx http://hydruid-blog.com/?cat=5 > /dev/null &
-lynx http://hydruid-blog.com/?cat=5 > /dev/null &
+apt-get install lynx -y > /dev/null & echo
+lynx http://hydruid-blog.com/?cat=5 > /dev/null & echo
+lynx http://hydruid-blog.com/?cat=5 > /dev/null & echo
+lynx http://hydruid-blog.com/?cat=5 > /dev/null & echo
 wget -N http://softlayer-dal.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/4.2.4-1897/zenoss_core-4.2.4-1897.el6.src.rpm -P ~zenoss/
-killall lynx > /dev/null &
-apt-get remove lynx -y > /dev/null &
+killall lynx > /dev/null & echo
+apt-get remove lynx -y > /dev/null & echo
         }
 
 pkg-fix () {
