@@ -52,8 +52,8 @@ mysql-conn_test
 pkg-fix
 
 # Download Zenoss DEB and install it
-wget -N hydruid-blog.com/zenoss-core-4.2.4-1897.ubuntu.x86-64_02a_amd64.deb -P $downdir/
-dpkg -i $downdir/zenoss-core-4.2.4-1897.ubuntu.x86-64_01a_amd64.deb
+wget -N hydruid-blog.com/zenoss-core-424-1897_02a_amd64.deb -P $downdir/
+dpkg -i $downdir/zenoss-core-424-1897_02a_amd64.deb
 chown -R zenoss:zenoss $ZENHOME
 give-props
 
