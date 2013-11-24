@@ -1,7 +1,7 @@
 #!/bin/bash
 #######################################################
-# Version: 03a Alpha - 04                             #
-#  Status: Not Functional                             #
+# Version: 03a Alpha - 05                             #
+#  Status: Functional                                 #
 #   Notes: Includes updated DEB with ZenUP            #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
 #      OS: Ubuntu 12/13 x86_64                        #
@@ -61,7 +61,7 @@ give-props
 mysql -u root -e "create database zenoss_zep"
 mysql -u root -e "create database zodb"
 mysql -u root -e "create database zodb_session"
-echo "The 1305 MySQL import error below is save to ignore..."
+echo "...The 1305 MySQL import error below is save to ignore"
 mysql -u root zenoss_zep < $zenosshome/zenoss_zep.sql
 mysql -u root zodb < $zenosshome/zodb.sql
 mysql -u root zodb_session < $zenosshome/zodb_session.sql
