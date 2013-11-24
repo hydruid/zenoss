@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 01a                                        #
+# Version: 01b                                        #
 #  Status: Functional                                 #
 #######################################################
 
@@ -22,6 +22,7 @@ ln -s /lib/x86_64-linux-gnu/libcrypto.so.1.0.0 /usr/lib/libcrypto.so.10
 mkdir $zenosshome/temp-zenup && cd $zenosshome/temp-zenup
 wget -N http://wiki.zenoss.org/download/core/zenup/zenup-1.0.0.131-1.el6.x86_64.rpm
 rpm2cpio zenup-1.0.0.131-1.el6.x86_64.rpm | cpio -i --make-directories
+rm zenup-1.0.0.131-1.el6.x86_64.rpm
 cp -fr $zenosshome/temp-zenup/opt/zenup /usr/local/zenoss/
 chown -R zenoss:zenoss /usr/local/zenoss/zenup
 ln -s /usr/local/zenoss/zenup /opt
