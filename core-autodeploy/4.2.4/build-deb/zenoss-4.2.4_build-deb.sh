@@ -33,7 +33,7 @@ rm -fr $zenosshome/zenoss424-srpm_install/*.spec
 
 # Build Deb
 echo "...Building DEB"
-fpm -n zenoss-core_424-1897 -v 1.0 -s dir -t deb $zenosshome /usr/local/zenoss
+fpm -n zenoss-core_424-1897 -v 02a -s dir -t deb $zenosshome /usr/local/zenoss
 
 echo "...Script Complete"
 exit 0
