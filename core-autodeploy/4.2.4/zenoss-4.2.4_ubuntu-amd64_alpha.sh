@@ -1,7 +1,7 @@
 #!/bin/bash
 #######################################################
-# Version: 03a Alpha - 02                             #
-#  Status: Functional                                 #
+# Version: 03a Alpha - 03                             #
+#  Status: Not Functional                             #
 #   Notes: Includes updated DEB with ZenUP            #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
 #      OS: Ubuntu 12/13 x86_64                        #
