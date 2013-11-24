@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 03a Alpha - 03                             #
+# Version: 03a Alpha - 04                             #
 #  Status: Not Functional                             #
 #   Notes: Includes updated DEB with ZenUP            #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
@@ -87,6 +87,14 @@ rabbitmqctl add_vhost /zenoss
 rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'
 
 # Post Install Tweaks
+## ZenUp
+ln -s /usr/local/zenoss /opt
+apt-get install libssl1.0.0 libssl-dev -y
+ln -s /lib/x86_64-linux-gnu/libssl.so.1.0.0 /usr/lib/libssl.so.10
+ln -s /lib/x86_64-linux-gnu/libcrypto.so.1.0.0 /usr/lib/libcrypto.so.10
+ln -s /usr/local/zenoss/zenup /opt
+chmod +x /usr/local/zenoss/zenup/bin/zenup
+## Misc.
 echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
 touch $ZENHOME/var/Data.fs
 cp $ZENHOME/bin/zenoss /etc/init.d/zenoss
