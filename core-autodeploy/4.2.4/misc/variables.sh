@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 02x                                        #
+# Version: 02y                                        #
 #######################################################
 
 # Variables
@@ -78,7 +78,7 @@ apt-get update
 	}
 
 give-props () {
-apt-get install lynx -y > /dev/null & echo
+apt-get install lynx -y 
 lynx http://hydruid-blog.com/?cat=5 > /dev/null & echo
 lynx http://hydruid-blog.com/?cat=5 > /dev/null & echo
 lynx http://hydruid-blog.com/?cat=5 > /dev/null & echo
