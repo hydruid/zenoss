@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 01c                                        #
+# Version: 01d                                        #
 #  Status: Functional                                 #
 #   Notes: Focusing on automating DEB builds          #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
@@ -79,7 +79,6 @@ make 2>&1 | tee log-make.log
 make clean 2>&1 | tee log-make_clean.log
 cp mkzenossinstance.sh mkzenossinstance.sh.orig
 su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. variables.sh:g' /home/zenoss/zenoss424-srpm_install/zenoss_core-4.2.4/mkzenossinstance.sh"
-read -p "If you set a password for the root MySQL User, you will have to manually input the password into: /usr/local/zenoss/etc/global.conf (I will automate this on the next round, there are 2 entries for the password)"
 ./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_a.log
 ./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_b.log
 chown -R zenoss:zenoss /usr/local/zenoss
