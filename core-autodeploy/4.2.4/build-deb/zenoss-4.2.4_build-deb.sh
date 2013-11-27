@@ -1,14 +1,19 @@
 #!/bin/bash
 #######################################################
-# Version: 01a                                        #
+# Version: 01b                                        #
 #  Status: Functional                                 #
 #######################################################
+
+read -p "Please verify that zenoss is not currently running! Press ctrl+c to cancel if needed..."
 
 # Installer variables
 ## Home path for the zenoss user
 zenosshome="/home/zenoss"
 ## Download Directory
 downdir="/tmp"
+## DEB Version
+debver="02a"
+## Zenoss Variables
 . $zenosshome/zenoss424-srpm_install/variables.sh
 
 # Install FPM
@@ -33,7 +38,7 @@ rm -fr $zenosshome/zenoss424-srpm_install/*.spec
 
 # Build Deb
 echo "...Building DEB"
-fpm -n zenoss-core_424-1897 -v 02a -s dir -t deb $zenosshome /usr/local/zenoss
+fpm -n zenoss-core_424-1897 -v $debver -s dir -t deb $zenosshome /usr/local/zenoss
 
 echo "...Script Complete"
 exit 0
