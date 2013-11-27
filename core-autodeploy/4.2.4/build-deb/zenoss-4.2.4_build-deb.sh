@@ -35,6 +35,7 @@ rm -fr $zenosshome/zenoss424-srpm_install/zenoss_core-4.2.4
 rm -fr $zenosshome/zenoss424-srpm_install/*.rpm
 rm -fr $zenosshome/zenoss424-srpm_install/*.tar
 rm -fr $zenosshome/zenoss424-srpm_install/*.spec
+rm -fr $zenosshome/zenoss424-srpm_install/rrdtool-1.4.7 
 
 # Build Deb
 echo "...Building DEB"
