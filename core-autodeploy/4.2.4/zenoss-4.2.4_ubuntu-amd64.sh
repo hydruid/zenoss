@@ -1,8 +1,8 @@
 #!/bin/bash
 #######################################################
-# Version: 02a                                        #
+# Version: 03a                                        #
 #  Status: Functional                                 #
-#   Notes: Focused on cleaning up the code            #
+#   Notes: Includes updated DEB with ZenUP            #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
 #      OS: Ubuntu 12/13 x86_64                        #
 #######################################################
@@ -28,6 +28,7 @@ echo 'export ZENHOME=/usr/local/zenoss' >> $zenosshome/.bashrc
 echo 'export PYTHONPATH=/usr/local/zenoss/lib/python' >> $zenosshome/.bashrc
 echo 'export PATH=/usr/local/zenoss/bin:$PATH' >> $zenosshome/.bashrc
 echo 'export INSTANCE_HOME=$ZENHOME' >> $zenosshome/.bashrc
+echo 'export PATH=/opt/zenup/bin:$PATH' >> $zenosshome/.bashrc
 chmod 644 $zenosshome/.bashrc
 mkdir $zenosshome/zenoss424-srpm_install
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P $zenosshome/zenoss424-srpm_install/
@@ -51,8 +52,8 @@ mysql-conn_test
 pkg-fix
 
 # Download Zenoss DEB and install it
-wget -N hydruid-blog.com/zenoss-core-4.2.4-1897.ubuntu.x86-64_01a_amd64.deb -P $downdir/
-dpkg -i $downdir/zenoss-core-4.2.4-1897.ubuntu.x86-64_01a_amd64.deb
+wget -N hydruid-blog.com/zenoss-core-424-1897_02a_amd64.deb -P $downdir/
+dpkg -i $downdir/zenoss-core-424-1897_02a_amd64.deb
 chown -R zenoss:zenoss $ZENHOME
 give-props
 
@@ -60,7 +61,7 @@ give-props
 mysql -u root -e "create database zenoss_zep"
 mysql -u root -e "create database zodb"
 mysql -u root -e "create database zodb_session"
-echo "The 1305 MySQL import error below is save to ignore..."
+echo "...The 1305 MySQL import error below is save to ignore"
 mysql -u root zenoss_zep < $zenosshome/zenoss_zep.sql
 mysql -u root zodb < $zenosshome/zodb.sql
 mysql -u root zodb_session < $zenosshome/zodb_session.sql
@@ -86,6 +87,14 @@ rabbitmqctl add_vhost /zenoss
 rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'
 
 # Post Install Tweaks
+## ZenUp
+ln -s /usr/local/zenoss /opt
+apt-get install libssl1.0.0 libssl-dev -y
+ln -s /lib/x86_64-linux-gnu/libssl.so.1.0.0 /usr/lib/libssl.so.10
+ln -s /lib/x86_64-linux-gnu/libcrypto.so.1.0.0 /usr/lib/libcrypto.so.10
+ln -s /usr/local/zenoss/zenup /opt
+chmod +x /usr/local/zenoss/zenup/bin/zenup
+## Misc.
 echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
 touch $ZENHOME/var/Data.fs
 cp $ZENHOME/bin/zenoss /etc/init.d/zenoss
