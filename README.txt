@@ -1,5 +1,5 @@
 #######################################################
-# Version: 03k                                        #
+# Version: 03l                                        #
 # http://hydruid-blog.com/?p=241                      #
 #######################################################
 
@@ -7,7 +7,7 @@ Description:
 This repo contains scripts to install Zenoss Core 4.2.x on Ubuntu and Debian.
 
 Future Plans:
-Add support for ZenUP, the new Zenoss Patch Utility
+Begin working on ZenPacks.
 
 Files:
 core-autodeploy
