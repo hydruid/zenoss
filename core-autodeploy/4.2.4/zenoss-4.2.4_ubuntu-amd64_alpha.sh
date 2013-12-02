@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 03a Alpha - 05                             #
+# Version: 04a Alpha - 01                             #
 #  Status: Functional                                 #
 #   Notes: Includes updated DEB with ZenUP            #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
