@@ -1,5 +1,5 @@
 #######################################################
-# Version: 01q                                        #
+# Version: 01r                                        #
 # http://hydruid-blog.com/?cat=5                      #
 #######################################################
 
@@ -16,6 +16,7 @@ Current:
 			10-14-13 - Alpha: created from zenoss-4.2.4_ubuntu-amd64.sh stable, not functional yet
 	Ubuntu
 		zenoss-4.2.4_ubuntu-amd64.sh -
+                        12-03-13 - Version-03b: Minor update to resolve OS issue with 13.10+netsnmp 
 			12-02-13 - Version-03a: Includes updated DEB with ZenUP
                         11-18-13 - Version-02a: mostly just code cleanup
 			09-30-13 - Version-01b: created from zenoss424_ub1304_alpha.sh alpha
