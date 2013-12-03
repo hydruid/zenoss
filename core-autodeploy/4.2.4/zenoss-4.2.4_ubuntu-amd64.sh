@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 03a                                        #
+# Version: 03b                                        #
 #  Status: Functional                                 #
 #   Notes: Includes updated DEB with ZenUP            #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
@@ -87,6 +87,8 @@ rabbitmqctl add_vhost /zenoss
 rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'
 
 # Post Install Tweaks
+## Misc OS Fixes
+os-fixes
 ## ZenUp
 ln -s /usr/local/zenoss /opt
 apt-get install libssl1.0.0 libssl-dev -y
