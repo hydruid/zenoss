@@ -87,6 +87,8 @@ rabbitmqctl add_vhost /zenoss
 rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'
 
 # Post Install Tweaks
+## Misc OS Fixes
+os-fixes
 ## ZenUp
 ln -s /usr/local/zenoss /opt
 apt-get install libssl1.0.0 libssl-dev -y
