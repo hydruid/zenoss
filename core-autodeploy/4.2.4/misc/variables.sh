@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 03a                                        #
+# Version: 03b                                        #
 #######################################################
 
 # Variables
@@ -32,13 +32,13 @@ done }
 
 detect-os () {
 if grep -Fxq "Ubuntu 13.04" /etc/issue.net
-        then    echo "...Supported OS detected."
+        then    echo "...Supported OS detected." && echo "ubuntu" >> $downdir/os.txt
 elif grep -Fxq "Ubuntu 13.10" /etc/issue.net
-       then    echo "...Supported OS detected."
+       then    echo "...Supported OS detected." && echo "ubuntu" >> $downdir/os.txt
 elif grep -Fxq "Ubuntu 12.04.3 LTS" /etc/issue.net
-       then    echo "...Supported OS detected."
+       then    echo "...Supported OS detected." && echo "ubuntu" >> $downdir/os.txt
 elif grep -Fxq "Debian GNU/Linux 7" /etc/issue.net
-       then    echo "...Supported OS detected."
+       then    echo "...Supported OS detected." && echo "debian" >> $downdir/os.txt
 else    menu-os
 fi      }
 
