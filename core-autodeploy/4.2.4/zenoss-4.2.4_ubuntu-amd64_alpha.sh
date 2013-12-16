@@ -1,24 +1,24 @@
 #!/bin/bash
 #######################################################
 # Version: 04a Alpha - 01                             #
-#  Status: Functional                                 #
-#   Notes: Includes updated DEB with ZenUP            #
+#  Status: Not Functional                             #
+#   Notes: Combining Ubuntu & Debian scripts          #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
-#      OS: Ubuntu 12/13 x86_64                        #
+#      OS: Ubuntu/Debian x86_64 (requires 64-bit os)  #
 #######################################################
 
 # Beginning Script Message
-echo && echo "Welcome to the Zenoss 4.2.4 core-autodeploy script for Ubuntu!"
-echo "Blog Post: http://hydruid-blog.com/?p=343" && echo 
+echo && echo "Welcome to the Zenoss 4.2.4 core-autodeploy script for Ubuntu and Debian!"
+echo "Blog Post: http://hydruid-blog.com/?p=241" && echo 
 echo "Notes: All feedback and suggestions are appreciated." && echo && sleep 5
 
 # Installer variables
 ## Home path for the zenoss user
-zenosshome="/home/zenoss"
+	zenosshome="/home/zenoss"
 ## Download Directory
-downdir="/tmp"
+	downdir="/tmp"
 
-# Update Ubuntu
+# Update OS
 apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y
 
 # Setup zenoss user and build environment
@@ -36,7 +36,7 @@ wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core
 mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
 
 # OS compatibility tests
-detect-os2 && detect-arch && detect-user
+detect-os && detect-arch && detect-user
 
 # Install Package Dependencies
 ## Java PPA
