@@ -39,17 +39,21 @@ mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
 detect-os && detect-arch && detect-user
 
 # Install Package Dependencies
-## Java PPA
-apt-get install python-software-properties -y && sleep 1
-echo | add-apt-repository ppa:webupd8team/java && sleep 1 && apt-get update
-## Install Packages
-apt-get install rrdtool libmysqlclient-dev nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev erlang-nox -y
-pkg-fix
-## MySQL Packages
-export DEBIAN_FRONTEND=noninteractive
-apt-get install mysql-server mysql-client mysql-common -y
-mysql-conn_test
-pkg-fix
+if grep -Fxq "ubuntu" $downdir/os.txt
+	## Java PPA
+	apt-get install python-software-properties -y && sleep 1
+	echo | add-apt-repository ppa:webupd8team/java && sleep 1 && apt-get update
+	## Install Packages
+	apt-get install rrdtool libmysqlclient-dev nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev erlang-nox -y
+	pkg-fix
+	export DEBIAN_FRONTEND=noninteractive
+	apt-get install mysql-server mysql-client mysql-common -y
+	mysql-conn_test
+	pkg-fix
+elif grep -Fxq "debian" $downdir/os.txt
+       then    echo "...need to add debian option" && exit 0
+else    echo "...OS Identifier not found" && exit 0
+fi
 
 # Download Zenoss DEB and install it
 wget -N hydruid-blog.com/zenoss-core-424-1897_02a_amd64.deb -P $downdir/
