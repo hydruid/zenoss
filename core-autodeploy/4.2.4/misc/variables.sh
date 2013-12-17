@@ -1,47 +1,42 @@
 #!/bin/bash
 #######################################################
-# Version: 03b                                        #
+# Version: 03c                                        #
 #######################################################
 
-# Variables
-export ZENHOME=/usr/local/zenoss
-export PYTHONPATH=/usr/local/zenoss/lib/python
-export PATH=/usr/local/zenoss/bin:$PATH
-export INSTANCE_HOME=$ZENHOME
-#INSTALLDIR="/home/zenoss/zenoss424-srpm_install"
-
+### CURRENT SECTION ###
+# Path Variables
+	export ZENHOME=/usr/local/zenoss
+	export PYTHONPATH=/usr/local/zenoss/lib/python
+	export PATH=/usr/local/zenoss/bin:$PATH
+	export INSTANCE_HOME=$ZENHOME
 # Functions
 menu-os () {
-echo && echo "...Non Supported OS detected...would you like to continue anyways?"
-PS3='(Press 1 or 2): '
-options=("Yes" "No")
-select opt in "${options[@]}"
-do
-case $opt in
-"Yes")
-echo "...continuing script with Non Supported OS...good luck!"
-break
-;;
-"No")
-echo "...stopping script" && exit 0
-break
-;;
-        *) echo invalid option;;
-esac
-done } 
-
+	echo && echo "...Non Supported OS detected...would you like to continue anyways?"
+	PS3='(Press 1 or 2): '
+	options=("Yes" "No")
+	select opt in "${options[@]}"
+	do case $opt in "Yes") echo "...continuing script with Non Supported OS...good luck!"
+	break ;;
+	"No") echo "...stopping script" && exit 0
+	break ;; *) echo invalid option;; esac
+	done }
+supos="echo ...Supported OS detected."
 detect-os () {
-if grep -Fxq "Ubuntu 13.04" /etc/issue.net
-        then    echo "...Supported OS detected." && echo "ubuntu" >> $downdir/os.txt
-elif grep -Fxq "Ubuntu 13.10" /etc/issue.net
-       then    echo "...Supported OS detected." && echo "ubuntu" >> $downdir/os.txt
-elif grep -Fxq "Ubuntu 12.04.3 LTS" /etc/issue.net
-       then    echo "...Supported OS detected." && echo "ubuntu" >> $downdir/os.txt
-elif grep -Fxq "Debian GNU/Linux 7" /etc/issue.net
-       then    echo "...Supported OS detected." && echo "debian" >> $downdir/os.txt
-else    menu-os
-fi      }
+	if grep -q "Ubuntu 13" /etc/issue.net
+		then    $supos && curos="ubuntu"
+	elif grep -q "Ubuntu 12" /etc/issue.net
+		then    $supos && curos="ubuntu"
+	elif grep -Fxq "Debian GNU/Linux 7" /etc/issue.net
+	then    $supos && curos="debian"
+	else    menu-os
+	fi      }
 
+
+### LEGACY SECTION ###
+# Path Variables
+	#INSTALLDIR="/home/zenoss/zenoss424-srpm_install"
+
+# Functions
 detect-os2 () {
 if grep -Fxq "Ubuntu 13.04" /etc/issue.net
         then    echo "...Supported OS detected."
