@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 04a Alpha - 02                             #
+# Version: 04a Alpha - 03                             #
 #  Status: Not Functional                             #
 #   Notes: Combining Ubuntu & Debian scripts          #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
@@ -90,6 +90,7 @@ mysql -u root -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'%';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'%';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'%';"
 mysql -u root -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'%';"
+rm ~zenoss/*.sql
 
 # Rabbit install and config
 wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.2.1/rabbitmq-server_3.2.1-1_all.deb -P $downdir/
@@ -100,16 +101,13 @@ rabbitmqctl add_vhost /zenoss
 rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'
 
 # Post Install Tweaks
-## Misc OS Fixes
 os-fixes
-## ZenUp
 ln -s /usr/local/zenoss /opt
 apt-get install libssl1.0.0 libssl-dev -y
 ln -s /lib/x86_64-linux-gnu/libssl.so.1.0.0 /usr/lib/libssl.so.10
 ln -s /lib/x86_64-linux-gnu/libcrypto.so.1.0.0 /usr/lib/libcrypto.so.10
 ln -s /usr/local/zenoss/zenup /opt
 chmod +x /usr/local/zenoss/zenup/bin/zenup
-## Misc.
 echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
 touch $ZENHOME/var/Data.fs
 cp $ZENHOME/bin/zenoss /etc/init.d/zenoss
