@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 04a Alpha - 04                             #
+# Version: 04a Alpha - 05                             #
 #  Status: Functional but not ready for production    #
 #   Notes: Combining Ubuntu & Debian scripts          #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
@@ -103,6 +103,22 @@ rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'
 
 # Post Install Tweaks
 os-fixes
+if [ $curos = "debian" ]; then
+touch /etc/insserv/overrides/zenoss
+        cat > /etc/insserv/overrides/zenoss << EOL
+        ### BEGIN INIT INFO
+        # Provides: zenoss-stack
+        # Required-Start: $local_fs $remote_fs
+        # Required-Stop: $local_fs $remote_fs
+        # Should-Start: $all
+        # Should-Stop: $all
+        # Default-Start: 2 3 4 5
+        # Default-Stop: 0 1 6
+        # Short-Description: Start/stop Zenoss-stack
+        # Description: Start/stop Zenoss-stack
+        ### END INIT INFO
+	EOL
+fi
 ln -s /usr/local/zenoss /opt
 apt-get install libssl1.0.0 libssl-dev -y
 ln -s /lib/x86_64-linux-gnu/libssl.so.1.0.0 /usr/lib/libssl.so.10
