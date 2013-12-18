@@ -110,7 +110,7 @@ elif grep -Fxq "Ubuntu 13.10" /etc/issue.net
 elif grep -Fxq "Ubuntu 12.04.3 LTS" /etc/issue.net
        then    echo "...No specific OS fixes needed."
 elif grep -Fxq "Debian GNU/Linux 7" /etc/issue.net
-	touch /etc/insserv/overrides/zenoss
+	then	touch /etc/insserv/overrides/zenoss
 	cat > /etc/insserv/overrides/zenoss << EOL
 	### BEGIN INIT INFO
 	# Provides: zenoss-stack
