@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 04a Alpha - 05                             #
+# Version: 04a Alpha - 06                             #
 #  Status: Functional but not ready for production    #
 #   Notes: Combining Ubuntu & Debian scripts          #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
@@ -103,22 +103,6 @@ rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'
 
 # Post Install Tweaks
 os-fixes
-if [ $curos = "debian" ]; then
-touch /etc/insserv/overrides/zenoss
-        cat > /etc/insserv/overrides/zenoss << EOL
-        ### BEGIN INIT INFO
-        # Provides: zenoss-stack
-        # Required-Start: $local_fs $remote_fs
-        # Required-Stop: $local_fs $remote_fs
-        # Should-Start: $all
-        # Should-Stop: $all
-        # Default-Start: 2 3 4 5
-        # Default-Stop: 0 1 6
-        # Short-Description: Start/stop Zenoss-stack
-        # Description: Start/stop Zenoss-stack
-        ### END INIT INFO
-	EOL
-fi
 ln -s /usr/local/zenoss /opt
 apt-get install libssl1.0.0 libssl-dev -y
 ln -s /lib/x86_64-linux-gnu/libssl.so.1.0.0 /usr/lib/libssl.so.10
@@ -130,6 +114,20 @@ touch $ZENHOME/var/Data.fs
 cp $ZENHOME/bin/zenoss /etc/init.d/zenoss
 su - root -c "sed -i 's:# License.zenoss under the directory where your Zenoss product is installed.:# License.zenoss under the directory where your Zenoss product is installed.\n#\n#Custom Ubuntu Variables\nexport ZENHOME=$ZENHOME\nexport RRDCACHED=$ZENHOME/bin/rrdcached:g' /etc/init.d/zenoss"
 update-rc.d zenoss defaults && sleep 2
+touch /etc/insserv/overrides/zenoss
+cat > /etc/insserv/overrides/zenoss << EOL
+### BEGIN INIT INFO
+# Provides: zenoss-stack
+# Required-Start: $local_fs $remote_fs
+# Required-Stop: $local_fs $remote_fs
+# Should-Start: $all
+# Should-Stop: $all
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Start/stop Zenoss-stack
+# Description: Start/stop Zenoss-stack
+### END INIT INFO
+EOL
 chown -c root:zenoss /usr/local/zenoss/bin/pyraw
 chown -c root:zenoss /usr/local/zenoss/bin/zensocket
 chown -c root:zenoss /usr/local/zenoss/bin/nmap
