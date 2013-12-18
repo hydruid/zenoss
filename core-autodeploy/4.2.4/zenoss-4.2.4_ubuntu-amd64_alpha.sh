@@ -1,7 +1,7 @@
 #!/bin/bash
 #######################################################
-# Version: 04a Alpha - 03                             #
-#  Status: Not Functional                             #
+# Version: 04a Alpha - 04                             #
+#  Status: Functional but not ready for production    #
 #   Notes: Combining Ubuntu & Debian scripts          #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
 #      OS: Ubuntu/Debian x86_64 (requires 64-bit os)  #
@@ -31,6 +31,7 @@ echo 'export INSTANCE_HOME=$ZENHOME' >> $zenosshome/.bashrc
 echo 'export PATH=/opt/zenup/bin:$PATH' >> $zenosshome/.bashrc
 chmod 644 $zenosshome/.bashrc
 mkdir $zenosshome/zenoss424-srpm_install
+rm -f $zenosshome/zenoss424-srpm_install/variables.sh
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P $zenosshome/zenoss424-srpm_install/
 . $zenosshome/zenoss424-srpm_install/variables.sh
 mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
