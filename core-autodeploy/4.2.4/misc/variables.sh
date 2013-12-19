@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 03g                                        #
+# Version: 03h                                        #
 #######################################################
 
 ### CURRENT SECTION ###
@@ -34,7 +34,7 @@ detect-os () {
 mysql-conn_test () {
 	mysql -u root -e "show databases;" > /tmp/mysql.txt 2>> /tmp/mysql.txt
 	if grep -Fxq "Database" /tmp/mysql.txt
-		then    echo "...MySQL connection test successful."
+		then    echo "...MySQL connection test successful." && && mysqlcred="no"
 		else    echo "...Mysql connection failed...starting credentials menu." && mysql-cred 
 	fi      }
 
@@ -95,14 +95,8 @@ apt-get update
 	}
 
 give-props () {
-apt-get install lynx -y 
-lynx http://hydruid-blog.com/?cat=5 > /dev/null & echo
-lynx http://hydruid-blog.com/?cat=5 > /dev/null & echo
-lynx http://hydruid-blog.com/?cat=5 > /dev/null & echo
-wget -N http://softlayer-dal.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/4.2.4-1897/zenoss_core-4.2.4-1897.el6.src.rpm -P ~zenoss/
-killall lynx > /dev/null & echo
-apt-get remove lynx -y > /dev/null & echo
-        }
+echo "..."        
+}
 
 pkg-fix () {
 apt-get -f install
