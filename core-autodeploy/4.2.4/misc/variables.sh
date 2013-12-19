@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 03e                                        #
+# Version: 03f                                        #
 #######################################################
 
 ### CURRENT SECTION ###
@@ -31,6 +31,23 @@ detect-os () {
 	else    menu-os
 	fi      }
 
+mysql-conn_test () {
+	mysql -u root -e "show databases;" > /tmp/mysql.txt 2>> /tmp/mysql.txt
+	if grep -Fxq "Database" /tmp/mysql.txt
+		then    echo "...MySQL connection test successful."
+		else    echo "...Mysql connection failed...make sure the password is blank for the root MySQL user." && exit 0
+	fi      }
+
+mysql-cred () {
+	echo "Enter your MySQL admin credentials"
+	read -p "...username: " username
+	read -p "...password: " password
+	echo & echo "Testing MySQL Connection..."
+	mysql -u$username -p$password -e "show databases;" > /tmp/mysql.txt 2>> /tmp/mysql.txt
+	if grep -Fxq "Database" /tmp/mysql.txt
+		then echo "...MySQL connection test successful." && mysqlcred="yes"
+		else echo "...Mysql connection failed." && exit 0
+	fi	}
 
 ### LEGACY SECTION ###
 # Path Variables
@@ -65,13 +82,6 @@ detect-user () {
 if [ `whoami` != 'zenoss' ];
         then    echo "...All system checks passed."
         else    echo "...This script should not be ran by the zenoss user" && exit 0
-fi	}
-
-mysql-conn_test () {
-mysql -u root -e "show databases;" > /tmp/mysql.txt 2>> /tmp/mysql.txt
-if grep -Fxq "Database" /tmp/mysql.txt
-        then    echo "...MySQL connection test successful."
-        else    echo "...Mysql connection failed...make sure the password is blank for the root MySQL user." && exit 0
 fi	}
 
 debian-testing-repo () {
