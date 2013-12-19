@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 04a Alpha - 06                             #
+# Version: 04a Alpha - 07                             #
 #  Status: Functional but not ready for production    #
 #   Notes: Combining Ubuntu & Debian scripts          #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
@@ -68,6 +68,8 @@ fi
 # Download Zenoss DEB and install it
 wget -N http://master.dl.sourceforge.net/project/zenossforubuntu/zenoss-core-424-1897_02a_amd64.deb -P $downdir/
 dpkg -i $downdir/zenoss-core-424-1897_02a_amd64.deb
+rm -f $zenosshome/zenoss424-srpm_install/variables.sh
+wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P $zenosshome/zenoss424-srpm_install/
 chown -R zenoss:zenoss $ZENHOME
 give-props
 
