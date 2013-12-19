@@ -1,7 +1,7 @@
 #!/bin/bash
 #######################################################
-# Version: 04a Alpha - 07                             #
-#  Status: Functional but not ready for production    #
+# Version: 04a Alpha - 08                             #
+#  Status: Not Functional                             # 
 #   Notes: Combining Ubuntu & Debian scripts          #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
 #      OS: Ubuntu/Debian x86_64 (requires 64-bit os)  #
@@ -74,26 +74,51 @@ chown -R zenoss:zenoss $ZENHOME
 give-props
 
 # Import the MySQL Database and create users
-mysql -u root -e "create database zenoss_zep"
-mysql -u root -e "create database zodb"
-mysql -u root -e "create database zodb_session"
-echo "...The 1305 MySQL import error below is save to ignore"
-mysql -u root zenoss_zep < $zenosshome/zenoss_zep.sql
-mysql -u root zodb < $zenosshome/zodb.sql
-mysql -u root zodb_session < $zenosshome/zodb_session.sql
-mysql -u root -e "CREATE USER 'zenoss'@'localhost' IDENTIFIED BY  'zenoss';"
-mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'localhost' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'localhost';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'localhost';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'localhost';"
-mysql -u root -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'localhost';"
-mysql -u root -e "CREATE USER 'zenoss'@'%' IDENTIFIED BY  'zenoss';"
-mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'%' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'%';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'%';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'%';"
-mysql -u root -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'%';"
-rm ~zenoss/*.sql
+if [ $mysqlcred = "yes" ]; then
+	mysql -u$username -p$password -e "create database zenoss_zep"
+	mysql -u$username -p$password -e "create database zodb"
+	mysql -u$username -p$password -e "create database zodb_session"
+	echo "...The 1305 MySQL import error below is save to ignore"
+	mysql -u$username -p$password zenoss_zep < $zenosshome/zenoss_zep.sql
+	mysql -u$username -p$password zodb < $zenosshome/zodb.sql
+	mysql -u$username -p$password zodb_session < $zenosshome/zodb_session.sql
+	mysql -u$username -p$password -e "CREATE USER 'zenoss'@'localhost' IDENTIFIED BY  'zenoss';"
+	mysql -u$username -p$password -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'localhost' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
+	mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'localhost';"
+	mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'localhost';"
+	mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'localhost';"
+	mysql -u$username -p$password -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'localhost';"
+	mysql -u$username -p$password -e "CREATE USER 'zenoss'@'%' IDENTIFIED BY  'zenoss';"
+	mysql -u$username -p$password -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'%' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
+	mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'%';"
+	mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'%';"
+	mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'%';"
+	mysql -u$username -p$password -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'%';"
+	rm ~zenoss/*.sql
+	else
+		mysql -u root -e "create database zenoss_zep"
+		mysql -u root -e "create database zodb"
+		mysql -u root -e "create database zodb_session"
+		echo "...The 1305 MySQL import error below is save to ignore"
+		mysql -u root zenoss_zep < $zenosshome/zenoss_zep.sql
+		mysql -u root zodb < $zenosshome/zodb.sql
+		mysql -u root zodb_session < $zenosshome/zodb_session.sql
+		mysql -u root -e "CREATE USER 'zenoss'@'localhost' IDENTIFIED BY  'zenoss';"
+		mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'localhost' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
+		mysql -u root -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'localhost';"
+		mysql -u root -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'localhost';"
+		mysql -u root -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'localhost';"
+		mysql -u root -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'localhost';"
+		mysql -u root -e "CREATE USER 'zenoss'@'%' IDENTIFIED BY  'zenoss';"
+		mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'%' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
+		mysql -u root -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'%';"
+		mysql -u root -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'%';"
+		mysql -u root -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'%';"
+		mysql -u root -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'%';"
+		rm ~zenoss/*.sql
+fi
+
+exit 0
 
 # Rabbit install and config
 wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.2.1/rabbitmq-server_3.2.1-1_all.deb -P $downdir/
