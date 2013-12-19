@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 03f                                        #
+# Version: 03g                                        #
 #######################################################
 
 ### CURRENT SECTION ###
@@ -35,7 +35,7 @@ mysql-conn_test () {
 	mysql -u root -e "show databases;" > /tmp/mysql.txt 2>> /tmp/mysql.txt
 	if grep -Fxq "Database" /tmp/mysql.txt
 		then    echo "...MySQL connection test successful."
-		else    echo "...Mysql connection failed...make sure the password is blank for the root MySQL user." && exit 0
+		else    echo "...Mysql connection failed...starting credentials menu." && mysql-cred 
 	fi      }
 
 mysql-cred () {
