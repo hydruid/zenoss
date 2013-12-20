@@ -1,5 +1,5 @@
 #######################################################
-# Version: 01r                                        #
+# Version: 01s                                        #
 # http://hydruid-blog.com/?cat=5                      #
 #######################################################
 
@@ -9,17 +9,12 @@ This text file is the version changelog for the scripts in this directory.
 Current:
 	Debian	
 		zenoss-4.2.4_debian-amd64 -
-                        10-28-13 - Version-01b: set wget to "--no-check-certificate" for https url's
-		        10-17-13 - Version-01a: created from zenoss-4.2.4_debian-amd64_alpha.sh alpha 
-		zenoss-4.2.4_debian-amd64_alpha.sh -
-			10-17-13 - Alpha: various tweaks applied, stable will be released soon 
-			10-14-13 - Alpha: created from zenoss-4.2.4_ubuntu-amd64.sh stable, not functional yet
+                        10-28-13 - Version 01b: set wget to "--no-check-certificate" for https url's
+		        10-17-13 - Version 01a: created from zenoss-4.2.4_debian-amd64_alpha.sh alpha 
 	Ubuntu
 		zenoss-4.2.4_ubuntu-amd64.sh -
-                        12-03-13 - Version-03b: Minor update to resolve OS issue with 13.10+netsnmp 
-			12-02-13 - Version-03a: Includes updated DEB with ZenUP
-                        11-18-13 - Version-02a: mostly just code cleanup
-			09-30-13 - Version-01b: created from zenoss424_ub1304_alpha.sh alpha
-		zenoss-4.2.4_ubuntu-amd64_alpha.sh -
-                        11-17-13 - Alpha: code cleanup almost complete
-		        10-17-13 - Alpha: created from zenoss-4.2.4_ubuntu-amd64.sh stable
+			12-20-13 - 04a: Tweaks and combined Ubuntu/Debian scripts 
+                        12-03-13 - 03b: Minor update to resolve OS issue with 13.10+netsnmp 
+			12-02-13 - 03a: Includes updated DEB with ZenUP
+                        11-18-13 - 02a: mostly just code cleanup
+			09-30-13 - 01b: created from zenoss424_ub1304_alpha.sh alpha
