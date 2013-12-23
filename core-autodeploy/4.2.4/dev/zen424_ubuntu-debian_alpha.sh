@@ -36,6 +36,7 @@ if not os.path.exists(os.path.join(zenosshome, 'zenoss424-srpm_install')):
 urllib.urlretrieve(varurl, os.path.join(zenosshome, "zenoss424-srpm_install/variables.sh"))
 
 
+
 #. $zenosshome/zenoss424-srpm_install/variables.sh
 #mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
 
