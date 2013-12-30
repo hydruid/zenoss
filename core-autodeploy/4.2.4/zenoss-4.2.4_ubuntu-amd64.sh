@@ -1,6 +1,6 @@
 #!/bin/bash
 #######################################################
-# Version: 04a                                        #
+# Version: 04b                                        #
 #  Status: Functional                                 # 
 #   Notes: Combined Ubuntu/Debian scripts             #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
@@ -10,7 +10,8 @@
 # Beginning Script Message
 echo && echo "Welcome to the Zenoss 4.2.4 core-autodeploy script for Ubuntu and Debian!"
 echo "Blog Post: http://hydruid-blog.com/?p=241" && echo 
-echo "Notes: All feedback and suggestions are appreciated." && echo && sleep 5
+echo "Notes: All feedback and suggestions are appreciated." && echo
+echo "Warning: This script will update your OS. For Debian users it will also install the testing version of libc6. Make sure to make a backup and/or take a snapshot!" && echo && sleep 5
 
 # Installer variables
 ## Home path for the zenoss user
