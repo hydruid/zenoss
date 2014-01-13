@@ -1,8 +1,8 @@
 #!/bin/bash
 #######################################################
-# Version: 04b                                        #
+# Version: 04c                                        #
 #  Status: Functional                                 # 
-#   Notes: Combined Ubuntu/Debian scripts             #
+#   Notes: Updated /etc/init.d/script                 #
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
 #      OS: Ubuntu/Debian x86_64 (requires 64-bit os)  #
 #######################################################
@@ -137,7 +137,8 @@ ln -s /usr/local/zenoss/zenup /opt
 chmod +x /usr/local/zenoss/zenup/bin/zenup
 echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
 touch $ZENHOME/var/Data.fs
-cp $ZENHOME/bin/zenoss /etc/init.d/zenoss
+wget --no-check-certificate -N https://raw2.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/zenoss -P $downdir/
+cp $downdir/zenoss /etc/init.d/zenoss
 su - root -c "sed -i 's:# License.zenoss under the directory where your Zenoss product is installed.:# License.zenoss under the directory where your Zenoss product is installed.\n#\n#Custom Ubuntu Variables\nexport ZENHOME=$ZENHOME\nexport RRDCACHED=$ZENHOME/bin/rrdcached:g' /etc/init.d/zenoss"
 update-rc.d zenoss defaults && sleep 2
 touch /etc/insserv/overrides/zenoss
