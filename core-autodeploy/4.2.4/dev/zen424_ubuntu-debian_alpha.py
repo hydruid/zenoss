@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #######################################################
-# Version: 01a Alpha03
+# Version: 01a Alpha04
 #  Status: Not Functional                             
 #   Notes: Converting to Python                       
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              
@@ -13,6 +13,7 @@ import time
 import urllib
 import pwd
 import grp
+import struct
 
 # Script variables
 zenosshome="/home/zenoss"
@@ -20,6 +21,8 @@ downdir="/tmp"
 varurl="https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/dev/variables.py"
 zenuid=pwd.getpwnam("zenoss").pw_uid
 zengid=grp.getgrnam("zenoss").gr_gid
+MYSQLUSER="root"
+MYSQLPASSWORD=""
 
 # Message
 os.system('clear')
@@ -44,17 +47,38 @@ if not os.path.exists(ZENHOME):
 os.chown(ZENHOME, zenuid, zengid)
 
 # OS Compatibility Tests
-if detectos('/etc/issue.net', 'Ubuntu 13'):
+if readfile('/etc/issue.net', 'Ubuntu 13'):
     print "...Supported OS detected"
-elif detectos('/etc/issue.net', 'Ubuntu 12'):
+    OS="ubuntu"
+elif readfile('/etc/issue.net', 'Ubuntu 12'):
     print "...Supported OS detected"
-elif detectos('/etc/issue.net', 'Debian 7'):
+    OS="ubuntu"
+elif readfile('/etc/issue.net', 'Debian 7'):
     print "...Supported OS detected"
+    OS="debian"
 else:
     sys.exit("...OS is not supported")
 
-#detect-arch && detect-user
+if ARCH < 64:
+    sys.exit("...Arch is not supported, Zenoss requires a 64bit OS")
+if 'zenoss' in USER:
+    sys.exit("...This script can not be ran by the 'zenoss' user")
 
-
-
+# Install Package Dependencies
+if 'ubuntu' in OS:
+    os.system('apt-get install python-software-properties -y')
+    os.system('echo | add-apt-repository ppa:webupd8team/java')
+    os.system('apt-get update')
+    UBUNTUPKGS
+    PKGFIX
+    UBUNTUPKGS
+    PKGFIX
+    os.system('export DEBIAN_FRONTEND=noninteractive')
+    os.system('apt-get install mysql-server mysql-client mysql-common -y')
+    os.system('mysql -u root -e "show databases;" > /tmp/mysqltest 2>> /tmp/mysqltest')
+    if readfile('/tmp/mysqltest', 'Database'):
+         MYSQLCRED="no"
+         print "...MySQL connection test successful"
+    else:
+         
 exit()
