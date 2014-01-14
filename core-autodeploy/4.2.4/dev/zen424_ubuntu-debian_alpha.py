@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #######################################################
-# Version: 01a Alpha04
+# Version: 01a Alpha05
 #  Status: Not Functional                             
 #   Notes: Converting to Python                       
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              
@@ -14,15 +14,17 @@ import urllib
 import pwd
 import grp
 import struct
+import MySQLdb
 
 # Script variables
-zenosshome="/home/zenoss"
-downdir="/tmp"
-varurl="https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/dev/variables.py"
-zenuid=pwd.getpwnam("zenoss").pw_uid
-zengid=grp.getgrnam("zenoss").gr_gid
+ZENOSSHOME="/home/zenoss"
+DOWNDIR="/tmp"
+VARURL="https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/dev/variables.py"
+DEBURL="http://master.dl.sourceforge.net/project/zenossforubuntu/zenoss-core-424-1897_02a_amd64.deb"
+ZENUID=pwd.getpwnam("zenoss").pw_uid
+ZENGID=grp.getgrnam("zenoss").gr_gid
 MYSQLUSER="root"
-MYSQLPASSWORD=""
+MYSQLPASS=""
 
 # Message
 os.system('clear')
@@ -36,15 +38,15 @@ os.system('apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y')
 
 # Zenoss User
 os.system('useradd -m -U -s /bin/bash zenoss')
-with open(os.path.join(zenosshome, '.bashrc'), "a") as f:
+with open(os.path.join(ZENOSSHOME, '.bashrc'), "a") as f:
     f.write("export ZENHOME=/usr/local/zenoss\nexport PYTHONPATH=/usr/local/zenoss/lib/python\nexport PATH=/usr/local/zenoss/bin:$PATH\nexport INSTANCE_HOME=$ZENHOME\nexport PATH=/opt/zenup/bin:$PATH")
-if not os.path.exists(os.path.join(zenosshome, 'zenoss424-srpm_install')):
-    os.makedirs(os.path.join(zenosshome, 'zenoss424-srpm_install'))
-urllib.urlretrieve(varurl, os.path.join(zenosshome, "zenoss424-srpm_install/variables.py"))
+if not os.path.exists(os.path.join(ZENOSSHOME, 'zenoss424-srpm_install')):
+    os.makedirs(os.path.join(ZENOSSHOME, 'zenoss424-srpm_install'))
+urllib.urlretrieve(VARURL, os.path.join(ZENOSSHOME, "zenoss424-srpm_install/variables.py"))
 execfile("/home/zenoss/zenoss424-srpm_install/variables.py")
 if not os.path.exists(ZENHOME):
     os.makedirs(ZENHOME)
-os.chown(ZENHOME, zenuid, zengid)
+os.chown(ZENHOME, ZENUID, ZENGID)
 
 # OS Compatibility Tests
 if readfile('/etc/issue.net', 'Ubuntu 13'):
@@ -75,10 +77,29 @@ if 'ubuntu' in OS:
     PKGFIX
     os.system('export DEBIAN_FRONTEND=noninteractive')
     os.system('apt-get install mysql-server mysql-client mysql-common -y')
-    os.system('mysql -u root -e "show databases;" > /tmp/mysqltest 2>> /tmp/mysqltest')
-    if readfile('/tmp/mysqltest', 'Database'):
-         MYSQLCRED="no"
-         print "...MySQL connection test successful"
-    else:
-         
+    db = MySQLdb.connect("localhost",MYSQLUSER,MYSQLPASS,"test" )
+    cursor = db.cursor()
+    cursor.execute("SELECT VERSION()")
+    data = cursor.fetchone()
+    print "...Testing MySQL Database\n......Database version : %s " % data
+    db.close()
+if 'debian' in OS:
+    os.system('apt-get install python-software-properties -y')
+    os.system('echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | tee -a /etc/apt/sources.list')
+    os.system('echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | tee -a /etc/apt/sources.lis')
+    os.system('apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886')
+    os.system('apt-get update')
+    DEBIANPKGS
+    PKGFIX
+    DEBIANPKGS
+    PKGFIX
+    print "...THIS SECTION NOT COMPLETE"
+
+# Download Zenoss DEB and install it
+print "...Downloading Zenoss DEB"
+urllib.urlretrieve(DEBURL, os.path.join(DOWNDIR, 'zenoss-core-424-1897_02a_amd64.deb'))
+DEBINSTALL=os.path.join('dpkg -i ', DOWNDIR.strip("/"), 'zenoss-core-424-1897_02a_amd64.deb')
+os.system(DEBINSTALL)
+#chown -R zenoss:zenoss $ZENHOME
+
 exit()
