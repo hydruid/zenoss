@@ -100,6 +100,31 @@ print "...Downloading Zenoss DEB"
 urllib.urlretrieve(DEBURL, os.path.join(DOWNDIR, 'zenoss-core-424-1897_02a_amd64.deb'))
 DEBINSTALL=os.path.join('dpkg -i ', DOWNDIR.strip("/"), 'zenoss-core-424-1897_02a_amd64.deb')
 os.system(DEBINSTALL)
-#chown -R zenoss:zenoss $ZENHOME
+os.chown(ZENHOME, ZENUID, ZENGID)
+
+# Import the MySQL Database and create users
+if [ $mysqlcred = "yes" ]; then
+        mysql -u$username -p$password -e "create database zenoss_zep"
+        mysql -u$username -p$password -e "create database zodb"
+        mysql -u$username -p$password -e "create database zodb_session"
+        echo "...The 1305 MySQL import error below is save to ignore"
+        mysql -u$username -p$password zenoss_zep < $zenosshome/zenoss_zep.sql
+        mysql -u$username -p$password zodb < $zenosshome/zodb.sql
+        mysql -u$username -p$password zodb_session < $zenosshome/zodb_session.sql
+        mysql -u$username -p$password -e "CREATE USER 'zenoss'@'localhost' IDENTIFIED BY  'zenoss';"
+        mysql -u$username -p$password -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'localhost' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
+        mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'localhost';"
+        mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'localhost';"
+        mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'localhost';"
+        mysql -u$username -p$password -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'localhost';"
+        mysql -u$username -p$password -e "CREATE USER 'zenoss'@'%' IDENTIFIED BY  'zenoss';"
+        mysql -u$username -p$password -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'%' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
+        mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'%';"
+        mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'%';"
+        mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'%';"
+        mysql -u$username -p$password -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'%';"
+        rm ~zenoss/*.sql
+fi
+
 
 exit()
