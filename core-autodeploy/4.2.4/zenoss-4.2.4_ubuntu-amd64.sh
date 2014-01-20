@@ -78,7 +78,7 @@ if [ $mysqlcred = "yes" ]; then
 	mysql -u$username -p$password -e "create database zenoss_zep"
 	mysql -u$username -p$password -e "create database zodb"
 	mysql -u$username -p$password -e "create database zodb_session"
-	echo "...The 1305 MySQL import error below is save to ignore"
+	echo "...The 1305 MySQL import error below is safe to ignore"
 	mysql -u$username -p$password zenoss_zep < $zenosshome/zenoss_zep.sql
 	mysql -u$username -p$password zodb < $zenosshome/zodb.sql
 	mysql -u$username -p$password zodb_session < $zenosshome/zodb_session.sql
@@ -100,7 +100,7 @@ if [ $mysqlcred = "no" ]; then
 	mysql -u root -e "create database zenoss_zep"
 	mysql -u root -e "create database zodb"
 	mysql -u root -e "create database zodb_session"
-	echo "...The 1305 MySQL import error below is save to ignore"
+	echo "...The 1305 MySQL import error below is safe to ignore"
 	mysql -u root zenoss_zep < $zenosshome/zenoss_zep.sql
 	mysql -u root zodb < $zenosshome/zodb.sql
 	mysql -u root zodb_session < $zenosshome/zodb_session.sql
