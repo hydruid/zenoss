@@ -139,6 +139,7 @@ echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
 touch $ZENHOME/var/Data.fs
 wget --no-check-certificate -N https://raw2.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/zenoss -P $downdir/
 cp $downdir/zenoss /etc/init.d/zenoss
+chmod 755 /etc/init.d/zenoss
 update-rc.d zenoss defaults && sleep 2
 touch /etc/insserv/overrides/zenoss
 cat > /etc/insserv/overrides/zenoss << EOL

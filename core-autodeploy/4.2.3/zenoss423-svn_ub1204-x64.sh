@@ -127,6 +127,7 @@ su - zenoss -c "/bin/sh /home/zenoss/helper2.sh"
 # Complete post installation adjustments
 echo "Step 08: Post Installation Adjustments"
 cp /usr/local/zenoss/bin/zenoss /etc/init.d/zenoss
+chmod 755 /etc/init.d/zenoss
 touch /usr/local/zenoss/var/Data.fs && chown zenoss:zenoss /usr/local/zenoss/var/Data.fs
 su - root -c "sed -i 's:# License.zenoss under the directory where your Zenoss product is installed.:# License.zenoss under the directory where your Zenoss product is installed.\n#\n#Custom Ubuntu Variables\nexport ZENHOME=/usr/local/zenoss\nexport RRDCACHED=/usr/local/zenoss/bin/rrdcached:g' /etc/init.d/zenoss"
 update-rc.d zenoss defaults
