@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #######################################################
-# Version: 01a Alpha06
+# Version: 01a Alpha07
 #  Status: Not Functional                             
 #   Notes: Converting to Python                       
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              
@@ -105,33 +105,9 @@ os.chown(ZENHOME, ZENUID, ZENGID)
 # Import the MySQL Database and create users
 db = MySQLdb.connect("localhost",MYSQLUSER,MYSQLPASS,"test" )
 cursor = db.cursor()
-cursor.execute("SHOW DATABASES")
-data = cursor.fetchone()
-print "...Testing MySQL Database\n......Database version : %s " % data
+COMMANDS = ('CREATE DATABASE zenoss_zep','CREATE DATABASE zodb','CREATE DATBASE zodb_session','zenoss_zep < $zenosshome/zenoss_zep.sql','zodb < $zenosshome/zodb.sql','zodb_session < $zenosshome/zodb_session.sql','CREATE USER 'zenoss'@'localhost' IDENTIFIED BY  'zenoss'','GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'localhost' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C'','GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'localhost'','GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'localhost', GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'localhost', GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'localhost', GRANT SELECT ON mysql.proc TO 'zenoss'@'localhost', CREATE USER 'zenoss'@'%' IDENTIFIED BY  'zenoss', GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'%' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C', GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'%', GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'%', GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'%', 'GRANT SELECT ON mysql.proc TO 'zenoss'@'%'')
+for COMMAND in COMMANDS:
+    cursor.execute(COMMAND)
 db.close()
-
-if [ $mysqlcred = "yes" ]; then
-        mysql -u$username -p$password -e "create database zenoss_zep"
-        mysql -u$username -p$password -e "create database zodb"
-        mysql -u$username -p$password -e "create database zodb_session"
-        echo "...The 1305 MySQL import error below is save to ignore"
-        mysql -u$username -p$password zenoss_zep < $zenosshome/zenoss_zep.sql
-        mysql -u$username -p$password zodb < $zenosshome/zodb.sql
-        mysql -u$username -p$password zodb_session < $zenosshome/zodb_session.sql
-        mysql -u$username -p$password -e "CREATE USER 'zenoss'@'localhost' IDENTIFIED BY  'zenoss';"
-        mysql -u$username -p$password -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'localhost' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
-        mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'localhost';"
-        mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'localhost';"
-        mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'localhost';"
-        mysql -u$username -p$password -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'localhost';"
-        mysql -u$username -p$password -e "CREATE USER 'zenoss'@'%' IDENTIFIED BY  'zenoss';"
-        mysql -u$username -p$password -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'%' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
-        mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'%';"
-        mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'%';"
-        mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'%';"
-        mysql -u$username -p$password -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'%';"
-        rm ~zenoss/*.sql
-fi
-
 
 exit()
