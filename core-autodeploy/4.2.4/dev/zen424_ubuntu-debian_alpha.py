@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #######################################################
-# Version: 01a Alpha05
+# Version: 01a Alpha06
 #  Status: Not Functional                             
 #   Notes: Converting to Python                       
 #  Zenoss: Core 4.2.4 & ZenPacks (v1897)              
@@ -103,6 +103,13 @@ os.system(DEBINSTALL)
 os.chown(ZENHOME, ZENUID, ZENGID)
 
 # Import the MySQL Database and create users
+db = MySQLdb.connect("localhost",MYSQLUSER,MYSQLPASS,"test" )
+cursor = db.cursor()
+cursor.execute("SHOW DATABASES")
+data = cursor.fetchone()
+print "...Testing MySQL Database\n......Database version : %s " % data
+db.close()
+
 if [ $mysqlcred = "yes" ]; then
         mysql -u$username -p$password -e "create database zenoss_zep"
         mysql -u$username -p$password -e "create database zodb"
