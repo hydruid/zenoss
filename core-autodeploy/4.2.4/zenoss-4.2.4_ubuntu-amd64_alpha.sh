@@ -1,39 +1,40 @@
 #!/bin/bash
-#######################################################
-# Version: 04a Alpha - 09                             #
-#  Status: Not Functional                             # 
-#   Notes: Combining Ubuntu & Debian scripts          #
-#  Zenoss: Core 4.2.4 & ZenPacks (v1897)              #
-#      OS: Ubuntu/Debian x86_64 (requires 64-bit os)  #
-#######################################################
+##########################################
+# Version: 04d Alpha01
+#  Status: Not Functional
+#   Notes: Upddating MySQL Section
+#  Zenoss: Core 4.2.4 (v1897) + ZenPacks
+#      OS: Ubuntu/Debian 64-Bit
+##########################################
 
 # Beginning Script Message
 echo && echo "Welcome to the Zenoss 4.2.4 core-autodeploy script for Ubuntu and Debian!"
 echo "Blog Post: http://hydruid-blog.com/?p=241" && echo 
-echo "Notes: All feedback and suggestions are appreciated." && echo && sleep 5
+echo "Notes: All feedback and suggestions are appreciated." && echo
+echo "Warning: This script will update your OS. For Debian users it will also install the testing version of libc6. Make sure to make a backup and/or take a snapshot!" && echo && sleep 5
 
 # Installer variables
-## Home path for the zenoss user
-	zenosshome="/home/zenoss"
-## Download Directory
-	downdir="/tmp"
+ZENOSSHOME="/home/zenoss"
+DOWNDIR="/tmp"
+MYSQLUSER="root"
+MYSQLPASS=""
 
 # Update OS
 apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y
 
 # Setup zenoss user and build environment
 useradd -m -U -s /bin/bash zenoss
-chmod 777 $zenosshome/.bashrc
-echo 'export ZENHOME=/usr/local/zenoss' >> $zenosshome/.bashrc
-echo 'export PYTHONPATH=/usr/local/zenoss/lib/python' >> $zenosshome/.bashrc
-echo 'export PATH=/usr/local/zenoss/bin:$PATH' >> $zenosshome/.bashrc
-echo 'export INSTANCE_HOME=$ZENHOME' >> $zenosshome/.bashrc
-echo 'export PATH=/opt/zenup/bin:$PATH' >> $zenosshome/.bashrc
-chmod 644 $zenosshome/.bashrc
-mkdir $zenosshome/zenoss424-srpm_install
-rm -f $zenosshome/zenoss424-srpm_install/variables.sh
-wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P $zenosshome/zenoss424-srpm_install/
-. $zenosshome/zenoss424-srpm_install/variables.sh
+chmod 777 $ZENOSSHOME/.bashrc
+echo 'export ZENHOME=/usr/local/zenoss' >> $ZENOSSHOME/.bashrc
+echo 'export PYTHONPATH=/usr/local/zenoss/lib/python' >> $ZENOSSHOME/.bashrc
+echo 'export PATH=/usr/local/zenoss/bin:$PATH' >> $ZENOSSHOME/.bashrc
+echo 'export INSTANCE_HOME=$ZENHOME' >> $ZENOSSHOME/.bashrc
+echo 'export PATH=/opt/zenup/bin:$PATH' >> $ZENOSSHOME/.bashrc
+chmod 644 $ZENOSSHOME/.bashrc
+mkdir $ZENOSSHOME/zenoss424-srpm_install
+rm -f $ZENOSSHOME/zenoss424-srpm_install/variables.sh
+wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P $ZENOSSHOME/zenoss424-srpm_install/
+. $ZENOSSHOME/zenoss424-srpm_install/variables.sh
 mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
 
 # OS compatibility tests
@@ -66,10 +67,10 @@ if [ $curos = "debian" ]; then
 fi
 
 # Download Zenoss DEB and install it
-wget -N http://master.dl.sourceforge.net/project/zenossforubuntu/zenoss-core-424-1897_02a_amd64.deb -P $downdir/
-dpkg -i $downdir/zenoss-core-424-1897_02a_amd64.deb
-rm -f $zenosshome/zenoss424-srpm_install/variables.sh
-wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P $zenosshome/zenoss424-srpm_install/
+wget -N http://master.dl.sourceforge.net/project/zenossforubuntu/zenoss-core-424-1897_02a_amd64.deb -P $DOWNDIR/
+dpkg -i $DOWNDIR/zenoss-core-424-1897_02a_amd64.deb
+rm -f $ZENOSSHOME/zenoss424-srpm_install/variables.sh
+wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P $ZENOSSHOME/zenoss424-srpm_install/
 chown -R zenoss:zenoss $ZENHOME
 
 # Import the MySQL Database and create users
@@ -78,9 +79,9 @@ if [ $mysqlcred = "yes" ]; then
 	mysql -u$username -p$password -e "create database zodb"
 	mysql -u$username -p$password -e "create database zodb_session"
 	echo "...The 1305 MySQL import error below is safe to ignore"
-	mysql -u$username -p$password zenoss_zep < $zenosshome/zenoss_zep.sql
-	mysql -u$username -p$password zodb < $zenosshome/zodb.sql
-	mysql -u$username -p$password zodb_session < $zenosshome/zodb_session.sql
+	mysql -u$username -p$password zenoss_zep < $ZENOSSHOME/zenoss_zep.sql
+	mysql -u$username -p$password zodb < $ZENOSSHOME/zodb.sql
+	mysql -u$username -p$password zodb_session < $ZENOSSHOME/zodb_session.sql
 	mysql -u$username -p$password -e "CREATE USER 'zenoss'@'localhost' IDENTIFIED BY  'zenoss';"
 	mysql -u$username -p$password -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'localhost' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
 	mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'localhost';"
@@ -100,9 +101,9 @@ if [ $mysqlcred = "no" ]; then
 	mysql -u root -e "create database zodb"
 	mysql -u root -e "create database zodb_session"
 	echo "...The 1305 MySQL import error below is safe to ignore"
-	mysql -u root zenoss_zep < $zenosshome/zenoss_zep.sql
-	mysql -u root zodb < $zenosshome/zodb.sql
-	mysql -u root zodb_session < $zenosshome/zodb_session.sql
+	mysql -u root zenoss_zep < $ZENOSSHOME/zenoss_zep.sql
+	mysql -u root zodb < $ZENOSSHOME/zodb.sql
+	mysql -u root zodb_session < $ZENOSSHOME/zodb_session.sql
 	mysql -u root -e "CREATE USER 'zenoss'@'localhost' IDENTIFIED BY  'zenoss';"
 	mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'localhost' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
 	mysql -u root -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'localhost';"
@@ -119,8 +120,8 @@ if [ $mysqlcred = "no" ]; then
 fi
 
 # Rabbit install and config
-wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.2.1/rabbitmq-server_3.2.1-1_all.deb -P $downdir/
-dpkg -i $downdir/rabbitmq-server_3.2.1-1_all.deb
+wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.2.1/rabbitmq-server_3.2.1-1_all.deb -P $DOWNDIR/
+dpkg -i $DOWNDIR/rabbitmq-server_3.2.1-1_all.deb
 chown -R zenoss:zenoss $ZENHOME
 rabbitmqctl add_user zenoss zenoss
 rabbitmqctl add_vhost /zenoss
@@ -136,9 +137,9 @@ ln -s /usr/local/zenoss/zenup /opt
 chmod +x /usr/local/zenoss/zenup/bin/zenup
 echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
 touch $ZENHOME/var/Data.fs
-cp $ZENHOME/bin/zenoss /etc/init.d/zenoss
+wget --no-check-certificate -N https://raw2.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/zenoss -P $DOWNDIR/
+cp $DOWNDIR/zenoss /etc/init.d/zenoss
 chmod 755 /etc/init.d/zenoss
-su - root -c "sed -i 's:# License.zenoss under the directory where your Zenoss product is installed.:# License.zenoss under the directory where your Zenoss product is installed.\n#\n#Custom Ubuntu Variables\nexport ZENHOME=$ZENHOME\nexport RRDCACHED=$ZENHOME/bin/rrdcached:g' /etc/init.d/zenoss"
 update-rc.d zenoss defaults && sleep 2
 touch /etc/insserv/overrides/zenoss
 cat > /etc/insserv/overrides/zenoss << EOL
