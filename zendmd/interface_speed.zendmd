@@ -1,6 +1,6 @@
 #!/usr/bin/env zendmd
 #####################
-# Version: 01a
+# Version: 01b
 #####################
 
 DEVICE = '172.16.41.21'
@@ -15,9 +15,8 @@ d = dmd.Devices.findDevice(DEVICE)
 for dev in d.Devices.getSubDevices():
     value = d.getProperty(dev)
     for interface in d.os.interfaces():
-        if interface.id.startswith(INTERFACE):
-#            print interface.id
-#            print interface.speed
-            interface.speed = (SPEED)
+        if INTERFACE == interface.id:
+            #print interface.id
+            #print interface.speed
+            interface.speed = float(SPEED)
             commit ()
-
