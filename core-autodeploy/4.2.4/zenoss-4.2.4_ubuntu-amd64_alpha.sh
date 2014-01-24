@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 04d Alpha01
+# Version: 04d Alpha02
 #  Status: Not Functional
 #   Notes: Upddating MySQL Section
 #  Zenoss: Core 4.2.4 (v1897) + ZenPacks
@@ -8,22 +8,21 @@
 ##########################################
 
 # Beginning Script Message
-echo && echo "Welcome to the Zenoss 4.2.4 core-autodeploy script for Ubuntu and Debian!"
-echo "Blog Post: http://hydruid-blog.com/?p=241" && echo 
-echo "Notes: All feedback and suggestions are appreciated." && echo
-echo "Warning: This script will update your OS. For Debian users it will also install the testing version of libc6. Make sure to make a backup and/or take a snapshot!" && echo && sleep 5
+clear
+echo && echo "Welcome to the Zenoss 4.2.4 core-autodeploy script for Ubuntu and Debian! (http://hydruid-blog.com/?p=241)" && echo
+echo "*WARNING*: This script will update your OS and for Debian users it will install the "Testing" version of some packages."
+echo "           Make sure to make a backup and/or take a snapshot!" && echo && sleep 5
+echo "...Begin, we will, learn you must." && sleep 1
 
 # Installer variables
 ZENOSSHOME="/home/zenoss"
 DOWNDIR="/tmp"
-MYSQLUSER="root"
-MYSQLPASS=""
 
 # Update OS
-apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y
+apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y && echo
 
 # Setup zenoss user and build environment
-useradd -m -U -s /bin/bash zenoss
+useradd -m -U -s /bin/bash zenoss && echo
 chmod 777 $ZENOSSHOME/.bashrc
 echo 'export ZENHOME=/usr/local/zenoss' >> $ZENOSSHOME/.bashrc
 echo 'export PYTHONPATH=/usr/local/zenoss/lib/python' >> $ZENOSSHOME/.bashrc
@@ -38,7 +37,7 @@ wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core
 mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
 
 # OS compatibility tests
-detect-os && detect-arch && detect-user
+detect-os && detect-arch && detect-user && echo
 
 # Install Package Dependencies
 if [ $curos = "ubuntu" ]; then
@@ -49,7 +48,7 @@ if [ $curos = "ubuntu" ]; then
 	export DEBIAN_FRONTEND=noninteractive
 	apt-get install mysql-server mysql-client mysql-common -y
 	mysql-conn_test
-	pkg-fix
+	echo && pkg-fix
 fi
 if [ $curos = "debian" ]; then
 	apt-get install python-software-properties -y && sleep 1
@@ -64,6 +63,7 @@ if [ $curos = "debian" ]; then
 	export DEBIAN_FRONTEND=noninteractive
 	apt-get install mysql-server mysql-client mysql-common -y
 	mysql-conn_test
+        echo && pkg-fix
 fi
 
 # Download Zenoss DEB and install it
@@ -74,50 +74,26 @@ wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core
 chown -R zenoss:zenoss $ZENHOME
 
 # Import the MySQL Database and create users
-if [ $mysqlcred = "yes" ]; then
-	mysql -u$username -p$password -e "create database zenoss_zep"
-	mysql -u$username -p$password -e "create database zodb"
-	mysql -u$username -p$password -e "create database zodb_session"
-	echo "...The 1305 MySQL import error below is safe to ignore"
-	mysql -u$username -p$password zenoss_zep < $ZENOSSHOME/zenoss_zep.sql
-	mysql -u$username -p$password zodb < $ZENOSSHOME/zodb.sql
-	mysql -u$username -p$password zodb_session < $ZENOSSHOME/zodb_session.sql
-	mysql -u$username -p$password -e "CREATE USER 'zenoss'@'localhost' IDENTIFIED BY  'zenoss';"
-	mysql -u$username -p$password -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'localhost' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
-	mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'localhost';"
-	mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'localhost';"
-	mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'localhost';"
-	mysql -u$username -p$password -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'localhost';"
-	mysql -u$username -p$password -e "CREATE USER 'zenoss'@'%' IDENTIFIED BY  'zenoss';"
-	mysql -u$username -p$password -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'%' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
-	mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'%';"
-	mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'%';"
-	mysql -u$username -p$password -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'%';"
-	mysql -u$username -p$password -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'%';"
-	rm ~zenoss/*.sql
-fi
-if [ $mysqlcred = "no" ]; then
-	mysql -u root -e "create database zenoss_zep"
-	mysql -u root -e "create database zodb"
-	mysql -u root -e "create database zodb_session"
-	echo "...The 1305 MySQL import error below is safe to ignore"
-	mysql -u root zenoss_zep < $ZENOSSHOME/zenoss_zep.sql
-	mysql -u root zodb < $ZENOSSHOME/zodb.sql
-	mysql -u root zodb_session < $ZENOSSHOME/zodb_session.sql
-	mysql -u root -e "CREATE USER 'zenoss'@'localhost' IDENTIFIED BY  'zenoss';"
-	mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'localhost' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
-	mysql -u root -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'localhost';"
-	mysql -u root -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'localhost';"
-	mysql -u root -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'localhost';"
-	mysql -u root -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'localhost';"
-	mysql -u root -e "CREATE USER 'zenoss'@'%' IDENTIFIED BY  'zenoss';"
-	mysql -u root -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'%' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
-	mysql -u root -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'%';"
-	mysql -u root -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'%';"
-	mysql -u root -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'%';"
-	mysql -u root -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'%';"
-	rm ~zenoss/*.sql
-fi
+mysql -u$MYSQLUSER -p$MYSQLPASS -e "create database zenoss_zep"
+mysql -u$MYSQLUSER -p$MYSQLPASS -e "create database zodb"
+mysql -u$MYSQLUSER -p$MYSQLPASS -e "create database zodb_session"
+echo && echo "...The 1305 MySQL import error below is safe to ignore"
+mysql -u$MYSQLUSER -p$MYSQLPASS zenoss_zep < $ZENOSSHOME/zenoss_zep.sql
+mysql -u$MYSQLUSER -p$MYSQLPASS zodb < $ZENOSSHOME/zodb.sql
+mysql -u$MYSQLUSER -p$MYSQLPASS zodb_session < $ZENOSSHOME/zodb_session.sql
+mysql -u$MYSQLUSER -p$MYSQLPASS -e "CREATE USER 'zenoss'@'localhost' IDENTIFIED BY  'zenoss';"
+mysql -u$MYSQLUSER -p$MYSQLPASS -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'localhost' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
+mysql -u$MYSQLUSER -p$MYSQLPASS -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'localhost';"
+mysql -u$MYSQLUSER -p$MYSQLPASS -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'localhost';"
+mysql -u$MYSQLUSER -p$MYSQLPASS -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'localhost';"
+mysql -u$MYSQLUSER -p$MYSQLPASS -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'localhost';"
+mysql -u$MYSQLUSER -p$MYSQLPASS -e "CREATE USER 'zenoss'@'%' IDENTIFIED BY  'zenoss';"
+mysql -u$MYSQLUSER -p$MYSQLPASS -e "GRANT REPLICATION SLAVE ON *.* TO 'zenoss'@'%' IDENTIFIED BY PASSWORD '*3715D7F2B0C1D26D72357829DF94B81731174B8C';"
+mysql -u$MYSQLUSER -p$MYSQLPASS -e "GRANT ALL PRIVILEGES ON zodb.* TO 'zenoss'@'%';"
+mysql -u$MYSQLUSER -p$MYSQLPASS -e "GRANT ALL PRIVILEGES ON zenoss_zep.* TO 'zenoss'@'%';"
+mysql -u$MYSQLUSER -p$MYSQLPASS -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'%';"
+mysql -u$MYSQLUSER -p$MYSQLPASS -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'%';"
+rm $ZENOSSHOME/*.sql && echo 
 
 # Rabbit install and config
 wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.2.1/rabbitmq-server_3.2.1-1_all.deb -P $DOWNDIR/
