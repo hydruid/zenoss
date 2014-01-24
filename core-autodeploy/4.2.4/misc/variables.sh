@@ -9,6 +9,10 @@
 	export PYTHONPATH=/usr/local/zenoss/lib/python
 	export PATH=/usr/local/zenoss/bin:$PATH
 	export INSTANCE_HOME=$ZENHOME
+
+# Variables
+supos="echo ...Supported OS detected."
+
 # Functions
 menu-os () {
 	echo && echo "...Non Supported OS detected...would you like to continue anyways?"
@@ -20,7 +24,7 @@ menu-os () {
 	"No") echo "...stopping script" && exit 0
 	break ;; *) echo invalid option;; esac
 	done }
-supos="echo ...Supported OS detected."
+
 detect-os () {
 	if grep -q "Ubuntu 13" /etc/issue.net
 		then    $supos && curos="ubuntu"
@@ -39,13 +43,12 @@ mysql-conn_test () {
 	fi      }
 
 mysql-cred () {
-	echo "Enter your MySQL admin credentials"
-	read -p "...username: " username
+	echo "Enter your MySQL credentials for the root user"
 	read -p "...password: " password
 	echo & echo "Testing MySQL Connection..."
-	mysql -u$username -p$password -e "show databases;" > /tmp/mysql.txt 2>> /tmp/mysql.txt
+	mysql -uroot -p$password -e "show databases;" > /tmp/mysql.txt 2>> /tmp/mysql.txt
 	if grep -Fxq "Database" /tmp/mysql.txt
-		then echo "...MySQL connection test successful." && mysqlcred="yes" && MYSQLUSER=$username && MYSQLPASS=$password && echo
+		then echo "...MySQL connection test successful." && mysqlcred="yes" && MYSQLUSER="root" && MYSQLPASS=$password && echo
 		else echo "...Mysql connection failed." && exit 0
 	fi	}
 
