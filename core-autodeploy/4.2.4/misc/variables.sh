@@ -10,7 +10,7 @@
 	export PATH=/usr/local/zenoss/bin:$PATH
 	export INSTANCE_HOME=$ZENHOME
 # Functions
-cmdspace="echo && echo"
+CMDSPACE="echo && echo"
 menu-os () {
 	echo && echo "...Non Supported OS detected...would you like to continue anyways?"
 	PS3='(Press 1 or 2): '
