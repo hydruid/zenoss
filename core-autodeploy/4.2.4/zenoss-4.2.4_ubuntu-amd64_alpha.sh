@@ -22,7 +22,7 @@ DOWNDIR="/tmp"
 apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y && echo
 
 # Setup zenoss user and build environment
-useradd -m -U -s /bin/bash zenoss && echo
+echo && useradd -m -U -s /bin/bash zenoss && echo
 chmod 777 $ZENOSSHOME/.bashrc
 echo 'export ZENHOME=/usr/local/zenoss' >> $ZENOSSHOME/.bashrc
 echo 'export PYTHONPATH=/usr/local/zenoss/lib/python' >> $ZENOSSHOME/.bashrc
