@@ -34,7 +34,7 @@ detect-os () {
 mysql-conn_test () {
 	mysql -u root -e "show databases;" > /tmp/mysql.txt 2>> /tmp/mysql.txt
 	if grep -Fxq "Database" /tmp/mysql.txt
-		then    echo && echo "...MySQL connection test successful." && mysqlcred="no" && echo
+		then    echo "...MySQL connection test successful." && mysqlcred="no" MYSQLUSER="root" && MYSQLPASS="" && echo
 		else    echo && echo "...Mysql connection failed...starting credentials menu." && mysql-cred && echo
 	fi      }
 
@@ -45,7 +45,7 @@ mysql-cred () {
 	echo & echo "Testing MySQL Connection..."
 	mysql -u$username -p$password -e "show databases;" > /tmp/mysql.txt 2>> /tmp/mysql.txt
 	if grep -Fxq "Database" /tmp/mysql.txt
-		then echo "...MySQL connection test successful." && mysqlcred="yes" && echo
+		then echo "...MySQL connection test successful." && mysqlcred="yes" && MYSQLUSER=$username && MYSQLPASS=$password && echo
 		else echo "...Mysql connection failed." && exit 0
 	fi	}
 
