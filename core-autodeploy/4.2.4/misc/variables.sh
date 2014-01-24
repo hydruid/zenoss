@@ -35,7 +35,7 @@ mysql-conn_test () {
 	mysql -u root -e "show databases;" > /tmp/mysql.txt 2>> /tmp/mysql.txt
 	if grep -Fxq "Database" /tmp/mysql.txt
 		then    echo "...MySQL connection test successful." && mysqlcred="no" MYSQLUSER="root" && MYSQLPASS="" && echo
-		else    echo && echo "...Mysql connection failed...starting credentials menu." && mysql-cred && echo
+		else    echo && echo "...Mysql connection failed...starting credentials menu." && echo && mysql-cred
 	fi      }
 
 mysql-cred () {
