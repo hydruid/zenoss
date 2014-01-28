@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 04d Alpha03
+# Version: 04d Alpha04
 #  Status: Not Functional
 #   Notes: Upddating MySQL Section
 #  Zenoss: Core 4.2.4 (v1897) + ZenPacks
@@ -89,8 +89,8 @@ mysql -u$MYSQLUSER -p$MYSQLPASS -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'%';"
 rm $ZENOSSHOME/*.sql && echo 
 
 # Rabbit install and config
-wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.2.1/rabbitmq-server_3.2.1-1_all.deb -P $DOWNDIR/
-dpkg -i $DOWNDIR/rabbitmq-server_3.2.1-1_all.deb
+wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.2.3/rabbitmq-server_3.2.3-1_all.deb -P $DOWNDIR/
+dpkg -i $DOWNDIR/rabbitmq-server_3.2.3-1_all.deb
 chown -R zenoss:zenoss $ZENHOME
 rabbitmqctl add_user zenoss zenoss
 rabbitmqctl add_vhost /zenoss
