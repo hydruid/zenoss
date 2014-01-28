@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 04d Alpha02
+# Version: 04d Alpha03
 #  Status: Not Functional
 #   Notes: Upddating MySQL Section
 #  Zenoss: Core 4.2.4 (v1897) + ZenPacks
@@ -23,13 +23,6 @@ apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y && echo
 
 # Setup zenoss user and build environment
 echo && useradd -m -U -s /bin/bash zenoss && echo
-chmod 777 $ZENOSSHOME/.bashrc
-echo 'export ZENHOME=/usr/local/zenoss' >> $ZENOSSHOME/.bashrc
-echo 'export PYTHONPATH=/usr/local/zenoss/lib/python' >> $ZENOSSHOME/.bashrc
-echo 'export PATH=/usr/local/zenoss/bin:$PATH' >> $ZENOSSHOME/.bashrc
-echo 'export INSTANCE_HOME=$ZENHOME' >> $ZENOSSHOME/.bashrc
-echo 'export PATH=/opt/zenup/bin:$PATH' >> $ZENOSSHOME/.bashrc
-chmod 644 $ZENOSSHOME/.bashrc
 mkdir $ZENOSSHOME/zenoss424-srpm_install
 rm -f $ZENOSSHOME/zenoss424-srpm_install/variables.sh
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P $ZENOSSHOME/zenoss424-srpm_install/
