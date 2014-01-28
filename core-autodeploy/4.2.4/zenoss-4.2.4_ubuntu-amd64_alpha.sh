@@ -17,6 +17,7 @@ echo "...Begin, we will, learn you must." && sleep 1
 # Installer variables
 ZENOSSHOME="/home/zenoss"
 DOWNDIR="/tmp"
+UPGRADE="NO"
 
 # Update OS
 apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y && echo
