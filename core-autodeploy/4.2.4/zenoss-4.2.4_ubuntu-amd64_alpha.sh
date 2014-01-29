@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 04d Alpha07
+# Version: 04d Alpha08
 #  Status: Functional but not Production
 #   Notes: Upddating MySQL Section
 #  Zenoss: Core 4.2.4 (v1897) + ZenPacks
@@ -90,7 +90,8 @@ if [ $UPGRADE = "no" ]; then
 		mysql -u$MYSQLUSER -p$MYSQLPASS -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'%';"
 		mysql -u$MYSQLUSER -p$MYSQLPASS -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'%';"
 		rm $ZENOSSHOME/*.sql && echo 
-	else
+	fi
+        if [ $mysqlcred = "no" ]; then
 		mysql -u$MYSQLUSER -e "create database zenoss_zep"
 		mysql -u$MYSQLUSER -e "create database zodb"
 		mysql -u$MYSQLUSER -e "create database zodb_session"
@@ -111,7 +112,7 @@ if [ $UPGRADE = "no" ]; then
 		mysql -u$MYSQLUSER -e "GRANT ALL PRIVILEGES ON zodb_session.* TO 'zenoss'@'%';"
 		mysql -u$MYSQLUSER -e "GRANT SELECT ON mysql.proc TO 'zenoss'@'%';"
 		rm $ZENOSSHOME/*.sql && echo
-
+	fi
 fi
 
 # Rabbit install and config
