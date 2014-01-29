@@ -1,7 +1,7 @@
 #!/bin/bash
 ##########################################
-# Version: 04d Alpha05
-#  Status: Not Functional
+# Version: 04d Alpha06
+#  Status: Functional but not Production
 #   Notes: Upddating MySQL Section
 #  Zenoss: Core 4.2.4 (v1897) + ZenPacks
 #      OS: Ubuntu/Debian 64-Bit
@@ -94,26 +94,26 @@ fi
 # Rabbit install and config
 wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.2.3/rabbitmq-server_3.2.3-1_all.deb -P $DOWNDIR/
 dpkg -i $DOWNDIR/rabbitmq-server_3.2.3-1_all.deb
-chown -R zenoss:zenoss $ZENHOME
+chown -R zenoss:zenoss $ZENHOME && echo
 rabbitmqctl add_user zenoss zenoss
 rabbitmqctl add_vhost /zenoss
-rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'
+rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*' && echo
 
 # Post Install Tweaks
 os-fixes
-ln -s /usr/local/zenoss /opt
+echo && ln -s /usr/local/zenoss /opt
 apt-get install libssl1.0.0 libssl-dev -y
 ln -s /lib/x86_64-linux-gnu/libssl.so.1.0.0 /usr/lib/libssl.so.10
 ln -s /lib/x86_64-linux-gnu/libcrypto.so.1.0.0 /usr/lib/libcrypto.so.10
 ln -s /usr/local/zenoss/zenup /opt
 chmod +x /usr/local/zenoss/zenup/bin/zenup
 echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
-touch $ZENHOME/var/Data.fs
+touch $ZENHOME/var/Data.fs && echo
 wget --no-check-certificate -N https://raw2.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/zenoss -P $DOWNDIR/
 cp $DOWNDIR/zenoss /etc/init.d/zenoss
 chmod 755 /etc/init.d/zenoss
 update-rc.d zenoss defaults && sleep 2
-touch /etc/insserv/overrides/zenoss
+echo && touch /etc/insserv/overrides/zenoss
 cat > /etc/insserv/overrides/zenoss << EOL
 ### BEGIN INIT INFO
 # Provides: zenoss-stack
@@ -127,12 +127,12 @@ cat > /etc/insserv/overrides/zenoss << EOL
 # Description: Start/stop Zenoss-stack
 ### END INIT INFO
 EOL
-chown -c root:zenoss /usr/local/zenoss/bin/pyraw
+echo && chown -c root:zenoss /usr/local/zenoss/bin/pyraw
 chown -c root:zenoss /usr/local/zenoss/bin/zensocket
 chown -c root:zenoss /usr/local/zenoss/bin/nmap
 chmod -c 04750 /usr/local/zenoss/bin/pyraw
 chmod -c 04750 /usr/local/zenoss/bin/zensocket
-chmod -c 04750 /usr/local/zenoss/bin/nmap
+chmod -c 04750 /usr/local/zenoss/bin/nmap && echo
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/secure_zenoss_ubuntu.sh -P $ZENHOME/bin
 chown -c zenoss:zenoss $ZENHOME/bin/secure_zenoss_ubuntu.sh && chmod -c 0700 $ZENHOME/bin/secure_zenoss_ubuntu.sh
 su -l -c "$ZENHOME/bin/secure_zenoss_ubuntu.sh" zenoss
