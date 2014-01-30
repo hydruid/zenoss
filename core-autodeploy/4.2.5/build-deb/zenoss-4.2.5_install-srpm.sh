@@ -37,7 +37,7 @@ mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
 
 # OS compatibility tests
 detect-os2 && detect-arch && detect-user
-if grep -Fxq "Ubuntu 12.04.3 LTS" /etc/issue.net
+if grep -Fxq "Ubuntu 12.04.4 LTS" /etc/issue.net
         then    echo "...Correct OS detected."
 else    echo "...Incorrect OS detected, this build script requires Ubuntu 12.04 LTS" && exit 0
 fi
