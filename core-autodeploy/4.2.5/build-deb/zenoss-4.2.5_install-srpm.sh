@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01a Alpha01
+# Version: 01a Alpha02
 #  Status: Not Functional
 #   Notes: Testing out 4.2.5
 #  Zenoss: Core 4.2.5 (v2070) + ZenPacks
@@ -31,12 +31,12 @@ echo 'export INSTANCE_HOME=$ZENHOME' >> $zenosshome/.bashrc
 echo 'export PATH=/opt/zenup/bin:$PATH' >> $zenosshome/.bashrc
 chmod 644 $zenosshome/.bashrc
 mkdir $zenosshome/zenoss425-srpm_install
-wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P $zenosshome/zenoss425-srpm_install/
+wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.5/misc/variables.sh -P $zenosshome/zenoss425-srpm_install/
 . $zenosshome/zenoss425-srpm_install/variables.sh
 mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
 
 # OS compatibility tests
-detect-os2 && detect-arch && detect-user
+detect-os && detect-arch && detect-user
 if grep -Fxq "Ubuntu 12.04.4 LTS" /etc/issue.net
         then    echo "...Correct OS detected."
 else    echo "...Incorrect OS detected, this build script requires Ubuntu 12.04 LTS" && exit 0
@@ -84,6 +84,9 @@ su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh 
 ./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_a.log
 ./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_b.log
 chown -R zenoss:zenoss /usr/local/zenoss
+
+exit 0
+# need to update this stuff
 
 # Download and extract the Core ZenPacks
 wget -N http://softlayer-dal.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/4.2.4-1897/zenoss_core-4.2.4-1897.el6.x86_64.rpm -P $downdir/
