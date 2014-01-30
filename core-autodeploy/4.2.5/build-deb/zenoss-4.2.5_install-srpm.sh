@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01a Alpha02
+# Version: 01a Alpha03
 #  Status: Not Functional
 #   Notes: Testing out 4.2.5
 #  Zenoss: Core 4.2.5 (v2070) + ZenPacks
@@ -60,8 +60,6 @@ wget -N http://softlayer-ams.dl.sourceforge.net/project/zenoss/zenoss-rc/builds/
 cd $zenosshome/zenoss425-srpm_install/ && rpm2cpio zenoss_core-4.2.5-2070.el6.src.rpm | cpio -i --make-directories
 bunzip2 zenoss_core-4.2.5-2070.el6.x86_64.tar.bz2 && tar -xvf zenoss_core-4.2.5-2070.el6.x86_64.tar
 
-exit 0
-
 # Install the Zenoss SRPM
 apt-get install librrd-dev -y
 tar zxvf /home/zenoss/zenoss425-srpm_install/zenoss_core-4.2.5/externallibs/rrdtool-1.4.7.tar.gz && cd rrdtool-1.4.7/
@@ -79,6 +77,7 @@ rabbitmqctl set_permissions -p /zenoss zenoss '.*' '.*' '.*'
 ./configure 2>&1 | tee log-configure.log
 make 2>&1 | tee log-make.log
 make clean 2>&1 | tee log-make_clean.log
+cp $zenosshome/zenoss425-srpm_install/variables.sh $zenosshome/zenoss425-srpm_install/zenoss_core-4.2.5/
 cp mkzenossinstance.sh mkzenossinstance.sh.orig
 su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh script.:# configure to generate the uplevel mkzenossinstance.sh script.\n#\n#Custom Ubuntu Variables\n. variables.sh:g' /home/zenoss/zenoss425-srpm_install/zenoss_core-4.2.5/mkzenossinstance.sh"
 ./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_a.log
