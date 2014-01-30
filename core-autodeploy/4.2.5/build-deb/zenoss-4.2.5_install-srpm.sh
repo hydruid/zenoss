@@ -1,7 +1,7 @@
 #!/bin/bash
 ##########################################
-# Version: 01a Alpha03
-#  Status: Not Functional
+# Version: 01a
+#  Status: Functional
 #   Notes: Testing out 4.2.5
 #  Zenoss: Core 4.2.5 (v2070) + ZenPacks
 #      OS: Ubuntu 12.04 64-Bit
@@ -84,12 +84,9 @@ su - root -c "sed -i 's:# configure to generate the uplevel mkzenossinstance.sh 
 ./mkzenossinstance.sh 2>&1 | tee log-mkzenossinstance_b.log
 chown -R zenoss:zenoss /usr/local/zenoss
 
-exit 0
-# need to update this stuff
-
 # Download and extract the Core ZenPacks
-wget -N http://softlayer-dal.dl.sourceforge.net/project/zenoss/zenoss-4.2/zenoss-4.2.4/4.2.4-1897/zenoss_core-4.2.4-1897.el6.x86_64.rpm -P $downdir/
-rpm2cpio $downdir/zenoss_core-4.2.4-1897.el6.x86_64.rpm | sudo cpio -ivd ./opt/zenoss/packs/*.* && mv opt/ $downdir/
+wget -N http://softlayer-ams.dl.sourceforge.net/project/zenoss/zenoss-rc/builds/4.2.5-2070/zenoss_core-4.2.5-2070.el6.x86_64.rpm -P $downdir/
+rpm2cpio $downdir/zenoss_core-4.2.5-2070.el6.x86_64.rpm | sudo cpio -ivd ./opt/zenoss/packs/*.* && mv opt/ $downdir/
 
 echo "...Script complete"
 exit 0
