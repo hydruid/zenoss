@@ -1,7 +1,7 @@
 #!/bin/bash
 ##########################################
-# Version: 04d Alpha08
-#  Status: Functional but not Production
+# Version: 04e Alpha01
+#  Status: Functional
 #   Notes: Upddating MySQL Section
 #  Zenoss: Core 4.2.4 (v1897) + ZenPacks
 #      OS: Ubuntu/Debian 64-Bit
@@ -133,6 +133,7 @@ ln -s /usr/local/zenoss/zenup /opt
 chmod +x /usr/local/zenoss/zenup/bin/zenup
 echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
 touch $ZENHOME/var/Data.fs && echo
+touch $ZENHOME/.fresh_install && echo
 wget --no-check-certificate -N https://raw2.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/zenoss -P $DOWNDIR/
 cp $DOWNDIR/zenoss /etc/init.d/zenoss
 chmod 755 /etc/init.d/zenoss
