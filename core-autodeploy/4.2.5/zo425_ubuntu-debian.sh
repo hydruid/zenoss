@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01a Alpha02
+# Version: 01a Alpha03
 #  Status: Not Functional
 #   Notes: Testing out new version
 #  Zenoss: Core 4.2.5 (v2070) + ZenPacks
@@ -29,7 +29,7 @@ mkdir $ZENOSSHOME/zenoss425-srpm_install
 rm -f $ZENOSSHOME/zenoss425-srpm_install/variables.sh
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.5/misc/variables.sh -P $ZENOSSHOME/zenoss425-srpm_install/
 . $ZENOSSHOME/zenoss425-srpm_install/variables.sh
-mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
+mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME && chown -cR zenoss:zenoss $ZENOSSHOME/.bashrc
 
 # OS compatibility tests
 detect-os && detect-arch && detect-user && echo
