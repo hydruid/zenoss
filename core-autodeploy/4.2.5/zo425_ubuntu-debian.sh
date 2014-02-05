@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01a Alpha04
+# Version: 01a Alpha05
 #  Status: Not Functional
 #   Notes: Testing out new version
 #  Zenoss: Core 4.2.5 (v2070) + ZenPacks
@@ -66,7 +66,7 @@ wget -N http://master.dl.sourceforge.net/project/zenossforubuntu/zenoss-core-425
 dpkg -i $DOWNDIR/zenoss-core-425-2070_03a_amd64.deb
 rm -f $ZENOSSHOME/zenoss425-srpm_install/variables.sh
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.5/misc/variables.sh -P $ZENOSSHOME/zenoss425-srpm_install/
-chown -cR zenoss:zenoss $ZENHOME && chown -cR zenoss:zenoss $ZENOSSHOME
+chown -R zenoss:zenoss $ZENHOME && chown -R zenoss:zenoss $ZENOSSHOME
 
 # Import the MySQL Database and create users
 if [ $UPGRADE = "no" ]; then
