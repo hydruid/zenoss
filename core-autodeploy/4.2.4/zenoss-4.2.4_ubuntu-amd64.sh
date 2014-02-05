@@ -28,7 +28,7 @@ mkdir $ZENOSSHOME/zenoss424-srpm_install
 rm -f $ZENOSSHOME/zenoss424-srpm_install/variables.sh
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P $ZENOSSHOME/zenoss424-srpm_install/
 . $ZENOSSHOME/zenoss424-srpm_install/variables.sh
-mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
+mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME && chown -cR zenoss:zenoss $ZENOSSHOME/.bashrc
 
 # OS compatibility tests
 detect-os && detect-arch && detect-user && echo
