@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01a Alpha01
+# Version: 01a Alpha02
 #  Status: Not Functional
 #   Notes: Testing out new version
 #  Zenoss: Core 4.2.5 (v2070) + ZenPacks
@@ -158,7 +158,7 @@ chown -c root:zenoss /usr/local/zenoss/bin/nmap
 chmod -c 04750 /usr/local/zenoss/bin/pyraw
 chmod -c 04750 /usr/local/zenoss/bin/zensocket
 chmod -c 04750 /usr/local/zenoss/bin/nmap && echo
-wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/secure_zenoss_ubuntu.sh -P $ZENHOME/bin
+wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.5/misc/secure_zenoss_ubuntu.sh -P $ZENHOME/bin
 chown -c zenoss:zenoss $ZENHOME/bin/secure_zenoss_ubuntu.sh && chmod -c 0700 $ZENHOME/bin/secure_zenoss_ubuntu.sh
 su -l -c "$ZENHOME/bin/secure_zenoss_ubuntu.sh" zenoss
 echo '#max_allowed_packet=16M' >> /etc/mysql/my.cnf
