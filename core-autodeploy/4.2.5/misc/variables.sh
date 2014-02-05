@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01a
+# Version: 01b
 #   Notes: Testing out 4.2.5
 ##########################################
 
@@ -74,10 +74,6 @@ cp /etc/apt/sources.list.orig /etc/apt/sources.list
 apt-get update
 	}
 
-give-props () {
-echo "..."        
-}
-
 pkg-fix () {
 apt-get -f install
         }
@@ -88,7 +84,7 @@ if grep -Fxq "Ubuntu 13.04" /etc/issue.net
 elif grep -Fxq "Ubuntu 13.10" /etc/issue.net
 	then	cd /usr/local/zenoss/lib/python/pynetsnmp
 		mv netsnmp.py netsnmp.py.orig
-		wget https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/netsnmp.py
+		wget https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.5/misc/netsnmp.py
 		chown zenoss:zenoss netsnmp.py
 		echo "...Specific OS fixes complete."
 elif grep -Fxq "Ubuntu 12.04.3 LTS" /etc/issue.net
