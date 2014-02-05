@@ -65,7 +65,7 @@ wget -N http://master.dl.sourceforge.net/project/zenossforubuntu/zenoss-core-424
 dpkg -i $DOWNDIR/zenoss-core-424-1897_02a_amd64.deb
 rm -f $ZENOSSHOME/zenoss424-srpm_install/variables.sh
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P $ZENOSSHOME/zenoss424-srpm_install/
-chown -cR zenoss:zenoss $ZENHOME && chown -cR zenoss:zenoss $ZENOSSHOME
+chown -R zenoss:zenoss $ZENHOME && chown -R zenoss:zenoss $ZENOSSHOME
 
 # Import the MySQL Database and create users
 if [ $UPGRADE = "no" ]; then
