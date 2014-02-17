@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01a Alpha05
+# Version: 01a Alpha06
 #  Status: Not Functional
 #   Notes: Testing out new version
 #  Zenoss: Core 4.2.5 (v2070) + ZenPacks
@@ -165,6 +165,9 @@ echo '#max_allowed_packet=16M' >> /etc/mysql/my.cnf
 echo 'innodb_buffer_pool_size=256M' >> /etc/mysql/my.cnf
 echo 'innodb_additional_mem_pool_size=20M' >> /etc/mysql/my.cnf
 sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
+
+# Check log for errors
+check-log
 
 # End of Script Message
 FINDIP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
