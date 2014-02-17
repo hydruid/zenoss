@@ -1,0 +1,10 @@
+##########################################
+# Version: 01a
+##########################################
+
+Description:
+This text file is the version changelog for the scripts in this directory.
+
+Current:
+	zo425_ubuntu-debian.sh -
+		02-17-14 - Alpha Version: uploaded and working out bugs
