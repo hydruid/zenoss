@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01b
+# Version: 01c
 #   Notes: Testing out 4.2.5
 ##########################################
 
@@ -66,7 +66,7 @@ fi	}
 
 debian-testing-repo () {
 cp /etc/apt/sources.list /etc/apt/sources.list.orig
-wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/debian-testing-repo.list -P /root/
+wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.5/misc/debian-testing-repo.list -P /root/
 mv /root/debian-testing-repo.list /etc/apt/sources.list
 apt-get update
 apt-get -t testing install libc6 libc6-dev -y
