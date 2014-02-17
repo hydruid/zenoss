@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01c
+# Version: 01d
 #   Notes: Testing out 4.2.5
 ##########################################
 
@@ -14,6 +14,12 @@
 supos="echo ...Supported OS detected."
 
 # Functions
+check-log () {
+        if grep -q "Cannot allocate memory" ./script-log.txt
+                then    echo "...Your server doesn't have enough RAM, 3GB is the recommended minimum." && exit 0
+        else    echo "...Check log didn't find any errors"
+        fi      }
+
 menu-os () {
 	echo && echo "...Non Supported OS detected...would you like to continue anyways?"
 	PS3='(Press 1 or 2): '
