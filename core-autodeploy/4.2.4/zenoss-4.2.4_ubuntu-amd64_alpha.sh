@@ -28,7 +28,7 @@ mkdir $ZENOSSHOME/zenoss424-srpm_install
 rm -f $ZENOSSHOME/zenoss424-srpm_install/variables.sh
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P $ZENOSSHOME/zenoss424-srpm_install/
 . $ZENOSSHOME/zenoss424-srpm_install/variables.sh
-mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
+mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME && chown -cR zenoss:zenoss $ZENOSSHOME/.bashrc
 
 # OS compatibility tests
 detect-os && detect-arch && detect-user && echo
@@ -65,7 +65,7 @@ wget -N http://master.dl.sourceforge.net/project/zenossforubuntu/zenoss-core-424
 dpkg -i $DOWNDIR/zenoss-core-424-1897_02a_amd64.deb
 rm -f $ZENOSSHOME/zenoss424-srpm_install/variables.sh
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P $ZENOSSHOME/zenoss424-srpm_install/
-chown -R zenoss:zenoss $ZENHOME
+chown -R zenoss:zenoss $ZENHOME && chown -R zenoss:zenoss $ZENOSSHOME
 
 # Import the MySQL Database and create users
 if [ $UPGRADE = "no" ]; then
@@ -133,7 +133,6 @@ ln -s /usr/local/zenoss/zenup /opt
 chmod +x /usr/local/zenoss/zenup/bin/zenup
 echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
 touch $ZENHOME/var/Data.fs && echo
-touch $ZENHOME/.fresh_install && echo
 wget --no-check-certificate -N https://raw2.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/zenoss -P $DOWNDIR/
 cp $DOWNDIR/zenoss /etc/init.d/zenoss
 chmod 755 /etc/init.d/zenoss
@@ -142,8 +141,8 @@ echo && touch /etc/insserv/overrides/zenoss
 cat > /etc/insserv/overrides/zenoss << EOL
 ### BEGIN INIT INFO
 # Provides: zenoss-stack
-# Required-Start: $local_fs $remote_fs
-# Required-Stop: $local_fs $remote_fs
+# Required-Start: $local_fs $network $remote_fs
+# Required-Stop: $local_fs $network $remote_fs
 # Should-Start: $all
 # Should-Stop: $all
 # Default-Start: 2 3 4 5
