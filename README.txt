@@ -1,7 +1,7 @@
-#######################################################
-# Version: 03l                                        #
-# http://hydruid-blog.com/?p=241                      #
-#######################################################
+##########################################
+# Version: 03m
+# http://hydruid-blog.com/?cat=5
+##########################################
 
 Description:
 This repo contains scripts to install Zenoss Core 4.2.x on Ubuntu and Debian.
@@ -10,12 +10,14 @@ Future Plans:
 Begin working on ZenPacks.
 
 Files:
-core-autodeploy
-	4.2.4
-	- change.txt - Version changelog
-        - zenoss-4.2.4_debian-amd64 : Core stable install script for Debian
-	- zenoss-4.2.4_debian-amd64_alpha.sh : Core alpha install script for Debian
-	- zenoss-4.2.4_ubuntu-amd64.sh : Core stable install script for Ubuntu
-        - zenoss-4.2.4_ubuntu-amd64_alpha.sh : Core alpha install script for Ubuntu
-	4.2.3
-	- zenoss423-svn_ub1204-x64.sh - Core stable install script for Ubuntu
+ core-autodeploy:
+	4.2.5 - Zenoss 4.2.5 DEB Install for Ubuntu/Debian
+	4.2.4 - Zenoss 4.2.4 DEB Install for Ubuntu/Debian
+	4.2.3 - Zenoss 4.2.3 Source Install for Ubuntu
+
+ zendmd:
+	Misc - Various scripts for zendmd
+
+ zenpacks:
+	Hyper-V - ZenPack for Hyper-V metrics
+	
