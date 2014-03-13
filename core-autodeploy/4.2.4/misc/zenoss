@@ -16,6 +16,17 @@
 export ZENHOME=/usr/local/zenoss
 export RRDCACHED=/usr/local/zenoss/bin/rrdcached
 export PATH="/usr/local/zenoss/bin:$PATH"
+### BEGIN INIT INFO
+# Provides: zenoss
+# Required-Start: $local_fs $network $remote_fs
+# Required-Stop: $local_fs $network $remote_fs
+# Should-Start: $all
+# Should-Stop: $all
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Start/stop Zenoss
+# Description: Start/stop Zenoss
+### END INIT INFO
 #
 ##############################################################################
 
