@@ -1,10 +1,12 @@
 ##########################################
-# Version: 01a
+# Version: 01b
+# http://hydruid-blog.com/?cat=5
 ##########################################
 
 Description:
 This text file is the version changelog for the scripts in this directory.
 
-Current:
-	zo425_ubuntu-debian.sh -
-		02-17-14 - Alpha Version: uploaded and working out bugs
+Files:
+ zo425_ubuntu-debian.sh:
+	03-13-14 - Alpha: Enhanced the Init script to play nice with Debian
+	02-17-14 - Alpha: Uploaded and working out bugs
