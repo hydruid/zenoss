@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 04d
+# Version: 04e
 #  Status: Functional
 #   Notes: Improved MySQL Flexibility
 #  Zenoss: Core 4.2.4 (v1897) + ZenPacks
@@ -141,8 +141,8 @@ echo && touch /etc/insserv/overrides/zenoss
 cat > /etc/insserv/overrides/zenoss << EOL
 ### BEGIN INIT INFO
 # Provides: zenoss-stack
-# Required-Start: $local_fs $remote_fs
-# Required-Stop: $local_fs $remote_fs
+# Required-Start: $local_fs $network $remote_fs
+# Required-Stop: $local_fs $network $remote_fs
 # Should-Start: $all
 # Should-Stop: $all
 # Default-Start: 2 3 4 5
