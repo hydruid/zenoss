@@ -3,6 +3,9 @@
 # Version: 03j  
 ###############
 
+# REPO is the github repository from which the script is being used
+REPO='hydruid/zenoss'
+
 ### CURRENT SECTION ###
 # Path Variables
 	export ZENHOME=/usr/local/zenoss
@@ -89,7 +92,7 @@ fi	}
 
 debian-testing-repo () {
 cp /etc/apt/sources.list /etc/apt/sources.list.orig
-wget -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/debian-testing-repo.list -P /root/
+wget -N https://raw.github.com/${REPO}/master/core-autodeploy/4.2.4/misc/debian-testing-repo.list -P /root/
 mv /root/debian-testing-repo.list /etc/apt/sources.list
 apt-get update
 apt-get -t testing install libc6 libc6-dev -y
@@ -111,7 +114,7 @@ if grep -Fxq "Ubuntu 13.04" /etc/issue.net
 elif grep -Fxq "Ubuntu 13.10" /etc/issue.net
 	then	cd /usr/local/zenoss/lib/python/pynetsnmp
 		mv netsnmp.py netsnmp.py.orig
-		wget https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/netsnmp.py
+		wget https://raw.github.com/${REPO}/master/core-autodeploy/4.2.4/misc/netsnmp.py
 		chown zenoss:zenoss netsnmp.py
 		echo "...Specific OS fixes complete."
 elif grep -Fxq "Ubuntu 12.04.3 LTS" /etc/issue.net
