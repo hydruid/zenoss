@@ -7,6 +7,9 @@
 #      OS: Ubuntu/Debian 64-Bit
 ##########################################
 
+# REPO is the github repository from which the script is being used
+REPO='hydruid/zenoss/master'
+
 # Beginning Script Message
 clear
 echo && echo "Welcome to the Zenoss 4.2.4 core-autodeploy script for Ubuntu and Debian! (http://hydruid-blog.com/?p=241)" && echo
@@ -26,7 +29,7 @@ apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y && echo
 echo && useradd -m -U -s /bin/bash zenoss && echo
 mkdir $ZENOSSHOME/zenoss424-srpm_install
 rm -f $ZENOSSHOME/zenoss424-srpm_install/variables.sh
-wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P $ZENOSSHOME/zenoss424-srpm_install/
+wget --no-check-certificate -N https://raw.github.com/${REPO}/core-autodeploy/4.2.4/misc/variables.sh -P $ZENOSSHOME/zenoss424-srpm_install/
 . $ZENOSSHOME/zenoss424-srpm_install/variables.sh
 mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME && chown -cR zenoss:zenoss $ZENOSSHOME/.bashrc
 
@@ -64,7 +67,7 @@ fi
 wget -N http://master.dl.sourceforge.net/project/zenossforubuntu/zenoss-core-424-1897_02a_amd64.deb -P $DOWNDIR/
 dpkg -i $DOWNDIR/zenoss-core-424-1897_02a_amd64.deb
 rm -f $ZENOSSHOME/zenoss424-srpm_install/variables.sh
-wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/variables.sh -P $ZENOSSHOME/zenoss424-srpm_install/
+wget --no-check-certificate -N https://raw.github.com/${REPO}/core-autodeploy/4.2.4/misc/variables.sh -P $ZENOSSHOME/zenoss424-srpm_install/
 chown -R zenoss:zenoss $ZENHOME && chown -R zenoss:zenoss $ZENOSSHOME
 
 # Import the MySQL Database and create users
@@ -133,7 +136,7 @@ ln -s /usr/local/zenoss/zenup /opt
 chmod +x /usr/local/zenoss/zenup/bin/zenup
 echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
 touch $ZENHOME/var/Data.fs && echo
-wget --no-check-certificate -N https://raw2.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/zenoss -P $DOWNDIR/
+wget --no-check-certificate -N https://raw2.github.com/${REPO}/core-autodeploy/4.2.4/misc/zenoss -P $DOWNDIR/
 cp $DOWNDIR/zenoss /etc/init.d/zenoss
 chmod 755 /etc/init.d/zenoss
 update-rc.d zenoss defaults && sleep 2
@@ -157,7 +160,7 @@ chown -c root:zenoss /usr/local/zenoss/bin/nmap
 chmod -c 04750 /usr/local/zenoss/bin/pyraw
 chmod -c 04750 /usr/local/zenoss/bin/zensocket
 chmod -c 04750 /usr/local/zenoss/bin/nmap && echo
-wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/secure_zenoss_ubuntu.sh -P $ZENHOME/bin
+wget --no-check-certificate -N https://raw.github.com/${REPO}/core-autodeploy/4.2.4/misc/secure_zenoss_ubuntu.sh -P $ZENHOME/bin
 chown -c zenoss:zenoss $ZENHOME/bin/secure_zenoss_ubuntu.sh && chmod -c 0700 $ZENHOME/bin/secure_zenoss_ubuntu.sh
 su -l -c "$ZENHOME/bin/secure_zenoss_ubuntu.sh" zenoss
 echo '#max_allowed_packet=16M' >> /etc/mysql/my.cnf
