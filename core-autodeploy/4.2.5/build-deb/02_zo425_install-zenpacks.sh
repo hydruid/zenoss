@@ -14,6 +14,6 @@ done
 
 easy_install readline
 
-echo "...Script complete"
+echo "...Script complete, move onto step 03"
 exit 0
 
