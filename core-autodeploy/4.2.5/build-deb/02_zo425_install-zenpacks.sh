@@ -14,6 +14,8 @@ done
 
 easy_install readline
 
+/usr/local/zenoss/bin/zenoss stop
+
 echo "...Script complete, move onto step 03"
 exit 0
 
