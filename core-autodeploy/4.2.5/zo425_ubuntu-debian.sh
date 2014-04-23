@@ -1,9 +1,9 @@
 #!/bin/bash
 ##########################################
-# Version: 01a Alpha07
-#  Status: Functional but not for Production
-#   Notes: Testing out new version
-#  Zenoss: Core 4.2.5 (v2070) + ZenPacks
+# Version: 01a Alpha08
+#  Status: Not Functional
+#   Notes: Tweaking for 4.2.5
+#  Zenoss: Core 4.2.5 (v2108) + ZenPacks
 #      OS: Ubuntu/Debian 64-Bit
 ##########################################
 
@@ -19,20 +19,24 @@ echo "...Begin, we will, learn you must." && sleep 1
 ZENOSSHOME="/home/zenoss"
 DOWNDIR="/tmp"
 UPGRADE="no"
+ZVER="425"
+ZVERb="4.2.5"
+ZVERc="2108"
+DVER="03b"
 
 # Update OS
-apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y && echo
+apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y
 
 # Setup zenoss user and build environment
-echo && useradd -m -U -s /bin/bash zenoss && echo
-mkdir $ZENOSSHOME/zenoss425-srpm_install
-rm -f $ZENOSSHOME/zenoss425-srpm_install/variables.sh
-wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.5/misc/variables.sh -P $ZENOSSHOME/zenoss425-srpm_install/
-. $ZENOSSHOME/zenoss425-srpm_install/variables.sh
+useradd -m -U -s /bin/bash zenoss
+mkdir $ZENOSSHOME/zenoss$ZVER-srpm_install
+rm -f $ZENOSSHOME/zenoss$ZVER-srpm_install/variables.sh
+wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/$ZVERb/misc/variables.sh -P $ZENOSSHOME/zenoss$ZVER-srpm_install/
+. $ZENOSSHOME/zenoss$ZVER-srpm_install/variables.sh
 mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
 
 # OS compatibility tests
-detect-os && detect-arch && detect-user && echo
+detect-os && detect-arch && detect-user
 
 # Install Package Dependencies
 if [ $curos = "ubuntu" ]; then
@@ -43,7 +47,7 @@ if [ $curos = "ubuntu" ]; then
 	export DEBIAN_FRONTEND=noninteractive
 	apt-get install mysql-server mysql-client mysql-common -y
 	mysql-conn_test
-	echo && pkg-fix
+	pkg-fix
 fi
 if [ $curos = "debian" ]; then
 	apt-get install python-software-properties -y && sleep 1
@@ -58,14 +62,16 @@ if [ $curos = "debian" ]; then
 	export DEBIAN_FRONTEND=noninteractive
 	apt-get install mysql-server mysql-client mysql-common -y
 	mysql-conn_test
-        echo && pkg-fix
+        pkg-fix
 fi
 
+exit 0
+
 # Download Zenoss DEB and install it
-wget -N http://master.dl.sourceforge.net/project/zenossforubuntu/zenoss-core-425-2070_03a_amd64.deb -P $DOWNDIR/
-dpkg -i $DOWNDIR/zenoss-core-425-2070_03a_amd64.deb
-rm -f $ZENOSSHOME/zenoss425-srpm_install/variables.sh
-wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.5/misc/variables.sh -P $ZENOSSHOME/zenoss425-srpm_install/
+wget -N http://master.dl.sourceforge.net/project/zenossforubuntu/zenoss-core-$ZVER-$ZVERc_$DVER_amd64.deb -P $DOWNDIR/
+dpkg -i $DOWNDIR/zenoss-core-$ZVER-$ZVERc_$DVER_amd64.deb
+rm -f $ZENOSSHOME/zenoss$ZVER-srpm_install/variables.sh
+wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/$ZVERb/misc/variables.sh -P $ZENOSSHOME/zenoss$ZVER-srpm_install/
 chown -R zenoss:zenoss $ZENHOME && chown -R zenoss:zenoss $ZENOSSHOME
 
 # Import the MySQL Database and create users
@@ -134,7 +140,7 @@ ln -s /usr/local/zenoss/zenup /opt
 chmod +x /usr/local/zenoss/zenup/bin/zenup
 echo 'watchdog True' >> $ZENHOME/etc/zenwinperf.conf
 touch $ZENHOME/var/Data.fs && echo
-wget --no-check-certificate -N https://raw2.github.com/hydruid/zenoss/master/core-autodeploy/4.2.5/misc/zenoss -P $DOWNDIR/
+wget --no-check-certificate -N https://raw2.github.com/hydruid/zenoss/master/core-autodeploy/$ZVERb/misc/zenoss -P $DOWNDIR/
 cp $DOWNDIR/zenoss /etc/init.d/zenoss
 chmod 755 /etc/init.d/zenoss
 update-rc.d zenoss defaults && sleep 2
@@ -158,7 +164,7 @@ chown -c root:zenoss /usr/local/zenoss/bin/nmap
 chmod -c 04750 /usr/local/zenoss/bin/pyraw
 chmod -c 04750 /usr/local/zenoss/bin/zensocket
 chmod -c 04750 /usr/local/zenoss/bin/nmap && echo
-wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.5/misc/secure_zenoss_ubuntu.sh -P $ZENHOME/bin
+wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/$ZVERb/misc/secure_zenoss_ubuntu.sh -P $ZENHOME/bin
 chown -c zenoss:zenoss $ZENHOME/bin/secure_zenoss_ubuntu.sh && chmod -c 0700 $ZENHOME/bin/secure_zenoss_ubuntu.sh
 su -l -c "$ZENHOME/bin/secure_zenoss_ubuntu.sh" zenoss
 echo '#max_allowed_packet=16M' >> /etc/mysql/my.cnf
@@ -171,7 +177,7 @@ check-log
 
 # End of Script Message
 FINDIP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
-echo && echo "The Zenoss 4.2.5 core-autodeploy script for Ubuntu is complete!!!" && echo
+echo && echo "The Zenoss $ZVERb core-autodeploy script for Ubuntu is complete!!!" && echo
 echo "Browse to $FINDIP:8080 to access your new Zenoss install."
 echo "The default login is:"
 echo "  username: admin"
