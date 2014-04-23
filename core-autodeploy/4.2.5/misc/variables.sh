@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01e
+# Version: 01f
 #   Notes: Testing out 4.2.5
 ##########################################
 
@@ -32,10 +32,8 @@ menu-os () {
 	done }
 
 detect-os () {
-	if grep -q "Ubuntu 14" /etc/issue.net
+	if grep -q "Ubuntu 13" /etc/issue.net
 		then    $supos && curos="ubuntu"
-        elif grep -q "Ubuntu 13" /etc/issue.net
-                then    $supos && curos="ubuntu"
 	elif grep -q "Ubuntu 12" /etc/issue.net
 		then    $supos && curos="ubuntu"
 	elif grep -Fxq "Debian GNU/Linux 7" /etc/issue.net
