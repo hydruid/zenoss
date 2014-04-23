@@ -1,5 +1,5 @@
 ##########################################
-# Version: 01c
+# Version: 01d
 # http://hydruid-blog.com/?cat=5
 ##########################################
 
@@ -8,6 +8,7 @@ This text file is the version changelog for the scripts in this directory.
 
 Files:
  zo425_ubuntu-debian.sh:
+        04-25-14 - 01a: Alpha converted to Stable
         04-23-14 - Alpha: Updated to Zenoss RC Build 2108
 	03-13-14 - Alpha: Enhanced the Init script to play nice with Debian
 	02-17-14 - Alpha: Uploaded and working out bugs
