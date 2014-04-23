@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01a Alpha12
+# Version: 01a Alpha13
 #  Status: Functional...Not ready for Production
 #   Notes: zentrap segfault issues on Ubuntu 14.04 LTS
 #  Zenoss: Core 4.2.5 (v2108) + ZenPacks
@@ -67,7 +67,7 @@ fi
 
 # Download Zenoss DEB and install it
 wget -N http://softlayer-dal.dl.sourceforge.net/project/zenossforubuntu/zenoss-core-425-2108_03c_amd64.deb -P $DOWNDIR/
-dpkg -i $DOWNDIR/zenoss-core-425-2108_03b_amd64.deb
+dpkg -i $DOWNDIR/zenoss-core-425-2108_03c_amd64.deb
 rm -f $ZENOSSHOME/zenoss$ZVER-srpm_install/variables.sh
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/$ZVERb/misc/variables.sh -P $ZENOSSHOME/zenoss$ZVER-srpm_install/
 chown -R zenoss:zenoss $ZENHOME && chown -R zenoss:zenoss $ZENOSSHOME
