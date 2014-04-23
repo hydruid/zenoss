@@ -10,7 +10,6 @@
 # Beginning Script Message
 clear
 echo && echo "Welcome to the Zenoss 4.2.5 core-autodeploy script for Ubuntu and Debian! (http://hydruid-blog.com/?p=710)" && echo
-echo "*WARNING*: THIS VERSION OF ZENOSS HAS NOT BEEN OFFICIALLY RELEASED, IT IS STILL A RC" && echo 
 echo "*WARNING*: This script will update your OS and for Debian users it will install the "Testing" version of some packages."
 echo "           Make sure to make a backup and/or take a snapshot!" && echo && sleep 5
 echo "...Begin, we will, learn you must." && sleep 1
