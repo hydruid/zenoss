@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01a Alpha09
+# Version: 01a Alpha10
 #  Status: Not Functional
 #   Notes: Tweaking for 4.2.5
 #  Zenoss: Core 4.2.5 (v2108) + ZenPacks
@@ -66,11 +66,13 @@ if [ $curos = "debian" ]; then
 fi
 
 # Download Zenoss DEB and install it
-wget -N http://master.dl.sourceforge.net/project/zenossforubuntu/zenoss-core-$ZVER-$ZVERc_$DVER_amd64.deb -P $DOWNDIR/
-dpkg -i $DOWNDIR/zenoss-core-$ZVER-$ZVERc_$DVER_amd64.deb
+wget -N http://softlayer-dal.dl.sourceforge.net/project/zenossforubuntu/zenoss-core-425-2108_03b_amd64.deb -P $DOWNDIR/
+dpkg -i $DOWNDIR/zenoss-core-425-2108_03b_amd64.deb
 rm -f $ZENOSSHOME/zenoss$ZVER-srpm_install/variables.sh
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/$ZVERb/misc/variables.sh -P $ZENOSSHOME/zenoss$ZVER-srpm_install/
 chown -R zenoss:zenoss $ZENHOME && chown -R zenoss:zenoss $ZENOSSHOME
+
+exit 0
 
 # Import the MySQL Database and create users
 if [ $UPGRADE = "no" ]; then
