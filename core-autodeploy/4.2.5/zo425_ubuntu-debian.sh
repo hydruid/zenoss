@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01a Alpha08
+# Version: 01a Alpha09
 #  Status: Not Functional
 #   Notes: Tweaking for 4.2.5
 #  Zenoss: Core 4.2.5 (v2108) + ZenPacks
@@ -65,8 +65,6 @@ if [ $curos = "debian" ]; then
         pkg-fix
 fi
 
-exit 0
-
 # Download Zenoss DEB and install it
 wget -N http://master.dl.sourceforge.net/project/zenossforubuntu/zenoss-core-$ZVER-$ZVERc_$DVER_amd64.deb -P $DOWNDIR/
 dpkg -i $DOWNDIR/zenoss-core-$ZVER-$ZVERc_$DVER_amd64.deb
@@ -123,8 +121,8 @@ if [ $UPGRADE = "no" ]; then
 fi
 
 # Rabbit install and config
-wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.2.3/rabbitmq-server_3.2.3-1_all.deb -P $DOWNDIR/
-dpkg -i $DOWNDIR/rabbitmq-server_3.2.3-1_all.deb
+wget -N http://www.rabbitmq.com/releases/rabbitmq-server/v3.3.0/rabbitmq-server_3.3.0-1_all.deb -P $DOWNDIR/
+dpkg -i $DOWNDIR/rabbitmq-server_3.3.0-1_all.deb
 chown -R zenoss:zenoss $ZENHOME && echo
 rabbitmqctl add_user zenoss zenoss
 rabbitmqctl add_vhost /zenoss
