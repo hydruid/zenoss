@@ -182,3 +182,5 @@ echo "Browse to $FINDIP:8080 to access your new Zenoss install."
 echo "The default login is:"
 echo "  username: admin"
 echo "  password: zenoss"
+
+exit 0
