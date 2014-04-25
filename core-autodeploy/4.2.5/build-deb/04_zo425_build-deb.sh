@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01a
+# Version: 01b
 #  Status: Functional
 #   Notes: Testing out 4.2.5
 ##########################################
@@ -10,7 +10,7 @@ read -p "Please verify that zenoss is not currently running! Press ctrl+c to can
 # Installer variables
 ZENOSSHOME="/home/zenoss"
 DOWNDIR="/tmp"
-DEBVER="03b"
+DEBVER="03c"
 ZVER="425"
 ZVERb="4.2.5"
 ZVERc="2108"
@@ -21,7 +21,7 @@ if [ -f /usr/local/bin/fpm ]
 	then
 		echo "...Skipping fpm installation"
 	else
-		apt-get install ruby ruby-dev rubygems-integration -y
+		apt-get install ruby ruby-dev -y
 		gem install fpm
 fi
 
