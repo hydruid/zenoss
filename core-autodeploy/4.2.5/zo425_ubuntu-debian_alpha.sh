@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 02a Alpha02
+# Version: 02a Alpha03
 #  Status: Functional
 #   Notes: zentrap segfault issues on Ubuntu 14.04 LTS
 #  Zenoss: Core 4.2.5 (v2108) + ZenPacks
@@ -160,7 +160,8 @@ chown -c root:zenoss /usr/local/zenoss/bin/zensocket
 chown -c root:zenoss /usr/local/zenoss/bin/nmap
 chmod -c 04750 /usr/local/zenoss/bin/pyraw
 chmod -c 04750 /usr/local/zenoss/bin/zensocket
-chmod -c 04750 /usr/local/zenoss/bin/nmap && echo
+chmod -c 04750 /usr/local/zenoss/bin/nmap
+chmod -c 04750 /usr/local/zenoss/bin/zentrap
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/$ZVERb/misc/secure_zenoss_ubuntu.sh -P $ZENHOME/bin
 chown -c zenoss:zenoss $ZENHOME/bin/secure_zenoss_ubuntu.sh && chmod -c 0700 $ZENHOME/bin/secure_zenoss_ubuntu.sh
 su -l -c "$ZENHOME/bin/secure_zenoss_ubuntu.sh" zenoss
