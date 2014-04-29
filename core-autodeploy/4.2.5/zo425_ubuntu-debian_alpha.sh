@@ -1,7 +1,7 @@
 #!/bin/bash
 ##########################################
-# Version: 02a Alpha01
-#  Status: Functional...Not ready for Production
+# Version: 02a Alpha02
+#  Status: Functional
 #   Notes: zentrap segfault issues on Ubuntu 14.04 LTS
 #  Zenoss: Core 4.2.5 (v2108) + ZenPacks
 #      OS: Ubuntu/Debian 64-Bit
@@ -41,7 +41,7 @@ detect-os && detect-arch && detect-user
 if [ $curos = "ubuntu" ]; then
 	apt-get install python-software-properties -y && sleep 1
 	echo | add-apt-repository ppa:webupd8team/java && sleep 1 && apt-get update
-	apt-get install rrdtool libmysqlclient-dev nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev erlang-nox -y
+	apt-get install rrdtool libmysqlclient-dev nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev erlang-nox krb5-user -y
 	pkg-fix
 	export DEBIAN_FRONTEND=noninteractive
 	apt-get install mysql-server mysql-client mysql-common -y
@@ -54,7 +54,7 @@ if [ $curos = "debian" ]; then
 	echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | tee -a /etc/apt/sources.list
 	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
 	apt-get update
-	apt-get install rrdtool libmysqlclient-dev nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev erlang-nox smistrip -y
+	apt-get install rrdtool libmysqlclient-dev nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev erlang-nox smistrip krb5-user -y
 	debian-testing-repo
 	wget -N http://ftp.us.debian.org/debian/pool/non-free/s/snmp-mibs-downloader/snmp-mibs-downloader_1.1_all.deb
 	dpkg -i snmp-mibs-downloader_1.1_all.deb
