@@ -1,6 +1,6 @@
 #!/bin/bash
 ###############
-# Version: 03j  
+# Version: 03k
 ###############
 
 ### CURRENT SECTION ###
@@ -106,14 +106,22 @@ apt-get -f install
         }
 
 os-fixes () {
-if grep -Fxq "Ubuntu 13.04" /etc/issue.net
-        then    echo "...No specific OS fixes needed."
-elif grep -Fxq "Ubuntu 13.10" /etc/issue.net
-	then	cd /usr/local/zenoss/lib/python/pynetsnmp
-		mv netsnmp.py netsnmp.py.orig
-		wget https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/netsnmp.py
-		chown zenoss:zenoss netsnmp.py
-		echo "...Specific OS fixes complete."
-elif grep -Fxq "Ubuntu 12.04.3 LTS" /etc/issue.net
-       then    echo "...No specific OS fixes needed."
-fi      }
+        if grep -q "Ubuntu 13" /etc/issue.net
+                then    cd /usr/local/zenoss/lib/python/pynetsnmp
+                        mv netsnmp.py netsnmp.py.orig
+                        wget https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/netsnmp.py
+                        chown zenoss:zenoss netsnmp.py
+                        echo "...Specific OS fixes complete."
+        elif grep -q "Ubuntu 14" /etc/issue.net
+                then    cd /usr/local/zenoss/lib/python/pynetsnmp
+                        mv netsnmp.py netsnmp.py.orig
+                        wget https://raw.github.com/hydruid/zenoss/master/core-autodeploy/4.2.4/misc/netsnmp.py
+                        chown zenoss:zenoss netsnmp.py
+                        echo "...Specific OS fixes complete."
+        elif grep -q "Ubuntu 12" /etc/issue.net
+                then    echo "...No specific OS fixes needed."
+        elif grep -Fxq "Debian GNU/Linux 7" /etc/issue.net
+                then    echo "...No specific OS fixes needed."
+        else    echo "...No specific OS fixes needed."
+        fi      }
+
