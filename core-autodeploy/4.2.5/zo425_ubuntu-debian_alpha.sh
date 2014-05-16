@@ -1,8 +1,8 @@
 #!/bin/bash
 ##########################################
-# Version: 02a Alpha03
-#  Status: Functional
-#   Notes: zentrap segfault issues on Ubuntu 14.04 LTS
+# Version: 02a Alpha04
+#  Status: Not Functional
+#   Notes: Testing 4.2.4 upgrade
 #  Zenoss: Core 4.2.5 (v2108) + ZenPacks
 #      OS: Ubuntu/Debian 64-Bit
 ##########################################
@@ -17,7 +17,7 @@ echo "...Begin, we will, learn you must." && sleep 1
 # Installer variables
 ZENOSSHOME="/home/zenoss"
 DOWNDIR="/tmp"
-UPGRADE="no"
+UPGRADE="no" # Valid options are "yes" and "no"
 ZVER="425"
 ZVERb="4.2.5"
 ZVERc="2108"
@@ -37,11 +37,16 @@ mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
 # OS compatibility tests
 detect-os && detect-arch && detect-user
 
+# Upgrade Preparation
+if [ $UPGRADE = "yes" ]; then
+        /etc/init.d/zenoss stop
+fi
+
 # Install Package Dependencies
 if [ $curos = "ubuntu" ]; then
 	apt-get install python-software-properties -y && sleep 1
 	echo | add-apt-repository ppa:webupd8team/java && sleep 1 && apt-get update
-	apt-get install rrdtool libmysqlclient-dev nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev erlang-nox krb5-user -y
+	apt-get install rrdtool libmysqlclient-dev nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev erlang-nox -y
 	pkg-fix
 	export DEBIAN_FRONTEND=noninteractive
 	apt-get install mysql-server mysql-client mysql-common -y
@@ -54,7 +59,7 @@ if [ $curos = "debian" ]; then
 	echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | tee -a /etc/apt/sources.list
 	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
 	apt-get update
-	apt-get install rrdtool libmysqlclient-dev nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev erlang-nox smistrip krb5-user -y
+	apt-get install rrdtool libmysqlclient-dev nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev erlang-nox smistrip -y
 	debian-testing-repo
 	wget -N http://ftp.us.debian.org/debian/pool/non-free/s/snmp-mibs-downloader/snmp-mibs-downloader_1.1_all.deb
 	dpkg -i snmp-mibs-downloader_1.1_all.deb
@@ -66,7 +71,12 @@ fi
 
 # Download Zenoss DEB and install it
 wget -N http://softlayer-dal.dl.sourceforge.net/project/zenossforubuntu/zenoss-core-425-2108_03c_amd64.deb -P $DOWNDIR/
-dpkg -i $DOWNDIR/zenoss-core-425-2108_03c_amd64.deb
+if [ $UPGRADE = "no" ]; then
+	dpkg -i $DOWNDIR/zenoss-core-425-2108_03c_amd64.deb
+fi
+if [ $UPGRADE = "yes" ]; then
+        dpkg --force-depends -i $DOWNDIR/zenoss-core-425-2108_03c_amd64.deb
+fi
 rm -f $ZENOSSHOME/zenoss$ZVER-srpm_install/variables.sh
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/$ZVERb/misc/variables.sh -P $ZENOSSHOME/zenoss$ZVER-srpm_install/
 chown -R zenoss:zenoss $ZENHOME && chown -R zenoss:zenoss $ZENOSSHOME
@@ -160,8 +170,7 @@ chown -c root:zenoss /usr/local/zenoss/bin/zensocket
 chown -c root:zenoss /usr/local/zenoss/bin/nmap
 chmod -c 04750 /usr/local/zenoss/bin/pyraw
 chmod -c 04750 /usr/local/zenoss/bin/zensocket
-chmod -c 04750 /usr/local/zenoss/bin/nmap
-chmod -c 04750 /usr/local/zenoss/bin/zentrap
+chmod -c 04750 /usr/local/zenoss/bin/nmap && echo
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/$ZVERb/misc/secure_zenoss_ubuntu.sh -P $ZENHOME/bin
 chown -c zenoss:zenoss $ZENHOME/bin/secure_zenoss_ubuntu.sh && chmod -c 0700 $ZENHOME/bin/secure_zenoss_ubuntu.sh
 su -l -c "$ZENHOME/bin/secure_zenoss_ubuntu.sh" zenoss
