@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 02a Alpha06
+# Version: 02a Alpha07
 #  Status: Not Functional
 #   Notes: Testing 4.2.4 upgrade
 #  Zenoss: Core 4.2.5 (v2108) + ZenPacks
@@ -17,7 +17,7 @@ echo "...Begin, we will, learn you must." && sleep 1
 # Installer variables
 ZENOSSHOME="/home/zenoss"
 DOWNDIR="/tmp"
-UPGRADE="no" # Valid options are "yes" and "no"
+UPGRADE="yes" # Valid options are "yes" and "no"
 ZVER="425"
 ZVERb="4.2.5"
 ZVERc="2108"
@@ -176,6 +176,9 @@ chmod -c 04750 /usr/local/zenoss/bin/nmap && echo
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/$ZVERb/misc/secure_zenoss_ubuntu.sh -P $ZENHOME/bin
 chown -c zenoss:zenoss $ZENHOME/bin/secure_zenoss_ubuntu.sh && chmod -c 0700 $ZENHOME/bin/secure_zenoss_ubuntu.sh
 su -l -c "$ZENHOME/bin/secure_zenoss_ubuntu.sh" zenoss
+if [ $UPGRADE = "yes" ]; then
+	su -l -c "zeneventserver stop && cd $ZENHOME/var/zeneventserver/index && rm -rf summary && rm -rf archive && zeneventserver start" zenoss
+fi 
 echo '#max_allowed_packet=16M' >> /etc/mysql/my.cnf
 echo 'innodb_buffer_pool_size=256M' >> /etc/mysql/my.cnf
 echo 'innodb_additional_mem_pool_size=20M' >> /etc/mysql/my.cnf
