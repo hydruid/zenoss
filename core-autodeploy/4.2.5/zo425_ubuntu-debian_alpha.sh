@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 02a Alpha05
+# Version: 02a Alpha06
 #  Status: Not Functional
 #   Notes: Testing 4.2.4 upgrade
 #  Zenoss: Core 4.2.5 (v2108) + ZenPacks
@@ -75,7 +75,8 @@ if [ $UPGRADE = "no" ]; then
 	dpkg -i $DOWNDIR/zenoss-core-425-2108_03c_amd64.deb
 fi
 if [ $UPGRADE = "yes" ]; then
-        dpkg --force-depends -i $DOWNDIR/zenoss-core-425-2108_03c_amd64.deb
+	echo "...The follow errors are normal, still working to suppress them" && sleep 5
+        dpkg --force-depends --force-overwrite -i $DOWNDIR/zenoss-core-425-2108_03c_amd64.deb
 	apt-get -f install -y
 fi
 rm -f $ZENOSSHOME/zenoss$ZVER-srpm_install/variables.sh
