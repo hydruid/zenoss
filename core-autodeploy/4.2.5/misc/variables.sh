@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01i
+# Version: 01j
 #   Notes: updated check-log
 ##########################################
 
@@ -68,7 +68,7 @@ fi	}
 
 detect-user () {
 if [ `whoami` != 'zenoss' ];
-        then    echo "...All system checks passed."
+        then    echo "...Detect user checks passed."
         else    echo "...This script should not be ran by the zenoss user" && exit 0
 fi	}
 
@@ -104,4 +104,12 @@ os-fixes () {
         elif grep -Fxq "Debian GNU/Linux 7" /etc/issue.net
                 then    echo "...No specific OS fixes needed."
         else	echo "...No specific OS fixes needed."
+        fi      }
+
+hostname-verify () {
+	HOSTVERIFY=$(cat /etc/hostname)
+        if grep -q $HOSTVERIFY /etc/hosts
+                then    echo "...Detect hostname checks passed."
+        else    echo "...The hostname for this server should be in /etc/hosts or rabbit will not play nice!"
+		echo "...stopping script" && exit 0
         fi      }
