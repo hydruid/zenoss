@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 03a Alpha02
+# Version: 03a Alpha03
 #  Status: Functional
 #   Notes: Begin testing of 4.2.4 upgrade
 #  Zenoss: Core 4.2.5 (v2108) + ZenPacks
@@ -40,7 +40,7 @@ wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core
 mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
 
 # OS compatibility tests
-detect-os && detect-arch && detect-user
+detect-os && detect-arch && detect-user && hostname-verify
 
 # Upgrade Preparation
 if [ $UPGRADE = "yes" ]; then
