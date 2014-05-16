@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 02a Alpha07
+# Version: 02a Alpha08
 #  Status: Not Functional
 #   Notes: Testing 4.2.4 upgrade
 #  Zenoss: Core 4.2.5 (v2108) + ZenPacks
@@ -17,7 +17,7 @@ echo "...Begin, we will, learn you must." && sleep 1
 # Installer variables
 ZENOSSHOME="/home/zenoss"
 DOWNDIR="/tmp"
-UPGRADE="yes" # Valid options are "yes" and "no"
+UPGRADE="no" # Valid options are "yes" and "no"
 ZVER="425"
 ZVERb="4.2.5"
 ZVERc="2108"
