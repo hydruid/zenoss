@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 03a Alpha01
+# Version: 03a Alpha02
 #  Status: Functional
 #   Notes: Begin testing of 4.2.4 upgrade
 #  Zenoss: Core 4.2.5 (v2108) + ZenPacks
@@ -81,8 +81,8 @@ if [ $UPGRADE = "no" ]; then
 fi
 if [ $UPGRADE = "yes" ]; then
 	echo "...The follow errors are normal, still working to suppress them" && sleep 5
-        dpkg --force-depends --force-overwrite -i $DOWNDIR/zenoss-core-425-2108_03c_amd64.deb
-	apt-get -f install -y
+	dpkg -r zenoss-core-424-1897
+        dpkg -i $DOWNDIR/zenoss-core-425-2108_03c_amd64.deb
 fi
 rm -f $ZENOSSHOME/zenoss$ZVER-srpm_install/variables.sh
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/$ZVERb/misc/variables.sh -P $ZENOSSHOME/zenoss$ZVER-srpm_install/
