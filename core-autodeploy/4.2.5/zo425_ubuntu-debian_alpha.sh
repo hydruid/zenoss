@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 02a Alpha04
+# Version: 02a Alpha05
 #  Status: Not Functional
 #   Notes: Testing 4.2.4 upgrade
 #  Zenoss: Core 4.2.5 (v2108) + ZenPacks
@@ -76,6 +76,7 @@ if [ $UPGRADE = "no" ]; then
 fi
 if [ $UPGRADE = "yes" ]; then
         dpkg --force-depends -i $DOWNDIR/zenoss-core-425-2108_03c_amd64.deb
+	apt-get -f install -y
 fi
 rm -f $ZENOSSHOME/zenoss$ZVER-srpm_install/variables.sh
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/$ZVERb/misc/variables.sh -P $ZENOSSHOME/zenoss$ZVER-srpm_install/
