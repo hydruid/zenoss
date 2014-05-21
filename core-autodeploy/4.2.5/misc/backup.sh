@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01a Alpha02
+# Version: 01a Alpha03
 #  Status: Functional
 #   Notes: Writing a backup script
 ##########################################
@@ -13,7 +13,7 @@ echo && echo "Welcome to the Zenoss Backup script for Ubuntu and Debian! (http:/
 DATE=$(date +%Y%m%d_%H%M)
 DBUSER="zenoss"
 DBPASS="zenoss"
-BACKUPLOC="~/zenoss-backups"
+BACKUPLOC=~/zenoss-backups
 
 # Check User
 if [ `whoami` != 'zenoss' ];
