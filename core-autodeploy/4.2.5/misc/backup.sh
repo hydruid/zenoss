@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01a Alpha03
+# Version: 01a
 #  Status: Functional
 #   Notes: Writing a backup script
 ##########################################
@@ -10,6 +10,12 @@ clear
 echo && echo "Welcome to the Zenoss Backup script for Ubuntu and Debian! (http://hydruid-blog.com/?p=710)" && echo
 
 # Script Variables
+export ZENHOME=/usr/local/zenoss
+export PYTHONPATH=/usr/local/zenoss/lib/python
+export PATH=/usr/local/zenoss/bin:$PATH
+export INSTANCE_HOME=$ZENHOME
+export PATH=/opt/zenup/bin:$PATH
+export DEFAULT_ZEP_JVM_ARGS="-Djetty.host=localhost -server"
 DATE=$(date +%Y%m%d_%H%M)
 DBUSER="zenoss"
 DBPASS="zenoss"
