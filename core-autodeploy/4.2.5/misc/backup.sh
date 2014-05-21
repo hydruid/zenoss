@@ -1,7 +1,7 @@
 #!/bin/bash
 ##########################################
-# Version: 01a Alpha01
-#  Status: Not Functional
+# Version: 01a Alpha02
+#  Status: Functional
 #   Notes: Writing a backup script
 ##########################################
 
@@ -13,6 +13,7 @@ echo && echo "Welcome to the Zenoss Backup script for Ubuntu and Debian! (http:/
 DATE=$(date +%Y%m%d_%H%M)
 DBUSER="zenoss"
 DBPASS="zenoss"
+BACKUPLOC="~/zenoss-backups"
 
 # Check User
 if [ `whoami` != 'zenoss' ];
@@ -24,16 +25,21 @@ fi
 echo "...Starting zenbackup"
 zenbackup
 
+# Stop Zenoss
+echo "...Stopping Zenoss"
+zenoss stop
+
 # Directory Backup
 echo "...Starting Directory Backup"
-zenoss stop
-tar --exclude backups --exclude perf --exclude log -czf ~/zenoss_backup_$DATE.tgz /usr/local/zenoss
+mkdir -p $BACKUPLOC/tar
+tar --exclude backups --exclude perf --exclude log -czf $BACKUPLOC/tar/zenoss_backup_$DATE.tgz /usr/local/zenoss
 
 # MySQL Backup
 echo "...Starting MySQL Backup"
-mysqldump -u$DBUSER -p$DBPASS zenoss_zep > ~/zenoss_zep_$DATE.sql
-mysqldump -u$DBUSER -p$DBPASS zodb > ~/zodb_$DATE.sql
-mysqldump -u$DBUSER -p$DBPASS zodb_session > ~/zodb_session_$DATE.sql
+mkdir -p $BACKUPLOC/sql
+mysqldump -u$DBUSER -p$DBPASS zenoss_zep > $BACKUPLOC/sql/zenoss_zep_$DATE.sql
+mysqldump -u$DBUSER -p$DBPASS zodb > $BACKUPLOC/sql/zodb_$DATE.sql
+mysqldump -u$DBUSER -p$DBPASS zodb_session > $BACKUPLOC/sql/zodb_session_$DATE.sql
 
 # Start Zenoss
 echo "...Starting Zenoss"
