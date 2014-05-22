@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 02a Alpha09
+# Version: 03a Alpha01
 #  Status: Functional
 #   Notes: Begin testing of 4.2.4 upgrade
 #  Zenoss: Core 4.2.5 (v2108) + ZenPacks
