@@ -1,7 +1,7 @@
 #!/bin/bash
 ##########################################
 # Version: 01i
-#   Notes: Need to reformat 
+#   Notes: updated check-log
 ##########################################
 
 # Path Variables
@@ -15,7 +15,7 @@ supos="echo ...Supported OS detected."
 
 # Functions
 check-log () {
-        if grep -q "Cannot allocate memory" ./script-log.txt
+        if grep -q "Cannot allocate memory" script-log.txt
                 then    echo "...Your server doesn't have enough RAM, 3GB is the recommended minimum." && exit 0
         else    echo "...Check log didn't find any errors"
         fi      }
