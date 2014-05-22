@@ -1,8 +1,8 @@
 #!/bin/bash
 ##########################################
-# Version: 01a
+# Version: 02a
 #  Status: Functional
-#   Notes: zentrap segfault issues on Ubuntu 14.04 LTS
+#   Notes: Begin testing of 4.2.4 upgrade
 #  Zenoss: Core 4.2.5 (v2108) + ZenPacks
 #      OS: Ubuntu/Debian 64-Bit
 ##########################################
@@ -17,11 +17,16 @@ echo "...Begin, we will, learn you must." && sleep 1
 # Installer variables
 ZENOSSHOME="/home/zenoss"
 DOWNDIR="/tmp"
-UPGRADE="no"
+UPGRADE="no" # Valid options are "yes" and "no"
 ZVER="425"
 ZVERb="4.2.5"
 ZVERc="2108"
 DVER="03c"
+
+# Upgrade Message
+if [ $UPGRADE = "yes" ]; then
+        echo && echo "...The upgrade process from 4.2.4 to 4.2.5 is still a work in progress. Use at your own risk and MAKE A BACKUP!" && sleep 5
+fi
 
 # Update OS
 apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y
@@ -36,6 +41,11 @@ mkdir $ZENHOME && chown -cR zenoss:zenoss $ZENHOME
 
 # OS compatibility tests
 detect-os && detect-arch && detect-user
+
+# Upgrade Preparation
+if [ $UPGRADE = "yes" ]; then
+        /etc/init.d/zenoss stop
+fi
 
 # Install Package Dependencies
 if [ $curos = "ubuntu" ]; then
@@ -66,7 +76,14 @@ fi
 
 # Download Zenoss DEB and install it
 wget -N http://softlayer-dal.dl.sourceforge.net/project/zenossforubuntu/zenoss-core-425-2108_03c_amd64.deb -P $DOWNDIR/
-dpkg -i $DOWNDIR/zenoss-core-425-2108_03c_amd64.deb
+if [ $UPGRADE = "no" ]; then
+	dpkg -i $DOWNDIR/zenoss-core-425-2108_03c_amd64.deb
+fi
+if [ $UPGRADE = "yes" ]; then
+	echo "...The follow errors are normal, still working to suppress them" && sleep 5
+        dpkg --force-depends --force-overwrite -i $DOWNDIR/zenoss-core-425-2108_03c_amd64.deb
+	apt-get -f install -y
+fi
 rm -f $ZENOSSHOME/zenoss$ZVER-srpm_install/variables.sh
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/$ZVERb/misc/variables.sh -P $ZENOSSHOME/zenoss$ZVER-srpm_install/
 chown -R zenoss:zenoss $ZENHOME && chown -R zenoss:zenoss $ZENOSSHOME
@@ -164,17 +181,22 @@ chmod -c 04750 /usr/local/zenoss/bin/nmap && echo
 wget --no-check-certificate -N https://raw.github.com/hydruid/zenoss/master/core-autodeploy/$ZVERb/misc/secure_zenoss_ubuntu.sh -P $ZENHOME/bin
 chown -c zenoss:zenoss $ZENHOME/bin/secure_zenoss_ubuntu.sh && chmod -c 0700 $ZENHOME/bin/secure_zenoss_ubuntu.sh
 su -l -c "$ZENHOME/bin/secure_zenoss_ubuntu.sh" zenoss
+if [ $UPGRADE = "yes" ]; then
+	su -l -c "zeneventserver stop && cd $ZENHOME/var/zeneventserver/index && rm -rf summary && rm -rf archive && zeneventserver start" zenoss
+fi 
 echo '#max_allowed_packet=16M' >> /etc/mysql/my.cnf
 echo 'innodb_buffer_pool_size=256M' >> /etc/mysql/my.cnf
 echo 'innodb_additional_mem_pool_size=20M' >> /etc/mysql/my.cnf
 sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
+wget --no-check-certificate -N https://raw.githubusercontent.com/hydruid/zenoss/master/core-autodeploy/$ZVERb/misc/backup.sh -P $ZENOSSHOME
 
 # Check log for errors
 check-log
 
 # End of Script Message
 FINDIP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
-echo && echo "The Zenoss $ZVERb core-autodeploy script for Ubuntu is complete!!!" && echo
+echo && echo "The Zenoss $ZVERb core-autodeploy script for Ubuntu is complete!!!"
+echo "A backup script (backup.sh) has been placed in the zenoss user home directory." && echo
 echo "Browse to $FINDIP:8080 to access your new Zenoss install."
 echo "The default login is:"
 echo "  username: admin"
