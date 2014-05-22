@@ -1,8 +1,8 @@
 #!/bin/bash
 ##########################################
-# Version: 02a Alpha08
-#  Status: Not Functional
-#   Notes: Testing 4.2.4 upgrade
+# Version: 02a Alpha09
+#  Status: Functional
+#   Notes: Begin testing of 4.2.4 upgrade
 #  Zenoss: Core 4.2.5 (v2108) + ZenPacks
 #      OS: Ubuntu/Debian 64-Bit
 ##########################################
@@ -22,6 +22,11 @@ ZVER="425"
 ZVERb="4.2.5"
 ZVERc="2108"
 DVER="03c"
+
+# Upgrade Message
+if [ $UPGRADE = "yes" ]; then
+        echo && echo "...The upgrade process from 4.2.4 to 4.2.5 is still a work in progress. Use at your own risk and MAKE A BACKUP!" && sleep 5
+fi
 
 # Update OS
 apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y
@@ -183,13 +188,15 @@ echo '#max_allowed_packet=16M' >> /etc/mysql/my.cnf
 echo 'innodb_buffer_pool_size=256M' >> /etc/mysql/my.cnf
 echo 'innodb_additional_mem_pool_size=20M' >> /etc/mysql/my.cnf
 sed -i 's/mibs/#mibs/g' /etc/snmp/snmp.conf
+wget --no-check-certificate -N https://raw.githubusercontent.com/hydruid/zenoss/master/core-autodeploy/$ZVERb/misc/backup.sh -P $ZENOSSHOME
 
 # Check log for errors
 check-log
 
 # End of Script Message
 FINDIP=`ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
-echo && echo "The Zenoss $ZVERb core-autodeploy script for Ubuntu is complete!!!" && echo
+echo && echo "The Zenoss $ZVERb core-autodeploy script for Ubuntu is complete!!!"
+echo "A backup script (backup.sh) has been placed in the zenoss user home directory." && echo
 echo "Browse to $FINDIP:8080 to access your new Zenoss install."
 echo "The default login is:"
 echo "  username: admin"
