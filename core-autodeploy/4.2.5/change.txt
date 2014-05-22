@@ -9,7 +9,7 @@ This text file is the version changelog for the scripts in this directory.
 Files:
  zo425_ubuntu-debian.sh:
         05-22-14 - 02a: Alpha converted to Stable
-        05-22-14 - Alpha: Misc improvements, fixed check-log, started work on 4.2.4 upgrade
+        05-22-14 - Alpha: Misc improvements, fixed check-log, added backup script, started work on 4.2.4 upgrade
         04-25-14 - 01a: Alpha converted to Stable
         04-23-14 - Alpha: Updated to Zenoss RC Build 2108
 	03-13-14 - Alpha: Enhanced the Init script to play nice with Debian
