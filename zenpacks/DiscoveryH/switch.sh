@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01a
+# Version: 01b
 #  Status: Functional
 #   Notes: Still under development 
 ##########################################
@@ -13,7 +13,7 @@ SNMPVER="2c"
 ##Make, Model, SN, Location, IP Address, Version
 
 # Cisco Query
-if [ $3 = "c" ]; then
+if [ $3 = "c1" ]; then
         echo "Cisco"
 	snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.47.1.1.1.1.11 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"'
         snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.47.1.1.1.1.13.1001 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"'
@@ -23,7 +23,7 @@ if [ $3 = "c" ]; then
 fi
 
 # Dell Query
-if [ $3 = "d" ]; then
+if [ $3 = "d1" ]; then
         echo "Dell"
         snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.47.1.1.1.1.11 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"'
         snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.47.1.1.1.1.13.2 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"'
@@ -32,6 +32,15 @@ if [ $3 = "d" ]; then
         snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.1.1.0 | grep -m 1 STRING | awk '{print $6}' | tr -d ','
 fi
 
+# Sonicwall Query
+if [ $3 = "s1" ]; then
+        echo "Sonicwall"
+        snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.1.1.0 | awk '{print $5,$6}'
+        snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.47.1.1.1.1.13.2 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"'
+        snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.1.6.0 | grep -m 1 STRING | grep -o '"[^"]\+"' |  tr -d '"'
+        snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.4.20.1.1 | awk 'NF>1{print $NF}'
+        snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.1.1.0 | grep -m 1 STRING | awk '{print $9}' | tr -d ')"'
+fi
 
 exit 0
 
