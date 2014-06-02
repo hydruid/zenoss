@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01c
+# Version: 01d
 #  Status: Functional
 #   Notes: Still under development 
 ##########################################
