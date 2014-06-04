@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01j
+# Version: 01k
 #   Notes: updated check-log
 ##########################################
 
@@ -17,8 +17,16 @@ supos="echo ...Supported OS detected."
 check-log () {
         if grep -q "Cannot allocate memory" script-log.txt
                 then    echo "...Your server doesn't have enough RAM, 3GB is the recommended minimum." && exit 0
+	elif grep -q "/usr/local/zenoss/lib/libxml2.so.2: no version information available" script-log.txt
+		then	echo "...Looks like you are upgrading from 4.2.3, let me fix a few files!" && mv /usr/local/zenoss/lib/libxml2.so.2 mv /usr/local/zenoss/lib/libxml2.so.2.old && mv /usr/local/zenoss/lib/libxml2.so mv /usr/local/zenoss/lib/libxml2.so.old && mv /usr/local/zenoss/lib/libz.so mv /usr/local/zenoss/lib/libz.so.old && mv /usr/local/zenoss/lib/libz.so.1 mv /usr/local/zenoss/lib/libz.so.1.old && zenoss restart
         else    echo "...Check log didn't find any errors"
         fi      }
+
+cd /usr/local/zenoss/lib
+mv libxml2.so.2 libxml2.so.2.old
+mv libxml2.so libxml2.so.old
+mv libz.so libz.so.old
+mv libz.so.1 libz.so.1.old
 
 menu-os () {
 	echo && echo "...Non Supported OS detected...would you like to continue anyways?"
