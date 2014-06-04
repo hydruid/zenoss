@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01k
+# Version: 01l
 #   Notes: updated check-log
 ##########################################
 
@@ -18,7 +18,13 @@ check-log () {
         if grep -q "Cannot allocate memory" script-log.txt
                 then    echo "...Your server doesn't have enough RAM, 3GB is the recommended minimum." && exit 0
 	elif grep -q "/usr/local/zenoss/lib/libxml2.so.2: no version information available" script-log.txt
-		then	echo "...Looks like you are upgrading from 4.2.3, let me fix a few files!" && mv /usr/local/zenoss/lib/libxml2.so.2 mv /usr/local/zenoss/lib/libxml2.so.2.old && mv /usr/local/zenoss/lib/libxml2.so mv /usr/local/zenoss/lib/libxml2.so.old && mv /usr/local/zenoss/lib/libz.so mv /usr/local/zenoss/lib/libz.so.old && mv /usr/local/zenoss/lib/libz.so.1 mv /usr/local/zenoss/lib/libz.so.1.old && zenoss restart
+		then	echo "...Looks like you are upgrading from 4.2.3, let me fix a few files!"
+			service zenoss stop
+			mv /usr/local/zenoss/lib/libxml2.so.2 /usr/local/zenoss/lib/libxml2.so.2.old
+			mv /usr/local/zenoss/lib/libxml2.so /usr/local/zenoss/lib/libxml2.so.old
+			mv /usr/local/zenoss/lib/libz.so /usr/local/zenoss/lib/libz.so.old
+			mv /usr/local/zenoss/lib/libz.so.1 /usr/local/zenoss/lib/libz.so.1.old
+			service zenoss start
         else    echo "...Check log didn't find any errors"
         fi      }
 
