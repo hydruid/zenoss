@@ -1,9 +1,9 @@
 #!/usr/bin/env zendmd
 #####################
-# Version: 01b
+# Version: 01c
 #####################
 
-DEVICE = '172.16.41.21'
+DEVICE = 'xensvr02'
 INTERFACE = 'eth0'
 SPEED10Mb = '100000000'
 SPEED100Mb = '100000000'
@@ -13,10 +13,11 @@ SPEED = SPEED10Gb
 
 d = dmd.Devices.findDevice(DEVICE)
 for dev in d.Devices.getSubDevices():
-    value = d.getProperty(dev)
-    for interface in d.os.interfaces():
-        if INTERFACE == interface.id:
-            #print interface.id
-            #print interface.speed
-            interface.speed = float(SPEED)
-            commit ()
+    if dev == d:
+        value = d.getProperty(dev)
+        for interface in d.os.interfaces():
+            if interface.id.startswith(INTERFACE):
+                print interface.id
+                print interface.speed
+#                interface.speed = (SPEED)
+#                commit ()
