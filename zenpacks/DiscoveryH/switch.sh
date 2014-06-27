@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01f
+# Version: 01g
 #  Status: Functional
 #   Notes: Still under development 
 ##########################################
@@ -46,12 +46,13 @@ fi
 
 # Dell 1
 if [ $3 = "d1" ]; then
-        echo "Dell"
-        snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.47.1.1.1.1.13.2 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"'
-        snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.47.1.1.1.1.11 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"'
-        snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.1.6.0 | grep -m 1 STRING | grep -o '"[^"]\+"' |  tr -d '"'
-        snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.4.20.1.1 | awk 'NF>1{print $NF}'
-        snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.1.1.0 | grep -m 1 STRING | awk '{print $6}' | tr -d ','
+        D1="Dell" && D1+=","
+        D1+=$(snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.47.1.1.1.1.13.2 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"') && D1+=","
+        D1+=$(snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.47.1.1.1.1.11 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"') && D1+=","
+        D1+=$(snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.1.6.0 | grep -m 1 STRING | grep -o '"[^"]\+"' |  tr -d '"') && D1+=","
+        D1+=$(snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.4.20.1.1 | awk 'NF>1{print $NF}') && D1+=","
+        D1+=$(snmpwalk -v$SNMPVER -c$1 $2 1.3.6.1.2.1.1.1.0 | grep -m 1 STRING | awk '{print $6}' | tr -d ',') && D1+=","
+	echo $D1
 fi
 
 # Sonicwall 1
