@@ -1,9 +1,12 @@
 #!/bin/bash
 ##########################################
-# Version: 01e
+# Version: 01f
 #  Status: Functional
 #   Notes: Still under development 
 ##########################################
+
+# Notes
+##Format: ./switch community host matrix
 
 # Variables
 ##SNMP
