@@ -1,5 +1,5 @@
 ##########################################
-# Version: 01e
+# Version: 01f
 # http://hydruid-blog.com/?cat=5
 ##########################################
 
@@ -8,6 +8,7 @@ This text file is the version changelog for the scripts in this directory.
 
 Files:
  zo425_ubuntu-debian.sh:
+	07-07-14 - 03a: Alpha converted to Stable
         05-22-14 - 02a: Alpha converted to Stable
         05-22-14 - Alpha: Misc improvements, fixed check-log, added backup script, started work on 4.2.4 upgrade
         04-25-14 - 01a: Alpha converted to Stable
