@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01h
+# Version: 01i
 #  Status: Functional
 #   Notes: Still under development 
 ##########################################
@@ -19,24 +19,29 @@ COM='sed -e 's/$/,/g''
 ##Trim Quote: tr -d '"'
 ##Trim Space: tr -d ' '
 ##Print All After: grep -o "target_string.*"
+##Print word #: awk '{print $1}'
 
 # OEM
 if [ $3 = "c1" ]; then			Q1="Cisco,"
 	elif [ $3 = "c2" ]; then	Q1="Cisco,"
         elif [ $3 = "c3" ]; then        Q1="Cisco,"
 	elif [ $3 = "d1" ]; then	Q1="Dell,"
+        elif [ $3 = "h1" ]; then        Q1="HP,"
 fi
+
 # Model 
 if [ $3 = "c1" ]; then                  Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.13.1001 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"' | $COM)
         elif [ $3 = "c2" ]; then        Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.2.68420352 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"' | $COM)
         elif [ $3 = "c3" ]; then        Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.13.1|grep -m 1 STRING|tr -d ' '|grep -o ":.*"|tr -d '"'|tr -d ':'|$COM)
         elif [ $3 = "d1" ]; then        Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.13.2 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"' | $COM)
+        elif [ $3 = "h1" ]; then        Q1+=$($WALK 1.3.6.1.2.1.1.1.0 | awk '{print $7}' | tr -d ',' | $COM)
 fi
 # Serial Number 
 if [ $3 = "c1" ]; then                  Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.11 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"' | $COM)
         elif [ $3 = "c2" ]; then        Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.11 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"' | $COM)
         elif [ $3 = "c3" ]; then        Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.11 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"' | $COM)
         elif [ $3 = "d1" ]; then        Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.11 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"' | $COM)
+        elif [ $3 = "h1" ]; then        Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.11.1 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"' | $COM)
 fi
 # Site and Location 
 if [ $3 = "c1" ]; then                  Q1+=$($WALK 1.3.6.1.2.1.1.6.0 | grep -m 1 STRING | grep -o '"[^"]\+"' |  tr -d '"' | $COM)
@@ -66,4 +71,4 @@ exit 0
 ##c2 = cisco sb300
 ##c3 = cisco ap1140
 ##d1 = dell 3524/48, 6224/48
-##s1 = sonicwall nsa 4500
+##h1 = hp 2500
