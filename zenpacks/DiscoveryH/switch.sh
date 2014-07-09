@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01i
+# Version: 01j
 #  Status: Functional
 #   Notes: Still under development 
 ##########################################
@@ -26,6 +26,7 @@ if [ $3 = "c1" ]; then			Q1="Cisco,"
 	elif [ $3 = "c2" ]; then	Q1="Cisco,"
         elif [ $3 = "c3" ]; then        Q1="Cisco,"
 	elif [ $3 = "d1" ]; then	Q1="Dell,"
+        elif [ $3 = "d2" ]; then        Q1="Dell,"
         elif [ $3 = "h1" ]; then        Q1="HP,"
 fi
 
@@ -34,6 +35,7 @@ if [ $3 = "c1" ]; then                  Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.13.10
         elif [ $3 = "c2" ]; then        Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.2.68420352 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"' | $COM)
         elif [ $3 = "c3" ]; then        Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.13.1|grep -m 1 STRING|tr -d ' '|grep -o ":.*"|tr -d '"'|tr -d ':'|$COM)
         elif [ $3 = "d1" ]; then        Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.13.2 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"' | $COM)
+        elif [ $3 = "d2" ]; then        Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.2.67108992| grep -o "[^ ]*$"|tr -d '"'|$COM)
         elif [ $3 = "h1" ]; then        Q1+=$($WALK 1.3.6.1.2.1.1.1.0 | awk '{print $7}' | tr -d ',' | $COM)
 fi
 # Serial Number 
@@ -41,6 +43,7 @@ if [ $3 = "c1" ]; then                  Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.11 | 
         elif [ $3 = "c2" ]; then        Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.11 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"' | $COM)
         elif [ $3 = "c3" ]; then        Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.11 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"' | $COM)
         elif [ $3 = "d1" ]; then        Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.11 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"' | $COM)
+        elif [ $3 = "d2" ]; then        Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.11 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"' | $COM)
         elif [ $3 = "h1" ]; then        Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.11.1 | grep -m 1 STRING | grep -o "[^ ]*$" | tr -d '"' | $COM)
 fi
 # Site and Location 
@@ -48,18 +51,22 @@ if [ $3 = "c1" ]; then                  Q1+=$($WALK 1.3.6.1.2.1.1.6.0 | grep -m 
         elif [ $3 = "c2" ]; then        Q1+=$($WALK iso.3.6.1.2.1.1.6.0|grep -m 1 STRING|grep -o '"[^"]\+"'|awk '{print $1}'|tr -d '"'|$COM)
         elif [ $3 = "c3" ]; then        Q1+=$($WALK iso.3.6.1.2.1.1.6.0|grep -m 1 STRING|grep -o '"[^"]\+"'|awk '{print $1}'|tr -d '"'|$COM)
         elif [ $3 = "d1" ]; then        Q1+=$($WALK 1.3.6.1.2.1.1.6.0 | grep -m 1 STRING | grep -o '"[^"]\+"' |  tr -d '"' | $COM | $COM | $COM)
+        elif [ $3 = "d2" ]; then        Q1+=$($WALK 1.3.6.1.2.1.1.6.0 | grep -m 1 STRING | grep -o '"[^"]\+"' |  tr -d '"' | $COM | $COM | $COM)
 fi
 # IP Address
 if [ $3 = "c1" ]; then                  Q1+=$($WALK 1.3.6.1.2.1.4.20.1.1 | awk 'NF>1{print $NF}' | $COM)
         elif [ $3 = "c2" ]; then        Q1+=$($WALK 1.3.6.1.2.1.4.20.1.1 | awk 'NF>1{print $NF}' | $COM)
         elif [ $3 = "c3" ]; then        Q1+=$($WALK 1.3.6.1.2.1.4.20.1.1 | awk 'NF>1{print $NF}' | $COM)
         elif [ $3 = "d1" ]; then        Q1+=$($WALK 1.3.6.1.2.1.4.20.1.1 | awk 'NF>1{print $NF}' | awk '{print $0","}' | sed 's/,[ \t]\?/,/g')
+        elif [ $3 = "d2" ]; then        Q1+=$($WALK 1.3.6.1.2.1.4.20.1.1 | awk 'NF>1{print $NF}' | awk '{print $0","}' | sed 's/,[ \t]\?/,/g')
+
 fi
 # Software Version
 if [ $3 = "c1" ]; then                  Q1+=$($WALK 1.3.6.1.2.1.1.1.0 | grep -m 1 STRING | awk '{print $11}' | tr -d ',')
         elif [ $3 = "c2" ]; then        Q1+=$($WALK iso.3.6.1.2.1.47.1.1.1.1.10.67108992 | grep -m 1 STRING | awk '{print $4}' | tr -d '"')
 	elif [ $3 = "c3" ]; then        Q1+=$($WALK 1.3.6.1.2.1.1.1.0 | grep -m 1 STRING | awk '{print $11}' | tr -d ',')
         elif [ $3 = "d1" ]; then        Q1+=$($WALK 1.3.6.1.2.1.1.1.0 | grep -m 1 STRING | awk '{print $6}' | tr -d ',')
+        elif [ $3 = "d2" ]; then        Q1+=$($WALK 1.3.6.1.2.1.47.1.1.1.1.10.67108992| grep -o '"[^"]\+"' |  tr -d '"')
 fi
 
 echo $Q1
@@ -71,4 +78,5 @@ exit 0
 ##c2 = cisco sb300
 ##c3 = cisco ap1140
 ##d1 = dell 3524/48, 6224/48
+##d2 = dell 3524P (old firmware)
 ##h1 = hp 2500
