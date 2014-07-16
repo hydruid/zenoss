@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 03b Alpha01
+# Version: 03b Alpha02
 #  Status: Functional
 #   Notes: Begin testing of 4.2.4 upgrade
 #  Zenoss: Core 4.2.5 (v2108) + ZenPacks
@@ -22,6 +22,7 @@ ZVER="425"
 ZVERb="4.2.5"
 ZVERc="2108"
 DVER="03c"
+PACKAGECLEANUP="Yes"
 
 # Upgrade Message
 if [ $UPGRADE = "yes" ]; then
@@ -29,7 +30,10 @@ if [ $UPGRADE = "yes" ]; then
 fi
 
 # Update OS
-apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y
+apt-get update && apt-get dist-upgrade -y
+if [ $PACKAGECLEANUP = "yes" ]; then
+        apt-get autoremove -y
+fi
 
 # Setup zenoss user and build environment
 useradd -m -U -s /bin/bash zenoss
