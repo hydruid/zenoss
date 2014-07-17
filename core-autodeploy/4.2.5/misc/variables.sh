@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01m
+# Version: 01n
 #   Notes: updated check-log
 ##########################################
 
@@ -14,6 +14,12 @@
 supos="echo ...Supported OS detected."
 
 # Functions
+multiverse-verify () {
+        MVCHECK=$(cat /etc/apt/sources.list | grep ^#* | grep multiverse | grep -c "#deb")
+        if [ $MVCHECK -ne "0" ]; then
+                echo && echo "...it appears that the Multiverse repo's are disabled, they are required, stopping script" && exit 0
+        fi      }
+
 check-log () {
         if grep -q "Cannot allocate memory" script-log.txt
                 then    echo "...Your server doesn't have enough RAM, 3GB is the recommended minimum." && exit 0
@@ -121,9 +127,3 @@ hostname-verify () {
         else    echo "...The hostname for this server should be in /etc/hosts or rabbit will not play nice!"
 		echo "...stopping script" && exit 0
         fi      }
-
-multiverse-verify () {
-	MVCHECK=$(cat /etc/apt/sources.list | grep ^#* | grep multiverse | grep -c "#deb")
-	if [ $MVCHECK -ne "0" ]; then
-	        echo && echo "...it appears that the Multiverse repo's are disabled, they are required, stopping script" && exit 0
-	fi	}
