@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 01l
+# Version: 01m
 #   Notes: updated check-log
 ##########################################
 
@@ -27,12 +27,6 @@ check-log () {
 			service zenoss start
         else    echo "...Check log didn't find any errors"
         fi      }
-
-cd /usr/local/zenoss/lib
-mv libxml2.so.2 libxml2.so.2.old
-mv libxml2.so libxml2.so.old
-mv libz.so libz.so.old
-mv libz.so.1 libz.so.1.old
 
 menu-os () {
 	echo && echo "...Non Supported OS detected...would you like to continue anyways?"
@@ -127,3 +121,9 @@ hostname-verify () {
         else    echo "...The hostname for this server should be in /etc/hosts or rabbit will not play nice!"
 		echo "...stopping script" && exit 0
         fi      }
+
+multiverse-verify () {
+	MVCHECK=$(cat /etc/apt/sources.list | grep ^#* | grep multiverse | grep -c "#deb")
+	if [ $MVCHECK -ne "0" ]; then
+	        echo && echo "...it appears that the Multiverse repo's are disabled, they are required, stopping script" && exit 0
+	fi	}
