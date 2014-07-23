@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 03b Alpha04
+# Version: 03b Alpha05
 #  Status: Functional
 #   Notes: Begin testing of 4.2.4 upgrade
 #  Zenoss: Core 4.2.5 (v2108) + ZenPacks
@@ -26,7 +26,7 @@ PACKAGECLEANUP="Yes"
 
 # Upgrade Message
 if [ $UPGRADE = "yes" ]; then
-        echo && echo "...The upgrade process from 4.2.4 to 4.2.5 is still a work in progress. Use at your own risk and MAKE A BACKUP!" && sleep 5
+	echo && echo "...The upgrade process from 4.2.4 to 4.2.5 is still a work in progress. Use at your own risk and MAKE A BACKUP!" && sleep 5
 fi
 
 # Update OS
@@ -49,6 +49,7 @@ detect-os && detect-arch && detect-user && hostname-verify
 # Upgrade Preparation
 if [ $UPGRADE = "yes" ]; then
         /etc/init.d/zenoss stop
+	cp $ZENHOME/etc/global.conf $ZENOSSHOME
 fi
 
 # Install Package Dependencies
