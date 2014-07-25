@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 03b Alpha05
+# Version: 03b Alpha06
 #  Status: Functional
 #   Notes: Begin testing of 4.2.4 upgrade
 #  Zenoss: Core 4.2.5 (v2108) + ZenPacks
@@ -55,7 +55,11 @@ fi
 # Install Package Dependencies
 if [ $curos = "ubuntu" ]; then
 	multiverse-check
-	apt-get install python-software-properties -y && sleep 1
+	if [ $idos = "14" ]; then
+		apt-get install software-properties-common -y && sleep 1
+	else
+		apt-get install python-software-properties -y && sleep 1
+	fi	
 	echo | add-apt-repository ppa:webupd8team/java && sleep 1 && apt-get update
 	apt-get install rrdtool libmysqlclient-dev nagios-plugins erlang subversion autoconf swig unzip zip g++ libssl-dev maven libmaven-compiler-plugin-java build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev oracle-java7-installer python-twisted python-gnutls python-twisted-web python-samba libsnmp-base snmp-mibs-downloader bc rpm2cpio memcached libncurses5 libncurses5-dev libreadline6-dev libreadline6 librrd-dev python-setuptools python-dev erlang-nox redis-server -y
 	pkg-fix
