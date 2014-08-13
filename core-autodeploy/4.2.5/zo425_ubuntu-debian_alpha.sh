@@ -1,6 +1,6 @@
 #!/bin/bash
 ##########################################
-# Version: 03b Alpha06
+# Version: 03c Alpha01
 #  Status: Functional
 #   Notes: Begin testing of 4.2.4 upgrade
 #  Zenoss: Core 4.2.5 (v2108) + ZenPacks
@@ -22,7 +22,7 @@ ZVER="425"
 ZVERb="4.2.5"
 ZVERc="2108"
 DVER="03c"
-PACKAGECLEANUP="Yes"
+PACKAGECLEANUP="yes" # Valid options are "yes" and "no"
 
 # Upgrade Message
 if [ $UPGRADE = "yes" ]; then
@@ -54,7 +54,7 @@ fi
 
 # Install Package Dependencies
 if [ $curos = "ubuntu" ]; then
-	multiverse-check
+	multiverse-verify
 	if [ $idos = "14" ]; then
 		apt-get install software-properties-common -y && sleep 1
 	else
